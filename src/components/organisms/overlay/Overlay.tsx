@@ -13,6 +13,7 @@ type Props = {
     onSwap: (target: number) => void;
     formData: SurveyType;
     orderCurrent: number;
+    setIsOpenOverlay: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Overlay = ({
@@ -21,6 +22,7 @@ const Overlay = ({
     onSwap,
     formData,
     orderCurrent,
+    setIsOpenOverlay,
 }: Props) => {
     const [isViewConfirm, setIsViewConfirm] = useState(false);
     const [isSwap, setIsSwap] = useState(false);
@@ -32,6 +34,7 @@ const Overlay = ({
                     formData={formData}
                     onDelete={() => {
                         onDelete();
+                        setIsOpenOverlay(false);
                         setIsViewConfirm(false);
                     }}
                     onBack={() => {
@@ -42,6 +45,7 @@ const Overlay = ({
                     }}
                     onSwap={(target: number) => {
                         onSwap(target);
+                        setIsOpenOverlay(false);
                         setIsViewConfirm(false);
                     }}
                     isSwap={isSwap}
