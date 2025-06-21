@@ -67,7 +67,7 @@ interface MatrixDataItem {
 }
 
 interface QuestionConfig {
-    image_end_question?: boolean;
+    ImageEndQuestion?: boolean;
     Min?: number;
     Max?: number;
     Step?: number;

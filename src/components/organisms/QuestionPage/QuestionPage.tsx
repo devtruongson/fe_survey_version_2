@@ -436,7 +436,7 @@ const QuestionPage = ({ formData, setFormData }: Props) => {
             JSON.parse(localStorage.getItem("listBackground") || "[]")
         );
     }, []);
-
+    console.log(questionedit);
     return (
         <div className="question-page flex flex-col h-full">
             <input
@@ -502,7 +502,7 @@ const QuestionPage = ({ formData, setFormData }: Props) => {
                 >
                     <div className="question-input-container relative z-10 flex flex-col items-center">
                         {questionedit?.MainImageBase64 &&
-                        questionedit.ConfigJson?.image_end_question ? (
+                        questionedit.ConfigJson?.ImageEndQuestion ? (
                             <img
                                 src={questionedit?.MainImageBase64}
                                 className="rounded-2xl "

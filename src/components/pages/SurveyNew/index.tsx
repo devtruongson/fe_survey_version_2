@@ -275,13 +275,11 @@ const SurveyNew = () => {
                             }}
                         >
                             {isTrigger
-                                ? !isSuccess
-                                    ? "Lưu không thành công"
-                                    : isSaving
+                                ? isSaving
                                     ? `Đang lưu ... ${saveCountdown}`
-                                    : hasChanges
-                                    ? "Đã Lưu"
-                                    : "Đã lưu"
+                                    : isSuccess
+                                    ? "Đã lưu"
+                                    : "Lưu không thành công"
                                 : "Lưu"}
                         </Button>
                     </div>
