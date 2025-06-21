@@ -72,6 +72,7 @@ const Sidebar = ({
                 label="Bắt buộc câu trả lời"
             />
             <SwitchCustomize
+                type="IsUseLabel"
                 question={question}
                 handleUpdateQuestion={handleUpdateQuestion}
                 label="Gắn nhãn ở đầu câu hỏi"
