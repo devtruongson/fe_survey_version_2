@@ -51,6 +51,7 @@ export type SurveyType = {
     SecurityModeId: number;
     MainImageBase64?: string;
     BackgroundImageBase64?: string;
+    IsSuccess?: boolean;
     ConfigJson: {
         Background: string;
         IsUseBackgroundImageBase64?: boolean;
