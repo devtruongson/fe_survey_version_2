@@ -50,6 +50,15 @@ const FormSelectType = ({ handleUpdateQuestion }: Props) => {
         [data?.data]
     );
 
+    const handleSelectType = (id: number) => {
+        handleUpdateQuestion("QuestionTypeId", id);
+        if (id === 5) {
+            handleUpdateQuestion("ConfigJson", {
+                FieldInputTypeId: 1,
+            });
+        }
+    };
+
     return (
         <div className="w-full flex justify-center">
             <div className="form-select-type-grid grid grid-cols-2 gap-6">
@@ -58,9 +67,7 @@ const FormSelectType = ({ handleUpdateQuestion }: Props) => {
                         <div
                             key={type.id}
                             className="form-select-type-card flex flex-col items-center justify-center p-4 cursor-pointer"
-                            onClick={() =>
-                                handleUpdateQuestion("QuestionTypeId", type.id)
-                            }
+                            onClick={() => handleSelectType(type.id)}
                         >
                             <div className="form-select-type-icon mb-2">
                                 {type.icon}

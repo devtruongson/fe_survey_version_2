@@ -45,22 +45,17 @@ const SingleInput = ({ question, handleUpdateQuestion }: Props) => {
         (id: number) => {
             handleUpdateQuestion("ConfigJson", {
                 ...question.ConfigJson,
-                fieldInputTypeId: id,
+                FieldInputTypeId: id,
             });
             if (question?.Options?.length) {
                 handleUpdateQuestion("Options", []);
             }
         },
-        [
-            handleUpdateQuestion,
-            question.ConfigJson,
-            question?.Options?.length,
-        ]
+        [handleUpdateQuestion, question.ConfigJson, question?.Options?.length]
     );
 
     const viewRender = useMemo(() => {
-        const fieldInputTypeIdValue =
-            question?.ConfigJson?.fieldInputTypeId;
+        const fieldInputTypeIdValue = question?.ConfigJson?.FieldInputTypeId;
         const typeId = Number(fieldInputTypeIdValue) || 1;
         if (typeId === 1) {
             return (
@@ -103,7 +98,7 @@ const SingleInput = ({ question, handleUpdateQuestion }: Props) => {
                 );
         }
     }, [
-        question?.ConfigJson?.fieldInputTypeId,
+        question?.ConfigJson?.FieldInputTypeId,
         handleUpdateQuestion,
         question,
     ]);
@@ -118,7 +113,7 @@ const SingleInput = ({ question, handleUpdateQuestion }: Props) => {
                 <InputLabel>Kiểu câu trả lời</InputLabel>
                 <Select
                     value={
-                        question?.ConfigJson?.fieldInputTypeId ||
+                        question?.ConfigJson?.FieldInputTypeId ||
                         questionTypes[0].id ||
                         0
                     }
