@@ -17,9 +17,9 @@ const Header: React.FC = () => {
                 />
                 <nav className="flex items-center gap-6">
                     <a
-                        href="#"
+                        href={routesMap.SurveyNew}
                         className="header-link font-semibold"
-                        onClick={() => navigate(routesMap.SurveyNew)}
+                        // onClick={() => navigate(routesMap.SurveyNew)}
                     >
                         TẠO KHẢO SÁT
                     </a>

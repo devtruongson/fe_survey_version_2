@@ -36,7 +36,6 @@ const Voice = ({
     setFormData,
     handleUpdateQuestion,
 }: SwitchCustomizeProps) => {
-    console.log(question?.IsVoice);
     const checked = useMemo(() => {
         return question?.IsVoice || false;
     }, [question]);

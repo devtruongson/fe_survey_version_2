@@ -29,7 +29,7 @@ const defaultValue = {
     SurveyTypeId: 2,
     SurveyTopicId: 2,
     SurveySpecificTopicId: 5,
-    SurveyStatusId: 2, //
+    SurveyStatusId: 1, //
     SecurityModeId: 1,
     Background: "image",
     IsPause: false,
@@ -44,7 +44,7 @@ const defaultValue = {
         ButtonContentColor: "#ffffff",
         Password: "123456",
         Brightness: 100,
-        DefaultBackgroundImageId: 1
+        DefaultBackgroundImageId: 1,
     },
     Questions: [],
     SkipStartPage: false,
@@ -57,17 +57,12 @@ const SurveyNew = () => {
     const [isSaving, setIsSaving] = useState(false);
     const [saveCountdown, setSaveCountdown] = useState(0);
     const [hasChanges, setHasChanges] = useState(false);
-    const [isDisable, setIsDisable] = useState(!!id);
+    const [isDisable, setIsDisable] = useState(false);
     const latestDataRef = useRef(formData);
     const timeoutRef = useRef<number | null>(null);
     const countdownRef = useRef<number | null>(null);
 
-    const isTrigger = useMemo(
-        () =>
-            formData?.SurveyStatusId === 2 &&
-            formData?.MarketSurveyVersionStatusId !== 1,
-        [formData]
-    );
+    const isTrigger = useMemo(() => formData?.SurveyStatusId !== 2, [formData]);
 
     const { data } = useGetSurvey({ id: Number(id) || 0 });
 
@@ -96,7 +91,7 @@ const SurveyNew = () => {
                 <QuestionPage
                     formData={formData}
                     setFormData={setFormData}
-                    isTrigger={isTrigger}
+                    // isTrigger={isTrigger}
                 />
             ),
         },
@@ -190,7 +185,7 @@ const SurveyNew = () => {
     }, [id, data]);
 
     useEffect(() => {
-        if (isTrigger || isDisable) return;
+        // if (isTrigger) return;
 
         if (!isEqual(latestDataRef.current, formData)) {
             latestDataRef.current = formData;
@@ -200,21 +195,21 @@ const SurveyNew = () => {
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [formData, isDisable]);
+    }, [formData]);
 
-    useEffect(() => {
-        if (!isDisable) return;
+    // useEffect(() => {
+    //     if (!isDisable) return;
 
-        window.addEventListener("keydown", (e) => {
-            e.preventDefault();
-        });
+    //     window.addEventListener("keydown", (e) => {
+    //         e.preventDefault();
+    //     });
 
-        return () => {
-            window.removeEventListener("keydown", (e) => {
-                e.preventDefault();
-            });
-        };
-    }, [isDisable]);
+    //     return () => {
+    //         window.removeEventListener("keydown", (e) => {
+    //             e.preventDefault();
+    //         });
+    //     };
+    // }, [isDisable]);
 
     useBlocker(true);
 
@@ -258,9 +253,7 @@ const SurveyNew = () => {
                         <Button
                             variant="text"
                             className="btn-save"
-                            onClick={() =>
-                                !isTrigger ? null : handleConfirm()
-                            }
+                            onClick={() => (isTrigger ? null : handleConfirm())}
                             sx={{
                                 ...(hasChanges &&
                                     !isSaving && {
@@ -272,7 +265,7 @@ const SurveyNew = () => {
                                     }),
                             }}
                         >
-                            {!isTrigger
+                            {isTrigger
                                 ? isSaving
                                     ? `Đang lưu ... ${saveCountdown}`
                                     : hasChanges
