@@ -4,6 +4,7 @@ import type { OptionType, QuestionType } from "../../../types/survey";
 import { useCallback, useEffect } from "react";
 
 type Props = {
+    isDisable?: boolean;
     question: QuestionType;
     handleUpdateQuestion: (
         key: keyof QuestionType,
@@ -19,14 +20,18 @@ const optionDefault = {
     Order: 1,
     Content: "",
 };
-const ShortSentences = ({ question, handleUpdateQuestion }: Props) => {
+const ShortSentences = ({
+    question,
+    handleUpdateQuestion,
+    isDisable,
+}: Props) => {
     const handleAddOption = useCallback(() => {
         handleUpdateQuestion("Options", [
             ...question.Options,
             { ...optionDefault, Order: question.Options.length + 1 },
         ]);
     }, [handleUpdateQuestion, question.Options]);
-
+    console.log(isDisable);
     useEffect(() => {
         if (!question?.Options?.length) {
             handleUpdateQuestion("Options", [optionDefault]);
@@ -47,7 +52,9 @@ const ShortSentences = ({ question, handleUpdateQuestion }: Props) => {
                       );
                   })
                 : null}
-            <ButtonAddAnswer onClick={() => handleAddOption()} />{" "}
+            {isDisable ? null : (
+                <ButtonAddAnswer onClick={() => handleAddOption()} />
+            )}
         </div>
     );
 };

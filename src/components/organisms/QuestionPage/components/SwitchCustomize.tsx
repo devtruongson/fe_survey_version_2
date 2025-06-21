@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-function-type */
 
 import { Box, Switch, Typography } from "@mui/material";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import type { OptionType, QuestionType } from "../../../../types/survey";
 import type { RangeSliderConfigJsonType } from "../../RangeSlider/RangeSlider";
 
@@ -31,54 +31,79 @@ export default function SwitchCustomize({
     handleUpdateQuestion,
     type = "",
 }: SwitchCustomizeProps) {
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.checked;
-        handleUpdateQuestion("ConfigJson", {
-            ...question.ConfigJson,
-            [type]: value,
-        });
-    };
+    const handleChange = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            const value = event.target.checked;
+            if (type === "IsChooseMuitiple") {
+                handleUpdateQuestion("ConfigJson", {
+                    ...question?.ConfigJson,
+                    [type]: value,
+                    MinChoiceCount: 1,
+                    MaxChoiceCount: question?.Options?.length || 1,
+                });
+            } else {
+                handleUpdateQuestion("ConfigJson", {
+                    ...question?.ConfigJson,
+                    [type]: value,
+                });
+            }
+        },
+        [
+            handleUpdateQuestion,
+            question?.ConfigJson,
+            question?.Options?.length,
+            type,
+        ]
+    );
 
     const checked = useMemo(() => {
         return question?.ConfigJson[type] || false;
     }, [question, type]);
 
-    const valueMinMax = useMemo(() => {
-        if (type === "is_choose_muitiple") {
-            return (
-                question?.ConfigJson?.valueMinMax || {
-                    Min: 0,
-                    Max: 0,
-                }
-            );
-        }
-    }, [question, type]);
+    const min = useMemo(
+        () => question?.ConfigJson?.MinChoiceCount || 1,
+        [question?.ConfigJson?.MinChoiceCount]
+    );
+    const max = useMemo(
+        () => question?.ConfigJson?.MaxChoiceCount || 1,
+        [question?.ConfigJson?.MaxChoiceCount]
+    );
 
-    const handleChangeInputMin = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const value = event.target.value;
-        handleUpdateQuestion("ConfigJson", {
-            ...question.ConfigJson,
-            valueMinMax: {
-                Min: value,
-                Max: question?.ConfigJson?.valueMinMax?.Max,
-            },
-        });
-    };
+    const handleChangeInputMin = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            const value = Number(event.target.value);
+            if (
+                value < 1 ||
+                value > question?.Options?.length ||
+                value >= question?.ConfigJson?.MaxChoiceCount
+            ) {
+                return;
+            }
+            handleUpdateQuestion("ConfigJson", {
+                ...question?.ConfigJson,
+                MinChoiceCount: value,
+            });
+        },
+        [handleUpdateQuestion, question?.ConfigJson, question?.Options?.length]
+    );
 
-    const handleChangeInputMax = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const value = event.target.value;
-        handleUpdateQuestion("ConfigJson", {
-            ...question.ConfigJson,
-            valueMinMax: {
-                Max: value,
-                Min: question?.ConfigJson?.valueMinMax?.Min,
-            },
-        });
-    };
+    const handleChangeInputMax = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            const value = Number(event.target.value);
+            if (
+                value < 1 ||
+                value > question?.Options?.length ||
+                value <= question?.ConfigJson?.MinChoiceCount
+            ) {
+                return;
+            }
+            handleUpdateQuestion("ConfigJson", {
+                ...question?.ConfigJson,
+                MaxChoiceCount: value,
+            });
+        },
+        [handleUpdateQuestion, question?.ConfigJson, question?.Options?.length]
+    );
 
     return (
         <div
@@ -128,8 +153,9 @@ export default function SwitchCustomize({
                             outline: "none",
                         }}
                         type="number"
-                        min={"0"}
-                        value={valueMinMax.Min}
+                        min={1}
+                        max={question?.Options?.length || 1}
+                        value={min}
                     />
                     <div
                         style={{
@@ -140,7 +166,8 @@ export default function SwitchCustomize({
                     <input
                         onChange={handleChangeInputMax}
                         type="number"
-                        min={"0"}
+                        min={1}
+                        max={question?.Options?.length || 1}
                         placeholder="Chọn nhiều nhất câu trả lời"
                         style={{
                             height: 32,
@@ -153,7 +180,7 @@ export default function SwitchCustomize({
                             background: "#f5f5f5",
                             outline: "none",
                         }}
-                        value={valueMinMax.Max}
+                        value={max}
                     />
                 </Box>
             ) : (

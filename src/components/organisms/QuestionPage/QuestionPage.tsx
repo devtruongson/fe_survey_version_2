@@ -98,17 +98,17 @@ const QuestionPage = ({ formData, setFormData }: Props) => {
             return {
                 type: item.id,
                 rules: [
-                    // {
-                    //     children: (
-                    //         <SwitchCustomize
-                    //             type="is_choose_muitiple"
-                    //             question={questionedit}
-                    //             isMinMax
-                    //             handleUpdateQuestion={handleUpdateQuestion}
-                    //             label="Chọn nhiều trả lời"
-                    //         />
-                    //     ),
-                    // },
+                    {
+                        children: (
+                            <SwitchCustomize
+                                type="IsChooseMuitiple"
+                                question={questionedit}
+                                isMinMax
+                                handleUpdateQuestion={handleUpdateQuestion}
+                                label="Chọn nhiều trả lời"
+                            />
+                        ),
+                    },
                     {
                         children: (
                             <SwitchCustomize
@@ -311,6 +311,7 @@ const QuestionPage = ({ formData, setFormData }: Props) => {
                 case 7:
                     return questionedit ? (
                         <Ranking
+                            formData={formData}
                             question={questionedit}
                             handleUpdateQuestion={handleUpdateQuestion}
                         />
@@ -328,6 +329,7 @@ const QuestionPage = ({ formData, setFormData }: Props) => {
     );
 
     const handleAddQuestion = useCallback(() => {
+        // if (isTrigger) return;
         setFormData((prev) => ({
             ...prev,
             Questions: [
@@ -416,7 +418,7 @@ const QuestionPage = ({ formData, setFormData }: Props) => {
             const reader = new FileReader();
             reader.onload = () => {
                 const base64String = reader.result;
-                handleUpdateQuestion("ImageHeader", base64String as string);
+                handleUpdateQuestion("MainImageBase64", base64String as string);
             };
             reader.onerror = (error) => {
                 console.error("Error reading file:", error);
@@ -457,9 +459,10 @@ const QuestionPage = ({ formData, setFormData }: Props) => {
                 <div
                     className="question-main flex-1 flex flex-col overflow-y-auto relative"
                     style={{
-                        ...(formData?.Background === "image" && {
+                        ...(formData?.ConfigJson?.Background === "image" && {
                             backgroundImage: `url(${
-                                formData?.IsUseBackgroundImageBase64 &&
+                                formData?.ConfigJson
+                                    ?.IsUseBackgroundImageBase64 &&
                                 formData.BackgroundImageBase64
                                     ? formData.BackgroundImageBase64
                                     : formData?.ConfigJson
@@ -480,14 +483,17 @@ const QuestionPage = ({ formData, setFormData }: Props) => {
                             })`,
                             backgroundColor: "transparent",
                         }),
-                        ...(formData?.Background === "color_gradient" && {
+                        ...(formData?.ConfigJson?.Background ===
+                            "color_gradient" && {
                             background: `linear-gradient(to right, ${formData?.ConfigJson.BackgroundGradient1Color}, ${formData?.ConfigJson.BackgroundGradient2Color})`,
                             filter: `Brightness(${
                                 formData?.ConfigJson.Brightness / 100
                             })`,
                         }),
-                        ...(formData?.Background?.startsWith("#") && {
-                            backgroundColor: formData?.Background,
+                        ...(formData?.ConfigJson?.Background?.startsWith(
+                            "#"
+                        ) && {
+                            backgroundColor: formData?.ConfigJson?.Background,
                             filter: `Brightness(${
                                 formData?.ConfigJson.Brightness / 100
                             })`,
@@ -495,10 +501,10 @@ const QuestionPage = ({ formData, setFormData }: Props) => {
                     }}
                 >
                     <div className="question-input-container relative z-10 flex flex-col items-center">
-                        {questionedit?.ImageHeader &&
+                        {questionedit?.MainImageBase64 &&
                         questionedit.ConfigJson?.image_end_question ? (
                             <img
-                                src={questionedit?.ImageHeader}
+                                src={questionedit?.MainImageBase64}
                                 className="rounded-2xl "
                                 alt=""
                             />

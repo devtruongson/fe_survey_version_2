@@ -60,6 +60,7 @@ const SingleInput = ({ question, handleUpdateQuestion }: Props) => {
         if (typeId === 1) {
             return (
                 <ShortSentences
+                    isDisable={true}
                     question={question}
                     handleUpdateQuestion={handleUpdateQuestion}
                 />
@@ -69,6 +70,7 @@ const SingleInput = ({ question, handleUpdateQuestion }: Props) => {
             case 1:
                 return (
                     <ShortSentences
+                        isDisable={true}
                         question={question}
                         handleUpdateQuestion={handleUpdateQuestion}
                     />
@@ -92,16 +94,13 @@ const SingleInput = ({ question, handleUpdateQuestion }: Props) => {
             default:
                 return (
                     <ShortSentences
+                        isDisable={true}
                         question={question}
                         handleUpdateQuestion={handleUpdateQuestion}
                     />
                 );
         }
-    }, [
-        question?.ConfigJson?.FieldInputTypeId,
-        handleUpdateQuestion,
-        question,
-    ]);
+    }, [handleUpdateQuestion, question]);
 
     return (
         <Box className="single-input flex flex-col gap-4 p-4 bg-gray-100 rounded-lg">
