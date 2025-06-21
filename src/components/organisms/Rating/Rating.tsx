@@ -36,13 +36,13 @@ const Rating = ({ question, handleUpdateQuestion }: Props) => {
     );
 
     const ratingLength = useMemo(
-        () => Number(config?.ratingLength) || 5,
-        [config?.ratingLength]
+        () => Number(config?.RatingLength) || 5,
+        [config?.RatingLength]
     );
 
     const ratingIcon = useMemo(
-        () => config?.ratingIcon || "StarBorderIcon",
-        [config?.ratingIcon]
+        () => config?.RatingIcon || "StarBorderIcon",
+        [config?.RatingIcon]
     );
 
     const handleRenderIcons = useCallback(() => {
@@ -108,13 +108,13 @@ const Rating = ({ question, handleUpdateQuestion }: Props) => {
     }, [ratingIcon]);
 
     useEffect(() => {
-        if (!config?.ratingLength || !config?.ratingIcon) {
+        if (!config?.RatingLength || !config?.RatingIcon) {
             handleUpdateQuestion("ConfigJson", {
-                ratingIcon: config?.RatingIcon ?? "StarBorderIcon",
-                ratingLength: config?.ratingLength ?? 5,
+                RatingIcon: config?.RatingIcon ?? "StarBorderIcon",
+                RatingLength: config?.RatingLength ?? 5,
             });
         }
-    }, [config, handleUpdateQuestion]);
+    }, []);
 
     return (
         <Box className="rating flex flex-col items-center justify-center p-4 bg-gray-100">
