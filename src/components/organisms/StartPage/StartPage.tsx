@@ -1055,23 +1055,21 @@ function BackgroundMode({
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                     }}
+                    onClick={() => {
+                        handleSelectColorBackground();
+                    }}
                 >
                     <div
-                        onClick={() => {
-                            setFormData({
-                                ...formData,
-                                ConfigJson: {
-                                    Background: "color_gradient",
-                                },
-                            });
-                            handleSelectColorBackground();
-                        }}
-                        className="absolute bottom-4 left-4 z-10"
                         style={{
                             color: "white",
                             fontSize: "0.8rem",
                             opacity: 1,
                         }}
+                        // onClick={(e) => {
+                        //     // console.log("run");
+                        //     // e.stopPropagation();
+                        //     handleSelectColorBackground();
+                        // }}
                     >
                         Click để đổi màu
                     </div>
@@ -1084,15 +1082,26 @@ function BackgroundMode({
                                     : "#ccc",
                         }}
                         className="absolute main-check-icon z-10"
-                        onClick={() => {
-                            setFormData((prev: any) => ({
-                                ...prev,
-                                Background:
-                                    formData?.ConfigJson?.Background ===
-                                    "color_gradient"
-                                        ? "image"
-                                        : "color_gradient",
-                            }));
+                        // onClick={() => {
+                        //     console.log("run >>>>>>>>>>>>");
+                        //     setFormData((prev: any) => ({
+                        //         ...prev,
+                        //         Background:
+                        //             formData?.ConfigJson?.Background ===
+                        //             "color_gradient"
+                        //                 ? "image"
+                        //                 : "color_gradient",
+                        //     }));
+                        // }}
+                        onClick={(e) => {
+                            e.stopPropagation(); // CHẶN nổi bọt lên cha
+                            setFormData({
+                                ...formData,
+                                ConfigJson: {
+                                    ...formData?.ConfigJson,
+                                    Background: "color_gradient",
+                                },
+                            });
                         }}
                     />
                     <div className="absolute inset-0 bg-black opacity-30 z-0"></div>
