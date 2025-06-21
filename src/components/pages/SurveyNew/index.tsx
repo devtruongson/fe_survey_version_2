@@ -25,17 +25,17 @@ const defaultValue = {
     RequesterId: 10,
     Title: "",
     Description: "",
-    MarketSurveyVersionStatusId: 1, // SurveyStatusId: 3
+    MarketSurveyVersionStatusId: 2, // SurveyStatusId: 3
     SurveyTypeId: 2,
     SurveyTopicId: 2,
     SurveySpecificTopicId: 5,
     SurveyStatusId: 1, //
     SecurityModeId: 1,
-    Background: "image",
-    IsPause: false,
     BackgroundImageBase64: "",
-    IsUseBackgroundImageBase64: false,
     ConfigJson: {
+        Background: "image",
+        IsUseBackgroundImageBase64: false,
+        IsPause: false,
         BackgroundGradient1Color: "#ffffff",
         BackgroundGradient2Color: "#f0f0f0",
         TitleColor: "#000000",
@@ -45,9 +45,9 @@ const defaultValue = {
         Password: "123456",
         Brightness: 100,
         DefaultBackgroundImageId: 1,
+        SkipStartPage: false,
     },
     Questions: [],
-    SkipStartPage: false,
 };
 
 const SurveyNew = () => {
@@ -76,7 +76,7 @@ const SurveyNew = () => {
             value: 0,
             component: (
                 <StartPage
-                    isTrigger={isTrigger}
+                    // isTrigger={isTrigger}
                     formData={formData}
                     setFormData={setFormData}
                     handleTabClick={handleTabClick}
@@ -125,7 +125,7 @@ const SurveyNew = () => {
             onSuccess(newData) {
                 setFormData(newData.data);
                 latestDataRef.current = newData.data;
-                setIsDisable(newData?.data?.IsPause);
+                setIsDisable(newData?.data?.ConfigJson?.IsPause);
                 if (!id) {
                     window.history.pushState(
                         {},
@@ -185,7 +185,7 @@ const SurveyNew = () => {
     }, [id, data]);
 
     useEffect(() => {
-        // if (isTrigger) return;
+        if (!isTrigger) return;
 
         if (!isEqual(latestDataRef.current, formData)) {
             latestDataRef.current = formData;
@@ -198,7 +198,7 @@ const SurveyNew = () => {
     }, [formData]);
 
     // useEffect(() => {
-    //     if (!isDisable) return;
+    //     // if (!isDisable) return;
 
     //     window.addEventListener("keydown", (e) => {
     //         e.preventDefault();
@@ -209,7 +209,7 @@ const SurveyNew = () => {
     //             e.preventDefault();
     //         });
     //     };
-    // }, [isDisable]);
+    // }, []);
 
     useBlocker(true);
 

@@ -2,7 +2,7 @@ export type OptionType = {
     Id?: number | null;
     Content: string;
     Order: number;
-    Image?: string; // base64 image data
+    MainImageBase64?: string; // base64 image data
 };
 
 export type SlideType = {
@@ -23,14 +23,17 @@ export type JumpLogicsType = {
 };
 export type QuestionType = {
     Id?: number | null;
-    ImageHeader?: string;
+    MainImageBase64?: string;
     QuestionTypeId: number;
     Content: string;
     Description: string;
     TimeLimit: number;
     IsVoice: boolean;
     Order: number;
-    ConfigJson: Record<string, string | number | SlideType[] | JumpLogicsType[]>;
+    ConfigJson: Record<
+        string,
+        string | number | SlideType[] | JumpLogicsType[]
+    >;
     Options: OptionType[];
 };
 
@@ -46,12 +49,11 @@ export type SurveyType = {
     SurveySpecificTopicId: number;
     SurveyStatusId: number;
     SecurityModeId: number;
-    Background: string;
-    ImageBase64?: string;
+    MainImageBase64?: string;
     BackgroundImageBase64?: string;
-    IsUseBackgroundImageBase64?: boolean;
-    CustomBackgroundImageUrl?: string | null;
     ConfigJson: {
+        Background: string;
+        IsUseBackgroundImageBase64?: boolean;
         BackgroundGradient1Color: string;
         BackgroundGradient2Color: string;
         TitleColor: string;
@@ -62,9 +64,9 @@ export type SurveyType = {
         Brightness: number;
         IsResizableIframeEnabled?: boolean;
         DefaultBackgroundImageId: number;
+        SkipStartPage: boolean;
     };
     Questions: QuestionType[];
-    SkipStartPage: boolean;
 };
 
 export interface PageProps {
@@ -72,5 +74,5 @@ export interface PageProps {
     formData: SurveyType;
     setFormData: React.Dispatch<React.SetStateAction<SurveyType>>;
     handleTabClick: (tabValue: number) => void;
-    isTrigger: boolean;
+    isTrigger?: boolean;
 }

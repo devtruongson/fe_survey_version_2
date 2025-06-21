@@ -28,20 +28,18 @@ type Props = {
 
 const RatingIcon = ({ question, handleUpdateQuestion }: Props) => {
     const config = useMemo(
-        () =>
-            (question?.ConfigJson as Record<string, string | number>) ||
-            {},
+        () => (question?.ConfigJson as Record<string, string | number>) || {},
         [question?.ConfigJson]
     );
 
     const ratingLength = useMemo(
-        () => Number(config?.ratingLength) || 5,
-        [config?.ratingLength]
+        () => Number(config?.RatingLength) || 5,
+        [config?.RatingLength]
     );
 
     const ratingIcon = useMemo(
-        () => config?.ratingIcon || "StarBorderIcon",
-        [config?.ratingIcon]
+        () => config?.RatingIcon || "StarBorderIcon",
+        [config?.RatingIcon]
     );
 
     const availableIcons = useMemo(
@@ -62,7 +60,7 @@ const RatingIcon = ({ question, handleUpdateQuestion }: Props) => {
         (_event: Event, newValue: number | number[]) => {
             handleUpdateQuestion("ConfigJson", {
                 ...config,
-                ratingLength: newValue as number,
+                RatingLength: newValue as number,
             });
         },
         [config, handleUpdateQuestion]
@@ -73,7 +71,7 @@ const RatingIcon = ({ question, handleUpdateQuestion }: Props) => {
             if (handleUpdateQuestion) {
                 handleUpdateQuestion("ConfigJson", {
                     ...config,
-                    ratingIcon: iconType,
+                    RatingIcon: iconType,
                 });
             }
         },
@@ -81,10 +79,10 @@ const RatingIcon = ({ question, handleUpdateQuestion }: Props) => {
     );
 
     useEffect(() => {
-        if (!config?.ratingLength || !config?.ratingIcon) {
+        if (!config?.RatingLength || !config?.RatingIcon) {
             handleUpdateQuestion("ConfigJson", {
-                ratingIcon: config?.ratingIcon ?? "StarBorderIcon",
-                ratingLength: config?.ratingLength ?? 5,
+                RatingIcon: config?.RatingIcon ?? "StarBorderIcon",
+                RatingLength: config?.RatingLength ?? 5,
             });
         }
     }, [config, handleUpdateQuestion]);
