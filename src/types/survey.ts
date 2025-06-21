@@ -42,7 +42,7 @@ export type SurveyType = {
     RequesterId: number;
     Title: string;
     Description: string;
-    IsPause: boolean;
+    // IsPause: boolean;
     MarketSurveyVersionStatusId: number | null;
     SurveyTypeId: number;
     SurveyTopicId: number;
