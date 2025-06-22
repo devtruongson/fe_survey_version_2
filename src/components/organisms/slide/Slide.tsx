@@ -22,7 +22,7 @@ const Slide = ({ currentQuestionId }: Props) => {
         [currentQuestionId, surveyData?.SurveyResponses]
     );
 
-    console.log("data >>>> ", data);
+    // console.log("data >>>> ", data);
 
     const handleRender = useCallback(() => {
         switch (data?.ValueJson.QuestionContent.QuestionTypeId) {

@@ -2,6 +2,11 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { handleUpdateForm } from "../../../app/appSlice";
 import { Box, TextField } from "@mui/material";
+import Date from "../../molecules/date/Date";
+import DateMonth from "../../molecules/date-month/DateMonth";
+import Year from "../../molecules/year/Year";
+import Time from "../../molecules/time/Time";
+import FullTime from "../../molecules/full-time/FullTime";
 
 interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -9,7 +14,7 @@ interface Props {
 }
 
 const SigleInputSlide = ({ data }: Props) => {
-    console.log(data);
+    // console.log(data);
     const dispatch = useDispatch();
 
     const handleRender = useCallback(() => {
@@ -121,15 +126,15 @@ const SigleInputSlide = ({ data }: Props) => {
                     </Box>
                 );
             case 5:
-                return;
+                return <Date isUpdate data={data} />;
             case 6:
-                return;
+                return <DateMonth isUpdate data={data} />;
             case 7:
-                return;
+                return <Year isUpdate data={data} />;
             case 8:
-                return;
+                return <Time isUpdate data={data} />;
             case 9:
-                return;
+                return <FullTime isUpdate data={data} />;
             default:
                 return <div className="">Chưa chọn type</div>;
         }

@@ -1,11 +1,60 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useCallback, useMemo } from "react";
+import { useAppDispatch } from "../../../app/hooks";
 import "./styles.scss";
+import { handleUpdateForm } from "../../../app/appSlice";
 
-const DateMonth = () => {
+type Props = {
+    isUpdate?: boolean;
+    data?: any;
+};
+const DateMonth = ({ data, isUpdate }: Props) => {
+    const dispatch = useAppDispatch();
+
+    const date = useMemo(
+        () =>
+            data?.ValueJson?.QuestionResponse?.Input?.Value?.split("/")[0] ||
+            "",
+        [data]
+    );
+    const month = useMemo(
+        () =>
+            data?.ValueJson?.QuestionResponse?.Input?.Value?.split("/")[1] ||
+            "",
+        [data]
+    );
+
+    const hadnleUpdate = useCallback(
+        (type: "date" | "month", value: string) => {
+            if (!isUpdate) return;
+            let result = "";
+            if (type === "date") {
+                result = `${value}/${month}`;
+            }
+            if (type == "month") {
+                result = `${date}/${value}`;
+            }
+
+            dispatch(
+                handleUpdateForm({
+                    idChoose: data?.ValueJson?.QuestionContent?.Id,
+                    type: 6,
+                    value: result,
+                })
+            );
+            // console.log(">>>", type, value);
+        },
+        [data?.ValueJson?.QuestionContent?.Id, date, dispatch, isUpdate, month]
+    );
+
     return (
         <div className="date-container">
             <div className="date-field">
                 <label>Ngày</label>
-                <select>
+                <select
+                    value={date}
+                    onChange={(e) => hadnleUpdate("date", e.target.value)}
+                >
                     {/* Options for Day */}
                     {[...Array(31)].map((_, i) => (
                         <option key={i + 1} value={i + 1}>
@@ -16,7 +65,10 @@ const DateMonth = () => {
             </div>
             <div className="date-field">
                 <label>Tháng</label>
-                <select>
+                <select
+                    value={month}
+                    onChange={(e) => hadnleUpdate("month", e.target.value)}
+                >
                     {/* Options for Month */}
                     {[...Array(12)].map((_, i) => (
                         <option key={i + 1} value={i + 1}>
