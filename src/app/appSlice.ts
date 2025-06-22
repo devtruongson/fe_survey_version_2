@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
@@ -249,6 +250,41 @@ export const appSlice = createSlice({
                 state.surveyData.SurveyResponses = clone;
             }
         },
+        handleUpdateRaking(
+            state,
+            action: PayloadAction<{
+                idChoose: number; // questionId
+                ranking: { SurveyOptionId: number; RankIndex: number }[];
+            }>
+        ) {
+            const clone = state.surveyData?.SurveyResponses.map((i) => {
+                if (
+                    i.ValueJson.QuestionContent.Id === action.payload.idChoose
+                ) {
+                    return {
+                        ...i,
+                        IsValid: true,
+                        ValueJson: {
+                            ...i.ValueJson,
+                            QuestionResponse: {
+                                ...((typeof i.ValueJson.QuestionResponse ===
+                                    "object" &&
+                                    i.ValueJson.QuestionResponse) ||
+                                    {}),
+                                Ranking: action.payload.ranking,
+                            },
+                        },
+                    };
+                }
+                return {
+                    ...i,
+                    IsValid: true,
+                };
+            });
+            if (state.surveyData && clone) {
+                state.surveyData.SurveyResponses = clone;
+            }
+        },
     },
 });
 
@@ -261,5 +297,6 @@ export const {
     handleChangeRangeSlide,
     handleChangeSlider,
     handleUpdateRating,
+    handleUpdateRaking,
 } = appSlice.actions;
 export default appSlice.reducer;

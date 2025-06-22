@@ -1,5 +1,82 @@
-const RakingSlide = () => {
-    return <div className="">RakingSlide</div>;
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useDispatch, useSelector } from "react-redux";
+import { handleUpdateRaking } from "../../../app/appSlice";
+import type { RootState } from "../../../app/store";
+
+interface Props {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: any;
+}
+
+const RakingSlide = ({ data }: Props) => {
+    const dispatch = useDispatch();
+    const questionId = data?.ValueJson?.QuestionContent?.Id;
+
+    const ranking: { SurveyOptionId: number; RankIndex: number }[] =
+        useSelector(
+            (state: RootState) =>
+                state.appSlice.surveyData?.SurveyResponses.find(
+                    (r) => r.ValueJson.QuestionContent.Id === questionId
+                )?.ValueJson.QuestionResponse?.Ranking || []
+        );
+
+    const options = data?.ValueJson?.QuestionContent?.Options || [];
+
+    const handleRank = (id: number, content: string) => {
+        const idx = ranking.findIndex((r) => r.SurveyOptionId === id);
+        let newRanking;
+        if (idx > -1) {
+            newRanking = ranking.filter((r) => r.SurveyOptionId !== id);
+        } else {
+            newRanking = [
+                ...ranking,
+                {
+                    SurveyOptionId: id,
+                    RankIndex: ranking.length + 1,
+                    Content: content,
+                },
+            ];
+        }
+        newRanking = newRanking.map((r, i) => ({
+            SurveyOptionId: r.SurveyOptionId,
+            RankIndex: i + 1,
+        }));
+        dispatch(
+            handleUpdateRaking({
+                idChoose: questionId,
+                ranking: newRanking,
+            })
+        );
+    };
+
+    const selectedMap = Object.fromEntries(
+        (ranking || []).map((r) => [r.SurveyOptionId, r.RankIndex])
+    );
+
+    return (
+        <div className="flex flex-col gap-4 w-[90%] max-w-5xl mx-auto mt-6">
+            {options.map((op: any) => (
+                <button
+                    key={op.Id}
+                    onClick={() => handleRank(op.Id, op.Content)}
+                    className={`text-left px-5 py-2 rounded transition-all duration-150 font-medium text-lg flex items-center
+                        ${
+                            selectedMap[op.Id]
+                                ? "bg-[#24738a] text-white"
+                                : "bg-transparent text-white border border-white"
+                        }
+                    `}
+                >
+                    {selectedMap[op.Id] && (
+                        <span className="mr-3 font-bold">
+                            #{selectedMap[op.Id]}
+                        </span>
+                    )}
+                    {op.Content}
+                </button>
+            ))}
+        </div>
+    );
 };
 
 export default RakingSlide;

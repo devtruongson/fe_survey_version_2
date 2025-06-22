@@ -39,7 +39,7 @@ const Slide = ({ currentQuestionId }: Props) => {
             case 6:
                 return <RatingSlide data={data} />;
             case 7:
-                return <RakingSlide />;
+                return <RakingSlide data={data} />;
             default:
                 return <div className="">Chưa chọn type</div>;
         }
