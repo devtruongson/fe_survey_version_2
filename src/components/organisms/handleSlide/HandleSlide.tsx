@@ -56,7 +56,11 @@ const HandleSlide = ({ dataResponse }: Props) => {
     return (
         <div className="">
             <Slide currentQuestionId={current} />
-            <Action onNext={handleNext} onPrev={handleBack} />
+            <Action
+                onNext={handleNext}
+                onPrev={handleBack}
+                currentQuestionId={current}
+            />
         </div>
     );
 };

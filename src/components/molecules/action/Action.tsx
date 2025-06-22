@@ -1,8 +1,12 @@
+import { useMemo } from "react";
+import { useAppSelector } from "../../../app/hooks";
+
 interface ActionProps {
     onPrev?: () => void;
     onNext?: () => void;
     isFirst?: boolean;
     nextLabel?: string;
+    currentQuestionId: number;
 }
 
 const Action = ({
@@ -10,7 +14,16 @@ const Action = ({
     onNext,
     isFirst = false,
     nextLabel = "Tiếp tục",
+    currentQuestionId,
 }: ActionProps) => {
+    const data = useAppSelector((state) => state.appSlice.surveyData);
+    const isValid = useMemo(
+        () =>
+            (data?.SurveyResponses || []).find(
+                (i) => i.ValueJson.QuestionContent.Id === currentQuestionId
+            )?.IsValid,
+        [currentQuestionId, data?.SurveyResponses]
+    );
     return (
         <div className="flex items-center justify-center gap-6 py-6 bg-transparent">
             {/* Quay lại */}
@@ -43,7 +56,9 @@ const Action = ({
             {/* Tiếp tục */}
             <button
                 onClick={onNext}
-                className="bg-[#20607b] text-white font-semibold text-xl rounded-lg px-8 py-3 flex items-center gap-2 hover:bg-[#184a5e] transition"
+                className={`${
+                    isValid ? "bg-[#20607b]" : ""
+                } text-white font-semibold text-xl rounded-lg px-8 py-3 flex items-center gap-2 transition`}
                 type="button"
             >
                 {nextLabel}
