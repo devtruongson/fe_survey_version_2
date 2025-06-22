@@ -4,11 +4,11 @@ import useBlocker from "../../../hooks/useBlocker";
 import { useFetcher, useParams } from "react-router-dom";
 import { useGetSurvey } from "../../../services/survey/get";
 import axios from "../../../libs/axios";
-import type { QuestionType, SurveyType } from "../../../types/survey";
-import Action from "../../molecules/action/Action";
-import { useAppDispatch } from "../../../app/hooks";
+import type { SurveyType } from "../../../types/survey";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { handleSetInfoSurvey } from "../../../app/appSlice";
 import HandleSlide from "../../organisms/handleSlide/HandleSlide";
+import { useUpdateSurveyPro } from "../../../services/survey/update-pro";
 
 function SurveyCustomer() {
     const [isVerified, setIsVerified] = useState(false);
@@ -18,7 +18,14 @@ function SurveyCustomer() {
         { id: number; url: string }[]
     >([]);
 
+    const survey = useAppSelector((state) => state.appSlice.surveyData);
     const dispatch = useAppDispatch();
+
+    const { mutate } = useUpdateSurveyPro({
+        mutationConfig: {
+            onSuccess() {},
+        },
+    });
 
     // console.log("surveyData >>>>", surveyData);
 
@@ -26,14 +33,14 @@ function SurveyCustomer() {
 
     const { id } = useParams();
 
-    const { data } = useGetSurvey({ id: Number(id) || 0 });
+    const { data: apiData } = useGetSurvey({ id: Number(id) || 0 });
 
     useEffect(() => {
-        if (data) {
-            setDataResponse(data?.data);
-            dispatch(handleSetInfoSurvey(data?.data));
+        if (apiData) {
+            setDataResponse(apiData.data);
+            dispatch(handleSetInfoSurvey(apiData.data));
         }
-    }, [data]);
+    }, [apiData]);
 
     useEffect(() => {
         const fetchBackgrounds = async () => {
@@ -42,6 +49,14 @@ function SurveyCustomer() {
         };
         fetchBackgrounds();
     }, []);
+
+    useEffect(() => {
+        if (!survey) return;
+        const handler = setTimeout(() => {
+            mutate(survey);
+        }, 2000);
+        return () => clearTimeout(handler);
+    }, [survey, mutate]);
 
     if (!dataResponse) return null;
 
