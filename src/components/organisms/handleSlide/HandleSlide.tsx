@@ -1,14 +1,17 @@
+import "./styles.scss";
 import {
     useState,
     useCallback,
     type SetStateAction,
     type Dispatch,
+    useMemo,
 } from "react";
-import { setSurveyData } from "../../../app/appSlice";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import type { SurveyType } from "../../../types/survey";
 import Action from "../../molecules/action/Action";
 import Slide from "../slide/Slide";
+import { setSurveyData } from "../../../app/appSlice";
 
 type Props = {
     dataResponse: SurveyType | null;
@@ -67,7 +70,17 @@ const Start = ({
     dataResponse: SurveyType | null;
     setCurrent: Dispatch<SetStateAction<number>>;
 }) => {
+    const data = useAppSelector((state) => state.appSlice.infoSurvey);
     const dispatch = useAppDispatch();
+
+    const buttonBgColor = useMemo(
+        () => data?.ConfigJson?.ButtonBackgroundColor || "#007bff",
+        [data?.ConfigJson?.ButtonBackgroundColor]
+    );
+    const buttonTextColor = useMemo(
+        () => data?.ConfigJson?.ButtonContentColor || "#ffffff",
+        [data?.ConfigJson?.ButtonContentColor]
+    );
 
     const handleStart = () => {
         if (dataResponse) {
@@ -112,7 +125,41 @@ const Start = ({
     };
     return (
         <div className="">
-            <button onClick={handleStart}>Start</button>
+            <p
+                className="text-[32px] text-center mb-4"
+                style={{ color: data?.ConfigJson?.TitleColor || "#FFFFFF" }}
+            >
+                {data?.Title}
+            </p>
+            <p
+                style={{ color: data?.ConfigJson?.ContentColor || "#CCCCCC" }}
+                className="text-[24px] text-center mb-6"
+            >
+                {data?.Description}
+            </p>
+            <button
+                onClick={handleStart}
+                className="startpage-btn group cursor-pointer"
+                style={{
+                    background:
+                        buttonBgColor?.startsWith("linear-gradient") ||
+                        buttonBgColor?.startsWith("radial-gradient")
+                            ? buttonBgColor
+                            : "",
+                    backgroundColor: !(
+                        buttonBgColor?.startsWith("linear-gradient") ||
+                        buttonBgColor?.startsWith("radial-gradient")
+                    )
+                        ? buttonBgColor
+                        : "",
+                    color: buttonTextColor,
+                }}
+            >
+                <span>Bắt đầu</span>
+                <span className="startpage-icon-wrapper">
+                    <ChevronRightIcon />
+                </span>
+            </button>
         </div>
     );
 };
