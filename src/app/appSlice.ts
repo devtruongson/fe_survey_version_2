@@ -210,6 +210,45 @@ export const appSlice = createSlice({
                 state.surveyData.SurveyResponses = clone;
             }
         },
+
+        handleUpdateRating(
+            state,
+            action: PayloadAction<{
+                idChoose: number; // questionId
+                value: number;
+            }>
+        ) {
+            const clone = state.surveyData?.SurveyResponses.map((i) => {
+                if (
+                    i.ValueJson.QuestionContent.Id === action.payload.idChoose
+                ) {
+                    return {
+                        ...i,
+                        IsValid: true,
+                        ValueJson: {
+                            ...i.ValueJson,
+                            QuestionResponse: {
+                                ...((typeof i.ValueJson.QuestionResponse ===
+                                    "object" &&
+                                    i.ValueJson.QuestionResponse) ||
+                                    {}),
+                                Input: {
+                                    Value: action.payload.value,
+                                    ValueType: "number",
+                                },
+                            },
+                        },
+                    };
+                }
+                return {
+                    ...i,
+                    IsValid: true,
+                };
+            });
+            if (state.surveyData && clone) {
+                state.surveyData.SurveyResponses = clone;
+            }
+        },
     },
 });
 
@@ -221,5 +260,6 @@ export const {
     handleUpdateMutilChoice,
     handleChangeRangeSlide,
     handleChangeSlider,
+    handleUpdateRating,
 } = appSlice.actions;
 export default appSlice.reducer;
