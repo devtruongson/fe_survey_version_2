@@ -13,6 +13,17 @@ import Action from "../../molecules/action/Action";
 import Slide from "../slide/Slide";
 import { setSurveyData } from "../../../app/appSlice";
 
+type JumpLogic = {
+    Conditions: {
+        QuestionOrder: number;
+        Conjunction: "AND" | "OR" | null;
+        Operator: string;
+        OptionOrder: number;
+        CompareValue: number;
+    }[];
+    TargetQuestionOrder: number;
+};
+
 type Props = {
     dataResponse: SurveyType | null;
 };
@@ -26,9 +37,54 @@ const HandleSlide = ({ dataResponse }: Props) => {
         const index = surveyData.SurveyResponses.findIndex(
             (item) => item.ValueJson?.QuestionContent?.Id === current
         );
-        if (!surveyData?.SurveyResponses[index]?.IsValid) {
+        const question = surveyData?.SurveyResponses[index];
+        if (!question?.IsValid) {
             return;
         }
+
+        const configJson = question?.ValueJson?.QuestionContent
+            ?.ConfigJson as Record<string, any>;
+        const jump: JumpLogic[] = (configJson?.JumpLogics || []) as JumpLogic[];
+
+        if (jump.length) {
+            for (const logic of jump) {
+                let isMatch = true;
+                for (const cond of logic.Conditions) {
+                    const q = surveyData.SurveyResponses.find(
+                        (item) =>
+                            (
+                                item.ValueJson.QuestionContent as Record<
+                                    string,
+                                    any
+                                >
+                            ).Order === cond.QuestionOrder
+                    );
+                    const questionResponse = q?.ValueJson
+                        .QuestionResponse as Record<string, any>;
+                    const selected = questionResponse?.SingleChoice;
+                    if (selected !== cond.OptionOrder) {
+                        isMatch = false;
+                        break;
+                    }
+                }
+                if (isMatch) {
+                    const target = surveyData.SurveyResponses.find(
+                        (item) =>
+                            (
+                                item.ValueJson.QuestionContent as Record<
+                                    string,
+                                    any
+                                >
+                            ).Order === logic.TargetQuestionOrder
+                    );
+                    if (target) {
+                        setCurrent(target.ValueJson.QuestionContent.Id);
+                        return;
+                    }
+                }
+            }
+        }
+
         if (index === -1 || index === surveyData.SurveyResponses.length - 1)
             return;
         setCurrent(

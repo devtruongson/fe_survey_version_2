@@ -305,42 +305,23 @@ export const appSlice = createSlice({
                 if (
                     i.ValueJson.QuestionContent.Id === action.payload.idChoose
                 ) {
-                    if (type === 2) {
-                        return {
-                            ...i,
-                            IsValid: true,
-                            ValueJson: {
-                                ...i.ValueJson,
-                                QuestionResponse: {
-                                    ...((typeof i.ValueJson.QuestionResponse ===
-                                        "object" &&
-                                        i.ValueJson.QuestionResponse) ||
-                                        {}),
-                                    SpeechText: value,
+                    return {
+                        ...i,
+                        IsValid: true,
+                        ValueJson: {
+                            ...i.ValueJson,
+                            QuestionResponse: {
+                                ...((typeof i.ValueJson.QuestionResponse ===
+                                    "object" &&
+                                    i.ValueJson.QuestionResponse) ||
+                                    {}),
+                                Input: {
+                                    Value: value,
+                                    ValueType: type === 4 ? "number" : "string",
                                 },
                             },
-                        };
-                    }
-                    if (type !== 2) {
-                        return {
-                            ...i,
-                            IsValid: true,
-                            ValueJson: {
-                                ...i.ValueJson,
-                                QuestionResponse: {
-                                    ...((typeof i.ValueJson.QuestionResponse ===
-                                        "object" &&
-                                        i.ValueJson.QuestionResponse) ||
-                                        {}),
-                                    Input: {
-                                        Value: value,
-                                        ValueType:
-                                            type === 4 ? "number" : "string",
-                                    },
-                                },
-                            },
-                        };
-                    }
+                        },
+                    };
                 }
                 return {
                     ...i,
