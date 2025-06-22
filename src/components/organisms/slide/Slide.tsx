@@ -22,6 +22,8 @@ const Slide = ({ currentQuestionId }: Props) => {
         [currentQuestionId, surveyData?.SurveyResponses]
     );
 
+    console.log("data >>>> ", data);
+
     const handleRender = useCallback(() => {
         switch (data?.ValueJson.QuestionContent.QuestionTypeId) {
             case 1:
@@ -31,7 +33,7 @@ const Slide = ({ currentQuestionId }: Props) => {
             case 3:
                 return <SigleSliderSlide data={data} />;
             case 4:
-                return <RangeSlideSlide />;
+                return <RangeSlideSlide data={data} />;
             case 5:
                 return <SigleInputSlide />;
             case 6:
