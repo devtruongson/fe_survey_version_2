@@ -31,6 +31,7 @@ const Slide = ({ currentQuestionId }: Props) => {
     const [inputText, setInputText] = useState<string>('');
     
     useEffect(() => {
+        setInputText((data?.ValueJson.QuestionContent as any)?.SpeechText || '');
         dispatch(handleSetIsValid(true));
         const timeLimit = (data?.ValueJson.QuestionContent as any)?.TimeLimit || 0;
         setTimer(timeLimit);
@@ -193,7 +194,7 @@ const Slide = ({ currentQuestionId }: Props) => {
     return (
         <div className="">
             {/* Timer overlay - chỉ hiển thị khi timer > 0 */}
-            {timer > 0 && (
+            {timer > 0 && (data?.ValueJson?.QuestionContent as any)?.IsVoice && (
                 <div className="fixed top-6 right-6 z-50">
                     <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-4 rounded-2xl shadow-2xl border border-white/20 backdrop-blur-sm">
                         <div className="flex items-center space-x-3">
@@ -240,7 +241,7 @@ const Slide = ({ currentQuestionId }: Props) => {
             </div>
             
             {/* Display transcribed text */}
-            {inputText && (
+            {inputText && (data?.ValueJson?.QuestionContent as any)?.IsVoice && (
                 <div className="text-center mb-4 p-4 bg-gray-100 rounded-lg">
                     <p className="text-gray-700 font-medium">Văn bản ghi âm:</p>
                     <p className="text-gray-900">{inputText}</p>
