@@ -10,3 +10,6 @@ export const SurveyEdit = lazy(
 export const SurveyShare = lazy(
     () => import("../components/pages/SurveyShare")
 );
+export const SurveyCustomer = lazy(
+    () => import("../components/pages/SurveyCustomer")
+);

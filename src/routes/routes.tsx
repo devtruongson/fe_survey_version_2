@@ -1,4 +1,4 @@
-import { Home, MySurvey, SurveyEdit, SurveyNew, SurveyShare } from "./index";
+import { Home, MySurvey, SurveyCustomer, SurveyEdit, SurveyNew, SurveyShare } from "./index";
 
 export const routes = [
     // {
@@ -37,6 +37,12 @@ export const routes = [
         element: <SurveyEdit />,
         requiresAuth: false,
     },
+    {
+        name: "SurveyCustomer   ",
+        path: "/public/survey/:id",
+        element: <SurveyCustomer />,
+        requiresAuth: false,
+    }
 ] as const;
 
 type RouteName = (typeof routes)[number]["name"];
