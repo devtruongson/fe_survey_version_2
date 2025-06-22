@@ -14,7 +14,7 @@ const Action = ({
     return (
         <div className="flex items-center justify-center gap-6 py-6 bg-transparent">
             {/* Quay lại */}
-            <button
+            {/* <button
                 onClick={onPrev}
                 disabled={isFirst}
                 className={`flex items-center bg-none border-none text-white font-medium text-lg transition-opacity ${
@@ -38,7 +38,7 @@ const Action = ({
                     />
                 </svg>
                 Quay lại
-            </button>
+            </button> */}
 
             {/* Tiếp tục */}
             <button

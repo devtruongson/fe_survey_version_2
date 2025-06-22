@@ -4,10 +4,10 @@ import { useParams } from "react-router-dom";
 import { useGetSurvey } from "../../../services/survey/get";
 import axios from "../../../libs/axios";
 import type { QuestionType, SurveyType } from "../../../types/survey";
-import Action from "../../molecules/action/Action";
 import { useAppDispatch } from "../../../app/hooks";
-import { handleSetInfoSurvey } from "../../../app/appSlice";
+import { handleSetInfoSurvey, handleSetIsValid } from "../../../app/appSlice";
 import HandleSlide from "../../organisms/handleSlide/HandleSlide";
+import TurnstileWidget from "../../../hooks/useRecapcha";
 
 function SurveyCustomer() {
     const [isVerified, setIsVerified] = useState(false);
@@ -18,13 +18,9 @@ function SurveyCustomer() {
     >([]);
 
     const dispatch = useAppDispatch();
-
-    // console.log("surveyData >>>>", surveyData);
-
     useBlocker(true);
 
     const { id } = useParams();
-
     const { data } = useGetSurvey({ id: Number(id) || 0 });
 
     useEffect(() => {
@@ -42,15 +38,23 @@ function SurveyCustomer() {
         fetchBackgrounds();
     }, []);
 
+    useEffect(() => {
+        if(isVerified) {
+            dispatch(handleSetIsValid(false));
+        }else {
+            dispatch(handleSetIsValid(true));
+        }
+    }, [isVerified])
+
     if (!dataResponse) return null;
 
     return (
         <div>
-            {/* <TurnstileWidget
+            <TurnstileWidget
                 isVerified={isVerified}
                 setIsVerified={setIsVerified}
                 isRefetch={isRefetch}
-            /> */}
+            /> 
             <div
                 className={`fixed top-0 left-0 w-full h-full bg-white z-50`}
                 style={{
@@ -85,7 +89,7 @@ function SurveyCustomer() {
                 }}
             >
                 <div className="w-full h-full flex flex-col items-center justify-center relative z-10">
-                    <HandleSlide dataResponse={dataResponse} />
+                    <HandleSlide setIsRefetch={setIsRefetch} dataResponse={dataResponse} />
                 </div>
             </div>
         </div>

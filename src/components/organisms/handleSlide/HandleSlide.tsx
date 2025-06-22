@@ -5,23 +5,30 @@ import {
     type SetStateAction,
     type Dispatch,
     useMemo,
+    useEffect,
 } from "react";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import type { SurveyType } from "../../../types/survey";
 import Action from "../../molecules/action/Action";
 import Slide from "../slide/Slide";
-import { setSurveyData } from "../../../app/appSlice";
+import { handleSetIsValid, setSurveyData } from "../../../app/appSlice";
 
 type Props = {
     dataResponse: SurveyType | null;
+    setIsRefetch: Dispatch<SetStateAction<boolean>>;
 };
 
-const HandleSlide = ({ dataResponse }: Props) => {
+const HandleSlide = ({ dataResponse , setIsRefetch}: Props) => {
     const [current, setCurrent] = useState(0);
     const surveyData = useAppSelector((state) => state.appSlice.surveyData);
+    const dispatch = useAppDispatch();
 
     const handleNext = useCallback(() => {
+        dispatch(handleSetIsValid(true));
+        if(Math.random() > 0.25) {
+            setIsRefetch(prev => !prev);
+        }
         if (!surveyData?.SurveyResponses) return;
         const index = surveyData.SurveyResponses.findIndex(
             (item) => item.ValueJson?.QuestionContent?.Id === current
@@ -55,7 +62,7 @@ const HandleSlide = ({ dataResponse }: Props) => {
 
     return (
         <div className="">
-            <Slide currentQuestionId={current} />
+            <Slide currentQuestionId={current} key={current} />
             <Action onNext={handleNext} onPrev={handleBack} />
         </div>
     );
@@ -97,6 +104,8 @@ const Start = ({
                             Description: i?.Description || "",
                             ConfigJson: i?.ConfigJson || {},
                             Options: i?.Options || [],
+                            TimeLimit: i?.TimeLimit || 0,
+                            SpeechText: i?.SpeechText || ""
                         },
                         QuestionResponse: {
                             Input: null,

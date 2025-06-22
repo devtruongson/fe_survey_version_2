@@ -22,8 +22,6 @@ function TurnstileWidget({
   const turnstileRef = useRef<any>(null);
 
   useEffect(() => {
-    setIsVerified(false);
-    
     if (isRefetch && turnstileRef.current) {
       turnstileRef.current.reset();
       turnstile.reset();
@@ -36,6 +34,10 @@ function TurnstileWidget({
     };
   }, [setIsVerified, isRefetch, turnstile]);
 
+  useEffect(() => {
+    setIsVerified(false);
+  }, [isRefetch])
+
   // Listen for page refresh/reload events
   useEffect(() => {
     const handleBeforeUnload = () => {
@@ -44,8 +46,6 @@ function TurnstileWidget({
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
-        // Reset khi tab becomes visible again
-        setIsVerified(false);
         if (turnstileRef.current) {
           turnstileRef.current.reset();
         }
@@ -208,8 +208,6 @@ function TurnstileWidget({
   const handleLoad = () => {
   };
 
-
-  console.log(isRefetch);
   return (
     <div style={overlayStyle}>
       <div style={containerStyle}>

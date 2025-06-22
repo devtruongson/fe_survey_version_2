@@ -28,11 +28,13 @@ interface SurveyData {
 interface AppState {
     surveyData: SurveyData | null;
     infoSurvey: any;
+    isValid: boolean;
 }
 
 const initialState: AppState = {
     surveyData: null,
     infoSurvey: null,
+    isValid: false,
 };
 
 export const appSlice = createSlice({
@@ -63,81 +65,85 @@ export const appSlice = createSlice({
             state,
             action: PayloadAction<{ idChoose: number; questionId: number }>
         ) {
-            const clone = state.surveyData?.SurveyResponses.map((i) => {
-                if (
-                    i.ValueJson.QuestionContent.Id === action.payload.questionId
-                ) {
-                    return {
-                        IsValid: true,
-                        ValueJson: {
-                            ...i.ValueJson,
-                            QuestionResponse: {
-                                ...((typeof i.ValueJson.QuestionResponse ===
-                                    "object" &&
-                                    i.ValueJson.QuestionResponse) ||
-                                    {}),
-                                SingleChoice: action.payload.idChoose,
+            if(!state.isValid){
+                const clone = state.surveyData?.SurveyResponses.map((i) => {
+                    if (
+                        i.ValueJson.QuestionContent.Id === action.payload.questionId
+                    ) {
+                        return {
+                            IsValid: true,
+                            ValueJson: {
+                                ...i.ValueJson,
+                                QuestionResponse: {
+                                    ...((typeof i.ValueJson.QuestionResponse ===
+                                        "object" &&
+                                        i.ValueJson.QuestionResponse) ||
+                                        {}),
+                                    SingleChoice: action.payload.idChoose,
+                                },
                             },
-                        },
+                        };
+                    }
+                    return {
+                        ...i,
+                        IsValid: true,
                     };
+                });
+                if (state.surveyData && clone) {
+                    state.surveyData.SurveyResponses = clone;
                 }
-                return {
-                    ...i,
-                    IsValid: true,
-                };
-            });
-            if (state.surveyData && clone) {
-                state.surveyData.SurveyResponses = clone;
             }
         },
         handleUpdateMutilChoice(
             state,
             action: PayloadAction<{ idChoose: number; questionId: number }>
         ) {
-            const clone = state.surveyData?.SurveyResponses.map((i) => {
-                if (
-                    i.ValueJson.QuestionContent.Id === action.payload.questionId
-                ) {
-                    const prevArr = Array.isArray(
-                        (i.ValueJson.QuestionResponse as any)?.MultipleChoice
-                    )
-                        ? [
-                              ...(i.ValueJson.QuestionResponse as any)
-                                  .MultipleChoice,
-                          ]
-                        : [];
-                    const idx = prevArr.findIndex(
-                        (v) => Number(v) === Number(action.payload.idChoose)
-                    );
-                    let newArr;
-                    if (idx > -1) {
-                        newArr = prevArr.filter(
-                            (v) => Number(v) !== Number(action.payload.idChoose)
+            if(!state.isValid){
+                const clone = state.surveyData?.SurveyResponses.map((i) => {
+                    if (
+                        i.ValueJson.QuestionContent.Id === action.payload.questionId
+                    ) {
+                        const prevArr = Array.isArray(
+                            (i.ValueJson.QuestionResponse as any)?.MultipleChoice
+                        )
+                            ? [
+                                  ...(i.ValueJson.QuestionResponse as any)
+                                      .MultipleChoice,
+                              ]
+                            : [];
+                        const idx = prevArr.findIndex(
+                            (v) => Number(v) === Number(action.payload.idChoose)
                         );
-                    } else {
-                        newArr = [...prevArr, action.payload.idChoose];
+                        let newArr;
+                        if (idx > -1) {
+                            newArr = prevArr.filter(
+                                (v) => Number(v) !== Number(action.payload.idChoose)
+                            );
+                        } else {
+                            newArr = [...prevArr, action.payload.idChoose];
+                        }
+                        return {
+                            IsValid: true,
+                            ValueJson: {
+                                ...i.ValueJson,
+                                QuestionResponse: {
+                                    ...((typeof i.ValueJson.QuestionResponse ===
+                                        "object" &&
+                                        i.ValueJson.QuestionResponse) ||
+                                        {}),
+                                    MultipleChoice: newArr,
+                                },
+                            },
+                        };
                     }
                     return {
+                        ...i,
                         IsValid: true,
-                        ValueJson: {
-                            ...i.ValueJson,
-                            QuestionResponse: {
-                                ...((typeof i.ValueJson.QuestionResponse ===
-                                    "object" &&
-                                    i.ValueJson.QuestionResponse) ||
-                                    {}),
-                                MultipleChoice: newArr,
-                            },
-                        },
                     };
+                });
+                if (state.surveyData && clone) {
+                    state.surveyData.SurveyResponses = clone;
                 }
-                return {
-                    ...i,
-                    IsValid: true,
-                };
-            });
-            if (state.surveyData && clone) {
-                state.surveyData.SurveyResponses = clone;
             }
         },
 
@@ -148,32 +154,34 @@ export const appSlice = createSlice({
                 value: number;
             }>
         ) {
-            const clone = state.surveyData?.SurveyResponses.map((i) => {
-                if (
-                    i.ValueJson.QuestionContent.Id === action.payload.idChoose
-                ) {
+            if(!state.isValid){
+                const clone = state.surveyData?.SurveyResponses.map((i) => {
+                    if (
+                        i.ValueJson.QuestionContent.Id === action.payload.idChoose
+                    ) {
+                        return {
+                            ...i,
+                            IsValid: true,
+                            ValueJson: {
+                                ...i.ValueJson,
+                                QuestionResponse: {
+                                    ...((typeof i.ValueJson.QuestionResponse ===
+                                        "object" &&
+                                        i.ValueJson.QuestionResponse) ||
+                                        {}),
+                                    Slider: action.payload.value,
+                                },
+                            },
+                        };
+                    }
                     return {
                         ...i,
                         IsValid: true,
-                        ValueJson: {
-                            ...i.ValueJson,
-                            QuestionResponse: {
-                                ...((typeof i.ValueJson.QuestionResponse ===
-                                    "object" &&
-                                    i.ValueJson.QuestionResponse) ||
-                                    {}),
-                                Slider: action.payload.value,
-                            },
-                        },
                     };
+                });
+                if (state.surveyData && clone) {
+                    state.surveyData.SurveyResponses = clone;
                 }
-                return {
-                    ...i,
-                    IsValid: true,
-                };
-            });
-            if (state.surveyData && clone) {
-                state.surveyData.SurveyResponses = clone;
             }
         },
 
@@ -185,127 +193,11 @@ export const appSlice = createSlice({
                 max: number;
             }>
         ) {
-            const clone = state.surveyData?.SurveyResponses.map((i) => {
-                if (
-                    i.ValueJson.QuestionContent.Id === action.payload.idChoose
-                ) {
-                    return {
-                        ...i,
-                        IsValid: true,
-                        ValueJson: {
-                            ...i.ValueJson,
-                            QuestionResponse: {
-                                ...((typeof i.ValueJson.QuestionResponse ===
-                                    "object" &&
-                                    i.ValueJson.QuestionResponse) ||
-                                    {}),
-                                Range: {
-                                    Min: action.payload.min,
-                                    Max: action.payload.max,
-                                },
-                            },
-                        },
-                    };
-                }
-                return {
-                    ...i,
-                    IsValid: true,
-                };
-            });
-            if (state.surveyData && clone) {
-                state.surveyData.SurveyResponses = clone;
-            }
-        },
-
-        handleUpdateRating(
-            state,
-            action: PayloadAction<{
-                idChoose: number; // questionId
-                value: number;
-            }>
-        ) {
-            const clone = state.surveyData?.SurveyResponses.map((i) => {
-                if (
-                    i.ValueJson.QuestionContent.Id === action.payload.idChoose
-                ) {
-                    return {
-                        ...i,
-                        IsValid: true,
-                        ValueJson: {
-                            ...i.ValueJson,
-                            QuestionResponse: {
-                                ...((typeof i.ValueJson.QuestionResponse ===
-                                    "object" &&
-                                    i.ValueJson.QuestionResponse) ||
-                                    {}),
-                                Input: {
-                                    Value: action.payload.value,
-                                    ValueType: "number",
-                                },
-                            },
-                        },
-                    };
-                }
-                return {
-                    ...i,
-                    IsValid: true,
-                };
-            });
-            if (state.surveyData && clone) {
-                state.surveyData.SurveyResponses = clone;
-            }
-        },
-        handleUpdateRaking(
-            state,
-            action: PayloadAction<{
-                idChoose: number;
-                ranking: { SurveyOptionId: number; RankIndex: number }[];
-            }>
-        ) {
-            const clone = state.surveyData?.SurveyResponses.map((i) => {
-                if (
-                    i.ValueJson.QuestionContent.Id === action.payload.idChoose
-                ) {
-                    return {
-                        ...i,
-                        IsValid: true,
-                        ValueJson: {
-                            ...i.ValueJson,
-                            QuestionResponse: {
-                                ...((typeof i.ValueJson.QuestionResponse ===
-                                    "object" &&
-                                    i.ValueJson.QuestionResponse) ||
-                                    {}),
-                                Ranking: action.payload.ranking,
-                            },
-                        },
-                    };
-                }
-                return {
-                    ...i,
-                    IsValid: true,
-                };
-            });
-            if (state.surveyData && clone) {
-                state.surveyData.SurveyResponses = clone;
-            }
-        },
-
-        handleUpdateForm(
-            state,
-            action: PayloadAction<{
-                idChoose: number;
-                type: number;
-                value: string | number;
-            }>
-        ) {
-            const type = action.payload.type;
-            const value = action.payload.value;
-            const clone = state.surveyData?.SurveyResponses.map((i) => {
-                if (
-                    i.ValueJson.QuestionContent.Id === action.payload.idChoose
-                ) {
-                    if (type === 2) {
+            if(!state.isValid){
+                const clone = state.surveyData?.SurveyResponses.map((i) => {
+                    if (
+                        i.ValueJson.QuestionContent.Id === action.payload.idChoose
+                    ) {
                         return {
                             ...i,
                             IsValid: true,
@@ -316,12 +208,37 @@ export const appSlice = createSlice({
                                         "object" &&
                                         i.ValueJson.QuestionResponse) ||
                                         {}),
-                                    SpeechText: value,
+                                    Range: {
+                                        Min: action.payload.min,
+                                        Max: action.payload.max,
+                                    },
                                 },
                             },
                         };
                     }
-                    if (type !== 2) {
+                    return {
+                        ...i,
+                        IsValid: true,
+                    };
+                });
+                if (state.surveyData && clone) {
+                    state.surveyData.SurveyResponses = clone;
+                }
+            }
+        },
+
+        handleUpdateRating(
+            state,
+            action: PayloadAction<{
+                idChoose: number; // questionId
+                value: number;
+            }>
+        ) {
+            if(!state.isValid){
+                const clone = state.surveyData?.SurveyResponses.map((i) => {
+                    if (
+                        i.ValueJson.QuestionContent.Id === action.payload.idChoose
+                    ) {
                         return {
                             ...i,
                             IsValid: true,
@@ -333,24 +250,153 @@ export const appSlice = createSlice({
                                         i.ValueJson.QuestionResponse) ||
                                         {}),
                                     Input: {
-                                        Value: value,
-                                        ValueType:
-                                            type === 4 ? "number" : "string",
+                                        Value: action.payload.value,
+                                        ValueType: "number",
                                     },
                                 },
                             },
                         };
                     }
-                }
-                return {
-                    ...i,
-                    IsValid: true,
-                };
-            });
-            if (state.surveyData && clone) {
-                state.surveyData.SurveyResponses = clone;
+                    return {
+                        ...i,
+                        IsValid: true,
+                    };
+                });
+                if (state.surveyData && clone) {
+                    state.surveyData.SurveyResponses = clone;
+                }               
             }
         },
+        handleUpdateRaking(
+            state,
+            action: PayloadAction<{
+                idChoose: number;
+                ranking: { SurveyOptionId: number; RankIndex: number }[];
+            }>
+        ) {
+            if(!state.isValid){
+                const clone = state.surveyData?.SurveyResponses.map((i) => {
+                    if (
+                        i.ValueJson.QuestionContent.Id === action.payload.idChoose
+                    ) {
+                        return {
+                            ...i,
+                            IsValid: true,
+                            ValueJson: {
+                                ...i.ValueJson,
+                                QuestionResponse: {
+                                    ...((typeof i.ValueJson.QuestionResponse ===
+                                        "object" &&
+                                        i.ValueJson.QuestionResponse) ||
+                                        {}),
+                                    Ranking: action.payload.ranking,
+                                },
+                            },
+                        };
+                    }
+                    return {
+                        ...i,
+                        IsValid: true,
+                    };
+                });
+                if (state.surveyData && clone) {
+                    state.surveyData.SurveyResponses = clone;
+                }
+            }
+        },
+
+        handleUpdateForm(
+            state,
+            action: PayloadAction<{
+                idChoose: number;
+                type: number;
+                value: string | number;
+            }>
+        ) {
+            if(!state.isValid){
+                const type = action.payload.type;
+                const value = action.payload.value;
+                const clone = state.surveyData?.SurveyResponses.map((i) => {
+                    if (
+                        i.ValueJson.QuestionContent.Id === action.payload.idChoose
+                    ) {
+                        if (type === 2) {
+                            return {
+                                ...i,
+                                IsValid: true,
+                                ValueJson: {
+                                    ...i.ValueJson,
+                                    QuestionResponse: {
+                                        ...((typeof i.ValueJson.QuestionResponse ===
+                                            "object" &&
+                                            i.ValueJson.QuestionResponse) ||
+                                            {}),
+                                        SpeechText: value,
+                                    },
+                                },
+                            };
+                        }
+                        if (type !== 2) {
+                            return {
+                                ...i,
+                                IsValid: true,
+                                ValueJson: {
+                                    ...i.ValueJson,
+                                    QuestionResponse: {
+                                        ...((typeof i.ValueJson.QuestionResponse ===
+                                            "object" &&
+                                            i.ValueJson.QuestionResponse) ||
+                                            {}),
+                                        Input: {
+                                            Value: value,
+                                            ValueType:
+                                                type === 4 ? "number" : "string",
+                                        },
+                                    },
+                                },
+                            };
+                        }
+                    }
+                    return {
+                        ...i,
+                        IsValid: true,
+                    };
+                });
+                if (state.surveyData && clone) {
+                    state.surveyData.SurveyResponses = clone;
+                }
+            }
+        },
+        handleSetIsValid(state, action: PayloadAction<boolean>) {
+            state.isValid = action.payload;
+        },
+
+        handleUpdateSpeechText(state, action: PayloadAction<{text:string, questionId:number}>) {
+            if(!state.isValid){
+                const clone = state.surveyData?.SurveyResponses.map((i) => {
+                    if(i.ValueJson.QuestionContent.Id === action.payload.questionId){
+                        return {
+                            ...i,
+                            IsValid: true,
+                            ValueJson:{
+                                ...i.ValueJson,
+                                QuestionContent:{
+                                    ...i.ValueJson.QuestionContent,
+                                    SpeechText:action.payload.text
+                                }
+                            }
+                        }
+                    }
+                    return {
+                        ...i,
+                        IsValid: true,
+                    };
+                });
+                if (state.surveyData && clone) {
+                    state.surveyData.SurveyResponses = clone;
+                }
+            }
+        }
     },
 });
 
@@ -366,5 +412,7 @@ export const {
     handleUpdateRating,
     handleUpdateRaking,
     handleUpdateForm,
+    handleSetIsValid,
+    handleUpdateSpeechText
 } = appSlice.actions;
 export default appSlice.reducer;
