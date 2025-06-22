@@ -6,14 +6,9 @@ import { useGetSurvey } from "../../../services/survey/get";
 import axios from "../../../libs/axios";
 import type { QuestionType, SurveyType } from "../../../types/survey";
 import Action from "../../molecules/action/Action";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { setSurveyData } from "../../../app/appSlice";
+import { useAppDispatch } from "../../../app/hooks";
+import { handleSetInfoSurvey } from "../../../app/appSlice";
 import HandleSlide from "../../organisms/handleSlide/HandleSlide";
-
-const defaultValue = {
-    InvalidReason: "",
-    SurveyResponses: [],
-};
 
 function SurveyCustomer() {
     const [isVerified, setIsVerified] = useState(false);
@@ -23,7 +18,6 @@ function SurveyCustomer() {
         { id: number; url: string }[]
     >([]);
 
-    const surveyData = useAppSelector((state) => state.appSlice.surveyData);
     const dispatch = useAppDispatch();
 
     // console.log("surveyData >>>>", surveyData);
@@ -36,7 +30,8 @@ function SurveyCustomer() {
 
     useEffect(() => {
         if (data) {
-            setDataResponse(data.data);
+            setDataResponse(data?.data);
+            dispatch(handleSetInfoSurvey(data?.data));
         }
     }, [data]);
 

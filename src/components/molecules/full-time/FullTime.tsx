@@ -77,7 +77,6 @@ const FullTime = ({ data, isUpdate }: Props) => {
                     value: result,
                 })
             );
-            // console.log(">>>", type, value);
         },
         [
             data?.ValueJson?.QuestionContent?.Id,

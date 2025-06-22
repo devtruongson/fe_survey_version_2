@@ -27,22 +27,27 @@ interface SurveyData {
 
 interface AppState {
     surveyData: SurveyData | null;
+    infoSurvey: any;
 }
 
 const initialState: AppState = {
     surveyData: null,
+    infoSurvey: null,
 };
 
 export const appSlice = createSlice({
     name: "appSlice",
     initialState,
     reducers: {
+        handleSetInfoSurvey(state, action: PayloadAction<SurveyData>) {
+            state.infoSurvey = action.payload;
+        },
         setSurveyData(state, action: PayloadAction<SurveyData>) {
             state.surveyData = action.payload;
         },
-        clearSurveyData(state) {
-            state.surveyData = null;
-        },
+        // // clearSurveyData(state) {
+        // //     state.surveyData = null;
+        // // },
         handleAddQuestionResponse(
             state,
             action: PayloadAction<SurveyResponse>
@@ -351,7 +356,8 @@ export const appSlice = createSlice({
 
 export const {
     setSurveyData,
-    clearSurveyData,
+    // clearSurveyData,
+    handleSetInfoSurvey,
     handleAddQuestionResponse,
     handleUpdateSigleChoose,
     handleUpdateMutilChoice,
