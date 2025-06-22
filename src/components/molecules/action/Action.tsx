@@ -35,7 +35,6 @@ const Action = ({
         [currentQuestionId, data?.SurveyResponses]
     );
 
-    console.log(isValid);
     return (
         <div className="flex items-center justify-center gap-6 py-6 bg-transparent">
             {/* Quay lại */}

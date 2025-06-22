@@ -16,13 +16,13 @@ import { handleSetIsValid, setSurveyData } from "../../../app/appSlice";
 
 type JumpLogic = {
     Conditions: {
-        QuestionOrder: number;
+        QuestionId: number;
         Conjunction: "AND" | "OR" | null;
         Operator: string;
-        OptionOrder: number;
+        OptionId: number;
         CompareValue: number;
     }[];
-    TargetQuestionOrder: number;
+    TargetQuestionId: number;
 };
 
 type Props = {
@@ -59,17 +59,15 @@ const HandleSlide = ({ dataResponse , setIsRefetch}: Props) => {
                 for (const cond of logic.Conditions) {
                     const q = surveyData.SurveyResponses.find(
                         (item) =>
-                            (
-                                item.ValueJson.QuestionContent as Record<
-                                    string,
-                                    any
-                                >
-                            ).Order === cond.QuestionOrder
+                            item.ValueJson.QuestionContent.Id ===
+                            cond.QuestionId
                     );
                     const questionResponse = q?.ValueJson
                         .QuestionResponse as Record<string, any>;
                     const selected = questionResponse?.SingleChoice;
-                    if (selected !== cond.OptionOrder) {
+                    const match = selected === cond.OptionId;
+
+                    if (!match) {
                         isMatch = false;
                         break;
                     }
@@ -77,12 +75,8 @@ const HandleSlide = ({ dataResponse , setIsRefetch}: Props) => {
                 if (isMatch) {
                     const target = surveyData.SurveyResponses.find(
                         (item) =>
-                            (
-                                item.ValueJson.QuestionContent as Record<
-                                    string,
-                                    any
-                                >
-                            ).Order === logic.TargetQuestionOrder
+                            item.ValueJson.QuestionContent.Id ===
+                            logic.TargetQuestionId
                     );
                     if (target) {
                         setCurrent(target.ValueJson.QuestionContent.Id);
