@@ -33,6 +33,7 @@ const defaultValue = {
     SurveyStatusId: 1, //
     SecurityModeId: 1,
     BackgroundImageBase64: "",
+    IsSuccess: true,
     ConfigJson: {
         Background: "image",
         IsUseBackgroundImageBase64: false,
@@ -59,6 +60,7 @@ const SurveyNew = () => {
     const [saveCountdown, setSaveCountdown] = useState(0);
     const [hasChanges, setHasChanges] = useState(false);
     const [isDisable, setIsDisable] = useState(false);
+    const [isSuccess, setIsSucces] = useState(true);
     const latestDataRef = useRef(formData);
     const timeoutRef = useRef<number | null>(null);
     const countdownRef = useRef<number | null>(null);
@@ -127,6 +129,7 @@ const SurveyNew = () => {
                 setFormData(newData.data);
                 latestDataRef.current = newData.data;
                 // setIsDisable(newData?.data?.ConfigJson?.IsPause);
+                setIsSucces(newData?.data?.IsSuccess);
                 if (!id) {
                     window.history.pushState(
                         {},
@@ -274,9 +277,9 @@ const SurveyNew = () => {
                             {isTrigger
                                 ? isSaving
                                     ? `Đang lưu ... ${saveCountdown}`
-                                    : hasChanges
-                                    ? "Đã Lưu"
-                                    : "Đã lưu"
+                                    : isSuccess
+                                    ? "Đã lưu"
+                                    : "Lưu không thành công"
                                 : "Lưu"}
                         </Button>
                     </div>

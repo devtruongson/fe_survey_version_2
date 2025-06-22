@@ -96,7 +96,8 @@ const Sidebar = ({
                     return Item.children;
                 })}
 
-            {formData?.SurveyTypeId === 3 ? null : (
+            {formData?.SurveyTypeId === 3 ||
+            formData?.SecurityModeId === 1 ? null : (
                 <>
                     <LogicComponent
                         questions={formData?.Questions || []}

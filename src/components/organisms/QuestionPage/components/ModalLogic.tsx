@@ -251,6 +251,9 @@ function ModalLogic({
         }
     };
 
+    console.log(JumpLogics);
+    console.log("que >>> ", questions);
+
     return (
         <div style={styles.modalOverlay}>
             <div className="bg-white rounded-lg w-[90%] max-w-3xl max-h-[90vh] flex flex-col">
@@ -446,7 +449,9 @@ function ModalLogic({
                                                                     condition.QuestionOrder
                                                             )
                                                             ?.Options?.map(
-                                                                (opt: OptionType) => (
+                                                                (
+                                                                    opt: OptionType
+                                                                ) => (
                                                                     <option
                                                                         key={
                                                                             opt.Order
@@ -535,25 +540,23 @@ function ModalLogic({
                                                 : logic.TargetQuestionOrder.toString()
                                         }
                                         onChange={(e) => {
-                                            const updatedLogic: JumpLogicType = {
-                                                ...logic,
-                                                TargetQuestionOrder:
-                                                    e.target.value === "end"
-                                                        ? "end"
-                                                        : parseInt(
-                                                              e.target.value
-                                                          ),
-                                            };
+                                            const updatedLogic: JumpLogicType =
+                                                {
+                                                    ...logic,
+                                                    TargetQuestionOrder:
+                                                        e.target.value === "end"
+                                                            ? "end"
+                                                            : parseInt(
+                                                                  e.target.value
+                                                              ),
+                                                };
                                             const newLogics = [...JumpLogics];
                                             newLogics[logicIndex] =
                                                 updatedLogic;
-                                            handleUpdateQuestion(
-                                                "ConfigJson",
-                                                {
-                                                    ...configJson,
-                                                    JumpLogics: newLogics,
-                                                }
-                                            );
+                                            handleUpdateQuestion("ConfigJson", {
+                                                ...configJson,
+                                                JumpLogics: newLogics,
+                                            });
                                         }}
                                         className="flex-1 px-2 py-1.5 border border-gray-300 rounded hover:border-blue-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                                     >
