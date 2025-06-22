@@ -1,13 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import TurnstileWidget from "../../../hooks/useRecapcha";
 import useBlocker from "../../../hooks/useBlocker";
-import { useFetcher, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useGetSurvey } from "../../../services/survey/get";
 import axios from "../../../libs/axios";
 import type { QuestionType, SurveyType } from "../../../types/survey";
-import Action from "../../molecules/action/Action";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { setSurveyData } from "../../../app/appSlice";
 import HandleSlide from "../../organisms/handleSlide/HandleSlide";
 
 const defaultValue = {
