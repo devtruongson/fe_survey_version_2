@@ -35,7 +35,7 @@ const Slide = ({ currentQuestionId }: Props) => {
             case 4:
                 return <RangeSlideSlide data={data} />;
             case 5:
-                return <SigleInputSlide />;
+                return <SigleInputSlide data={data} />;
             case 6:
                 return <RatingSlide data={data} />;
             case 7:

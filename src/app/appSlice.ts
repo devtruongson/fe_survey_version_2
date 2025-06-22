@@ -253,7 +253,7 @@ export const appSlice = createSlice({
         handleUpdateRaking(
             state,
             action: PayloadAction<{
-                idChoose: number; // questionId
+                idChoose: number;
                 ranking: { SurveyOptionId: number; RankIndex: number }[];
             }>
         ) {
@@ -285,6 +285,67 @@ export const appSlice = createSlice({
                 state.surveyData.SurveyResponses = clone;
             }
         },
+
+        handleUpdateForm(
+            state,
+            action: PayloadAction<{
+                idChoose: number;
+                type: number;
+                value: string | number;
+            }>
+        ) {
+            const type = action.payload.type;
+            const value = action.payload.value;
+            const clone = state.surveyData?.SurveyResponses.map((i) => {
+                if (
+                    i.ValueJson.QuestionContent.Id === action.payload.idChoose
+                ) {
+                    if (type === 2) {
+                        return {
+                            ...i,
+                            IsValid: true,
+                            ValueJson: {
+                                ...i.ValueJson,
+                                QuestionResponse: {
+                                    ...((typeof i.ValueJson.QuestionResponse ===
+                                        "object" &&
+                                        i.ValueJson.QuestionResponse) ||
+                                        {}),
+                                    SpeechText: value,
+                                },
+                            },
+                        };
+                    }
+                    if (type !== 2) {
+                        return {
+                            ...i,
+                            IsValid: true,
+                            ValueJson: {
+                                ...i.ValueJson,
+                                QuestionResponse: {
+                                    ...((typeof i.ValueJson.QuestionResponse ===
+                                        "object" &&
+                                        i.ValueJson.QuestionResponse) ||
+                                        {}),
+                                    Input: {
+                                        Value: value,
+                                        ValueType:
+                                            type === 4 ? "number" : "string",
+                                    },
+                                },
+                            },
+                        };
+                    }
+                }
+                return {
+                    ...i,
+                    IsValid: true,
+                };
+            });
+            if (state.surveyData && clone) {
+                state.surveyData.SurveyResponses = clone;
+            }
+        },
     },
 });
 
@@ -298,5 +359,6 @@ export const {
     handleChangeSlider,
     handleUpdateRating,
     handleUpdateRaking,
+    handleUpdateForm,
 } = appSlice.actions;
 export default appSlice.reducer;
