@@ -84,6 +84,56 @@ export const appSlice = createSlice({
                 state.surveyData.SurveyResponses = clone;
             }
         },
+        handleUpdateMutilChoice(
+            state,
+            action: PayloadAction<{ idChoose: number; questionId: number }>
+        ) {
+            const clone = state.surveyData?.SurveyResponses.map((i) => {
+                if (
+                    i.ValueJson.QuestionContent.Id === action.payload.questionId
+                ) {
+                    const prevArr = Array.isArray(
+                        (i.ValueJson.QuestionResponse as any)?.MultipleChoice
+                    )
+                        ? [
+                              ...(i.ValueJson.QuestionResponse as any)
+                                  .MultipleChoice,
+                          ]
+                        : [];
+                    const idx = prevArr.findIndex(
+                        (v) => Number(v) === Number(action.payload.idChoose)
+                    );
+                    let newArr;
+                    if (idx > -1) {
+                        newArr = prevArr.filter(
+                            (v) => Number(v) !== Number(action.payload.idChoose)
+                        );
+                    } else {
+                        newArr = [...prevArr, action.payload.idChoose];
+                    }
+                    return {
+                        IsValid: true,
+                        ValueJson: {
+                            ...i.ValueJson,
+                            QuestionResponse: {
+                                ...((typeof i.ValueJson.QuestionResponse ===
+                                    "object" &&
+                                    i.ValueJson.QuestionResponse) ||
+                                    {}),
+                                MultipleChoice: newArr,
+                            },
+                        },
+                    };
+                }
+                return {
+                    ...i,
+                    IsValid: true,
+                };
+            });
+            if (state.surveyData && clone) {
+                state.surveyData.SurveyResponses = clone;
+            }
+        },
     },
 });
 
@@ -92,5 +142,6 @@ export const {
     clearSurveyData,
     handleAddQuestionResponse,
     handleUpdateSigleChoose,
+    handleUpdateMutilChoice,
 } = appSlice.actions;
 export default appSlice.reducer;
