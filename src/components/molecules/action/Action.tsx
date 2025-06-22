@@ -16,6 +16,16 @@ const Action = ({
     nextLabel = "Tiếp tục",
     currentQuestionId,
 }: ActionProps) => {
+    const info = useAppSelector((state) => state.appSlice.infoSurvey);
+
+    const buttonBgColor = useMemo(
+        () => info?.ConfigJson?.ButtonBackgroundColor || "#007bff",
+        [info?.ConfigJson?.ButtonBackgroundColor]
+    );
+    const buttonTextColor = useMemo(
+        () => info?.ConfigJson?.ButtonContentColor || "#ffffff",
+        [info?.ConfigJson?.ButtonContentColor]
+    );
     const data = useAppSelector((state) => state.appSlice.surveyData);
     const isValid = useMemo(
         () =>
@@ -24,6 +34,8 @@ const Action = ({
             )?.IsValid,
         [currentQuestionId, data?.SurveyResponses]
     );
+
+    console.log(isValid);
     return (
         <div className="flex items-center justify-center gap-6 py-6 bg-transparent">
             {/* Quay lại */}
@@ -53,16 +65,28 @@ const Action = ({
                 Quay lại
             </button>
 
-            {/* Tiếp tục */}
             <button
                 onClick={onNext}
-                className={`${
-                    isValid ? "bg-[#20607b]" : ""
-                } text-white font-semibold text-xl rounded-lg px-8 py-3 flex items-center gap-2 transition`}
-                type="button"
+                className="startpage-btn group cursor-pointer"
+                style={{
+                    background: isValid
+                        ? buttonBgColor?.startsWith("linear-gradient") ||
+                          buttonBgColor?.startsWith("radial-gradient")
+                            ? buttonBgColor
+                            : ""
+                        : "",
+                    backgroundColor: isValid
+                        ? !(
+                              buttonBgColor?.startsWith("linear-gradient") ||
+                              buttonBgColor?.startsWith("radial-gradient")
+                          )
+                            ? buttonBgColor
+                            : ""
+                        : "",
+                    color: isValid ? buttonTextColor : "white",
+                }}
             >
                 {nextLabel}
-                {/* Check SVG */}
                 <svg
                     className="w-5 h-5"
                     fill="none"
