@@ -144,14 +144,14 @@ const Confirm = ({
             >
                 Xác nhận
             </Button>
-            <Button
+            {/* <Button
                 variant="contained"
                 startIcon={<ArrowBack />}
                 className="overlay-button bg-orange-200"
                 onClick={onBack}
             >
                 Quay lại
-            </Button>
+            </Button> */}
         </div>
     );
 };
