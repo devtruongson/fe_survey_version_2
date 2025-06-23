@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useAppSelector } from "../../../app/hooks";
 
 interface ActionProps {
@@ -7,6 +7,7 @@ interface ActionProps {
     isFirst?: boolean;
     nextLabel?: string;
     currentQuestionId: number;
+    onEnd: () => void;
 }
 
 const Action = ({
@@ -15,8 +16,10 @@ const Action = ({
     isFirst = false,
     nextLabel = "Tiếp tục",
     currentQuestionId,
+    onEnd,
 }: ActionProps) => {
     const info = useAppSelector((state) => state.appSlice.infoSurvey);
+    const surveyData = useAppSelector((state) => state.appSlice.surveyData);
 
     const buttonBgColor = useMemo(
         () => info?.ConfigJson?.ButtonBackgroundColor || "#007bff",
@@ -33,6 +36,14 @@ const Action = ({
                 (i) => i.ValueJson.QuestionContent.Id === currentQuestionId
             )?.IsValid,
         [currentQuestionId, data?.SurveyResponses]
+    );
+
+    const isEnd = useMemo(
+        () =>
+            currentQuestionId ===
+            surveyData?.SurveyResponses[surveyData?.SurveyResponses.length - 1]
+                ?.ValueJson?.QuestionContent?.Id,
+        [currentQuestionId, surveyData?.SurveyResponses]
     );
 
     return (
@@ -65,7 +76,7 @@ const Action = ({
             </button> */}
 
             <button
-                onClick={onNext}
+                onClick={() => (isEnd ? onEnd() : onNext())}
                 className="btn-next group cursor-pointer"
                 style={{
                     background: isValid
@@ -85,7 +96,7 @@ const Action = ({
                     color: isValid ? buttonTextColor : "white",
                 }}
             >
-                {nextLabel}
+                {isEnd ? nextLabel : "Kết thúc"}
                 <svg
                     className="w-5 h-5"
                     fill="none"

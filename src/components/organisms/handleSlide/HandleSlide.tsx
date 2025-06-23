@@ -214,6 +214,8 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
         );
     }, [surveyData, current]);
 
+    const handleEnd = useCallback(() => {}, []);
+
     if (!surveyData?.SurveyResponses?.length) {
         return <Start dataResponse={dataResponse} setCurrent={setCurrent} />;
     }
@@ -225,6 +227,7 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
                 onNext={handleNext}
                 onPrev={handleBack}
                 currentQuestionId={current}
+                onEnd={handleEnd}
             />
         </div>
     );
