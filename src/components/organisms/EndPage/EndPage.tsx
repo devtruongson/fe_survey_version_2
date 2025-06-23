@@ -14,15 +14,29 @@ const EndPage = ({ formData }: Props) => {
     const [listBackground, setListBackground] = useState<any[]>([]);
 
     useEffect(() => {
-        setListBackground(JSON.parse(localStorage.getItem("listBackground") || "[]"));
-    },[]);
-    
+        setListBackground(
+            JSON.parse(localStorage.getItem("listBackground") || "[]")
+        );
+    }, []);
+
     return (
         <div
             className="min-h-[100%] question-main flex-1 flex flex-col overflow-y-auto relative items-center justify-center"
             style={{
                 ...(formData?.Background === "image" && {
-                    backgroundImage: `url(${formData?.IsUseBackgroundImageBase64 && formData.BackgroundImageBase64 ? formData.BackgroundImageBase64: formData?.ConfigJson?.DefaultBackgroundImageId ? listBackground.find(item => item.id === formData?.ConfigJson?.DefaultBackgroundImageId)?.url : ""})`,
+                    backgroundImage: `url(${
+                        formData?.IsUseBackgroundImageBase64 &&
+                        formData.BackgroundImageBase64
+                            ? formData.BackgroundImageBase64
+                            : formData?.ConfigJson?.DefaultBackgroundImageId
+                            ? listBackground.find(
+                                  (item) =>
+                                      item.id ===
+                                      formData?.ConfigJson
+                                          ?.DefaultBackgroundImageId
+                              )?.url
+                            : ""
+                    })`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
@@ -37,7 +51,7 @@ const EndPage = ({ formData }: Props) => {
                         formData.ConfigJson.Brightness / 100
                     })`,
                 }),
-                ...(formData.Background.startsWith("#") && {
+                ...(formData.Background?.startsWith("#") && {
                     backgroundColor: formData.Background,
                     filter: `Brightness(${
                         formData.ConfigJson.Brightness / 100

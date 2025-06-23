@@ -233,24 +233,23 @@ const Slide = ({ currentQuestionId }: Props) => {
     return (
         <div className="">
             {/* Timer overlay - chỉ hiển thị khi timer > 0 */}
-            {timer > 0 &&
-                (data?.ValueJson?.QuestionContent as any)?.IsVoice && (
-                    <div className="fixed top-6 right-6 z-50">
-                        <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-4 rounded-2xl shadow-2xl border border-white/20 backdrop-blur-sm">
-                            <div className="flex items-center space-x-3">
-                                <div className="w-3 h-3 bg-red-400 rounded-full animate-pulse"></div>
-                                <div className="text-center">
-                                    <div className="text-sm font-medium opacity-90">
-                                        Có thể trả lời sau {timer}s
-                                    </div>
-                                    <div className="text-2xl font-bold">
-                                        {timer}s
-                                    </div>
+            {timer > 0 && (
+                <div className="fixed top-6 right-6 z-50">
+                    <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-4 rounded-2xl shadow-2xl border border-white/20 backdrop-blur-sm">
+                        <div className="flex items-center space-x-3">
+                            <div className="w-3 h-3 bg-red-400 rounded-full animate-pulse"></div>
+                            <div className="text-center">
+                                <div className="text-sm font-medium opacity-90">
+                                    Có thể trả lời sau {timer}s
+                                </div>
+                                <div className="text-2xl font-bold">
+                                    {timer}s
                                 </div>
                             </div>
                         </div>
                     </div>
-                )}
+                </div>
+            )}
 
             <div className="">
                 <div className="mb-[20px]">

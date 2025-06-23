@@ -33,7 +33,7 @@ export const dataMock = {
             QuestionTypeId: 1,
             Content: "C1",
             Description: "c1",
-            TimeLimit: 12,
+            TimeLimit: 4,
             IsVoice: false,
             Order: 1,
             ConfigJson: {

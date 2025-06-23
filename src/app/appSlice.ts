@@ -65,10 +65,11 @@ export const appSlice = createSlice({
             state,
             action: PayloadAction<{ idChoose: number; questionId: number }>
         ) {
-            if(!state.isValid){
+            if (!state.isValid) {
                 const clone = state.surveyData?.SurveyResponses.map((i) => {
                     if (
-                        i.ValueJson.QuestionContent.Id === action.payload.questionId
+                        i.ValueJson.QuestionContent.Id ===
+                        action.payload.questionId
                     ) {
                         return {
                             IsValid: true,
@@ -98,13 +99,15 @@ export const appSlice = createSlice({
             state,
             action: PayloadAction<{ idChoose: number; questionId: number }>
         ) {
-            if(!state.isValid){
+            if (!state.isValid) {
                 const clone = state.surveyData?.SurveyResponses.map((i) => {
                     if (
-                        i.ValueJson.QuestionContent.Id === action.payload.questionId
+                        i.ValueJson.QuestionContent.Id ===
+                        action.payload.questionId
                     ) {
                         const prevArr = Array.isArray(
-                            (i.ValueJson.QuestionResponse as any)?.MultipleChoice
+                            (i.ValueJson.QuestionResponse as any)
+                                ?.MultipleChoice
                         )
                             ? [
                                   ...(i.ValueJson.QuestionResponse as any)
@@ -117,7 +120,9 @@ export const appSlice = createSlice({
                         let newArr;
                         if (idx > -1) {
                             newArr = prevArr.filter(
-                                (v) => Number(v) !== Number(action.payload.idChoose)
+                                (v) =>
+                                    Number(v) !==
+                                    Number(action.payload.idChoose)
                             );
                         } else {
                             newArr = [...prevArr, action.payload.idChoose];
@@ -154,10 +159,11 @@ export const appSlice = createSlice({
                 value: number;
             }>
         ) {
-            if(!state.isValid){
+            if (!state.isValid) {
                 const clone = state.surveyData?.SurveyResponses.map((i) => {
                     if (
-                        i.ValueJson.QuestionContent.Id === action.payload.idChoose
+                        i.ValueJson.QuestionContent.Id ===
+                        action.payload.idChoose
                     ) {
                         return {
                             ...i,
@@ -193,10 +199,11 @@ export const appSlice = createSlice({
                 max: number;
             }>
         ) {
-            if(!state.isValid){
+            if (!state.isValid) {
                 const clone = state.surveyData?.SurveyResponses.map((i) => {
                     if (
-                        i.ValueJson.QuestionContent.Id === action.payload.idChoose
+                        i.ValueJson.QuestionContent.Id ===
+                        action.payload.idChoose
                     ) {
                         return {
                             ...i,
@@ -234,10 +241,11 @@ export const appSlice = createSlice({
                 value: number;
             }>
         ) {
-            if(!state.isValid){
+            if (!state.isValid) {
                 const clone = state.surveyData?.SurveyResponses.map((i) => {
                     if (
-                        i.ValueJson.QuestionContent.Id === action.payload.idChoose
+                        i.ValueJson.QuestionContent.Id ===
+                        action.payload.idChoose
                     ) {
                         return {
                             ...i,
@@ -274,10 +282,11 @@ export const appSlice = createSlice({
                 ranking: { SurveyOptionId: number; RankIndex: number }[];
             }>
         ) {
-            if(!state.isValid){
+            if (!state.isValid) {
                 const clone = state.surveyData?.SurveyResponses.map((i) => {
                     if (
-                        i.ValueJson.QuestionContent.Id === action.payload.idChoose
+                        i.ValueJson.QuestionContent.Id ===
+                        action.payload.idChoose
                     ) {
                         return {
                             ...i,
@@ -313,12 +322,13 @@ export const appSlice = createSlice({
                 value: string | number;
             }>
         ) {
-            if(!state.isValid){
+            if (!state.isValid) {
                 const type = action.payload.type;
                 const value = action.payload.value;
                 const clone = state.surveyData?.SurveyResponses.map((i) => {
                     if (
-                        i.ValueJson.QuestionContent.Id === action.payload.idChoose
+                        i.ValueJson.QuestionContent.Id ===
+                        action.payload.idChoose
                     ) {
                         return {
                             ...i,
@@ -332,7 +342,8 @@ export const appSlice = createSlice({
                                         {}),
                                     Input: {
                                         Value: value,
-                                        ValueType: type === 4 ? "number" : "string",
+                                        ValueType:
+                                            type === 4 ? "number" : "string",
                                     },
                                 },
                             },
@@ -352,21 +363,27 @@ export const appSlice = createSlice({
             state.isValid = action.payload;
         },
 
-        handleUpdateSpeechText(state, action: PayloadAction<{text:string, questionId:number}>) {
-            if(!state.isValid){
+        handleUpdateSpeechText(
+            state,
+            action: PayloadAction<{ text: string; questionId: number }>
+        ) {
+            if (!state.isValid) {
                 const clone = state.surveyData?.SurveyResponses.map((i) => {
-                    if(i.ValueJson.QuestionContent.Id === action.payload.questionId){
+                    if (
+                        i.ValueJson.QuestionContent.Id ===
+                        action.payload.questionId
+                    ) {
                         return {
                             ...i,
                             IsValid: true,
-                            ValueJson:{
+                            ValueJson: {
                                 ...i.ValueJson,
-                                QuestionContent:{
+                                QuestionContent: {
                                     ...i.ValueJson.QuestionContent,
-                                    SpeechText:action.payload.text
-                                }
-                            }
-                        }
+                                    SpeechText: action.payload.text,
+                                },
+                            },
+                        };
                     }
                     return {
                         ...i,
@@ -377,7 +394,7 @@ export const appSlice = createSlice({
                     state.surveyData.SurveyResponses = clone;
                 }
             }
-        }
+        },
     },
 });
 
@@ -394,6 +411,6 @@ export const {
     handleUpdateRaking,
     handleUpdateForm,
     handleSetIsValid,
-    handleUpdateSpeechText
+    handleUpdateSpeechText,
 } = appSlice.actions;
 export default appSlice.reducer;
