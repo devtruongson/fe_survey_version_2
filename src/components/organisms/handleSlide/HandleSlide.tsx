@@ -219,7 +219,7 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
     }
 
     return (
-        <div className="">
+        <div className="w-[60%]">
             <Slide currentQuestionId={current} />
             <Action
                 onNext={handleNext}

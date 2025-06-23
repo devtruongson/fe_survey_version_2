@@ -66,7 +66,7 @@ const Action = ({
 
             <button
                 onClick={onNext}
-                className="startpage-btn group cursor-pointer"
+                className="btn-next group cursor-pointer"
                 style={{
                     background: isValid
                         ? buttonBgColor?.startsWith("linear-gradient") ||
