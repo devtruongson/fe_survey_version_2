@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useEffect } from "react";
 import { useAppSelector } from "../../../app/hooks";
 
 interface ActionProps {
@@ -46,6 +46,20 @@ const Action = ({
         [currentQuestionId, surveyData?.SurveyResponses]
     );
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Enter") {
+                if (isEnd) {
+                    onEnd();
+                } else {
+                    onNext();
+                }
+            }
+        };
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [isEnd, onEnd, onNext]);
+
     return (
         <div className="flex items-center justify-center gap-6 py-6 bg-transparent">
             {/* Quay lại */}
@@ -76,7 +90,13 @@ const Action = ({
             </button> */}
 
             <button
-                onClick={() => (isEnd ? onEnd() : onNext())}
+                onClick={() => {
+                    if (isEnd) {
+                        onEnd && onEnd();
+                    } else {
+                        onNext && onNext();
+                    }
+                }}
                 className="btn-next group cursor-pointer"
                 style={{
                     background: isValid
@@ -96,7 +116,7 @@ const Action = ({
                     color: isValid ? buttonTextColor : "white",
                 }}
             >
-                {isEnd ? nextLabel : "Kết thúc"}
+                {!isEnd ? nextLabel : "Kết thúc"}
                 <svg
                     className="w-5 h-5"
                     fill="none"
@@ -113,9 +133,11 @@ const Action = ({
             </button>
 
             {/* Hoặc nhấn ENTER */}
-            <span className="text-white font-semibold ml-2">
-                hoặc nhấn <span className="font-bold">ENTER</span>
-            </span>
+            {!isEnd ? (
+                <span className="text-white font-semibold ml-2">
+                    hoặc nhấn <span className="font-bold">ENTER</span>
+                </span>
+            ) : null}
         </div>
     );
 };

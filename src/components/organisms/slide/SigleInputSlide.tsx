@@ -29,9 +29,9 @@ const SigleInputSlide = ({ data }: Props) => {
                         type="text"
                         placeholder="Vui lòng nhập tại đây"
                         className="text-input w-full px-5 py-3 border-white border-[1px] outline-none rounded-[4px]"
-                        style={{
-                            color: config?.ConfigJson?.ContentColor || "#000",
-                        }}
+                        // style={{
+                        //     color: config?.ConfigJson?.ContentColor || "#000",
+                        // }}
                         value={
                             data?.ValueJson?.QuestionResponse?.Input?.Value ||
                             ""
@@ -50,68 +50,64 @@ const SigleInputSlide = ({ data }: Props) => {
                 );
             case 2:
                 return (
-                    <Box className="text-area w-full">
-                        <TextField
-                            fullWidth
-                            multiline
-                            rows={4}
-                            placeholder="Vui lòng nhập tại đây"
-                            // variant="outlined"
-                            size="small"
-                            className="w-full px-5 py-3 border-white border-[1px] outline-none rounded-[4px]"
-                            style={{
-                                color:
-                                    config?.ConfigJson?.ContentColor || "#000",
-                            }}
-                            value={
-                                data?.ValueJson?.QuestionResponse?.Input
-                                    ?.Value || ""
-                            }
-                            onChange={(e) =>
-                                dispatch(
-                                    handleUpdateForm({
-                                        idChoose:
-                                            data?.ValueJson?.QuestionContent
-                                                ?.Id,
-                                        type: 2,
-                                        value: e.target.value || "",
-                                    })
-                                )
-                            }
-                        />
-                    </Box>
+                    <TextField
+                        fullWidth
+                        multiline
+                        rows={4}
+                        placeholder="Vui lòng nhập tại đây"
+                        // variant="outlined"
+                        size="small"
+                        className="w-full px-5 py-3 border-white border-[1px] outline-none rounded-[4px]"
+                        style={{
+                            color: config?.ConfigJson?.ContentColor || "#000",
+                        }}
+                        value={
+                            data?.ValueJson?.QuestionResponse?.Input?.Value ||
+                            ""
+                        }
+                        onChange={(e) =>
+                            dispatch(
+                                handleUpdateForm({
+                                    idChoose:
+                                        data?.ValueJson?.QuestionContent?.Id,
+                                    type: 2,
+                                    value: e.target.value || "",
+                                })
+                            )
+                        }
+                    />
+                    // <Box className="text-area w-full">
+                    // </Box>
                 );
             case 3:
                 return (
-                    <Box className="email-input w-full">
-                        <TextField
-                            fullWidth
-                            placeholder="Nhập email tại đây"
-                            className="w-full px-5 py-3 border-white border-[1px] outline-none rounded-[4px]"
-                            variant="outlined"
-                            size="small"
-                            type="email"
-                            style={{
-                                color:
-                                    config?.ConfigJson?.ContentColor || "#000",
-                            }}
-                            value={
-                                data?.ValueJson?.QuestionResponse?.Input
-                                    ?.Value || ""
-                            }
-                            onChange={(e) =>
-                                dispatch(
-                                    handleUpdateForm({
-                                        idChoose:
-                                            data?.ValueJson?.QuestionContent
-                                                ?.Id,
-                                        type: 3,
-                                        value: e.target.value || "",
-                                    })
-                                )
-                            }
-                        />
-                    </Box>
+                    // <Box className=" w-full">
+                    // </Box>
+                    <TextField
+                        fullWidth
+                        placeholder="Nhập email tại đây"
+                        className="w-full px-5 py-3 border-white border-[1px] outline-none rounded-[4px]"
+                        variant="outlined"
+                        size="small"
+                        type="email"
+                        style={{
+                            color: config?.ConfigJson?.ContentColor || "red",
+                        }}
+                        value={
+                            data?.ValueJson?.QuestionResponse?.Input?.Value ||
+                            ""
+                        }
+                        onChange={(e) =>
+                            dispatch(
+                                handleUpdateForm({
+                                    idChoose:
+                                        data?.ValueJson?.QuestionContent?.Id,
+                                    type: 3,
+                                    value: e.target.value || "",
+                                })
+                            )
+                        }
+                    />
                 );
             case 4:
                 return (

@@ -107,7 +107,7 @@ const RatingSlide = ({ data }: Props) => {
 
     return (
         <div className="">
-            <Box className="flex space-x-4">
+            <Box className="flex justify-center space-x-4">
                 {Array.from({ length: length }).map((_, index) => (
                     <Box
                         key={index}
