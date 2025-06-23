@@ -7,8 +7,9 @@ import { handleUpdateForm } from "../../../app/appSlice";
 type Props = {
     isUpdate?: boolean;
     data?: any;
+    color?: string;
 };
-const Date = ({ isUpdate, data }: Props) => {
+const Date = ({ isUpdate, data, color }: Props) => {
     const dispatch = useAppDispatch();
 
     const date = useMemo(
@@ -69,6 +70,7 @@ const Date = ({ isUpdate, data }: Props) => {
                 <select
                     value={date}
                     onChange={(e) => hadnleUpdate("date", e.target.value)}
+                    // style={{ color: color }}
                 >
                     {/* Options for Day */}
                     {[...Array(31)].map((_, i) => (

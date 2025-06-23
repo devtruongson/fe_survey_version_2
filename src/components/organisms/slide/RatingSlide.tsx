@@ -10,6 +10,7 @@ import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import { Box, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { handleUpdateRating } from "../../../app/appSlice";
+import { useAppSelector } from "../../../app/hooks";
 
 interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,6 +18,8 @@ interface Props {
 }
 
 const RatingSlide = ({ data }: Props) => {
+    const config = useAppSelector((state) => state.appSlice.infoSurvey);
+
     const length = useMemo(
         () => data?.ValueJson?.QuestionContent?.ConfigJson?.RatingLength || 0,
         [data]

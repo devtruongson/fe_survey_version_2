@@ -9,6 +9,7 @@ import { handleSetInfoSurvey, handleSetIsValid } from "../../../app/appSlice";
 import HandleSlide from "../../organisms/handleSlide/HandleSlide";
 import { useUpdateSurveyPro } from "../../../services/survey/update-pro";
 import TurnstileWidget from "../../../hooks/useRecapcha";
+import { dataMock } from "../../../constants";
 
 function SurveyCustomer() {
     const [isVerified, setIsVerified] = useState(false);
@@ -39,6 +40,8 @@ function SurveyCustomer() {
         if (apiData) {
             setDataResponse(apiData.data);
             dispatch(handleSetInfoSurvey(apiData.data));
+            // setDataResponse(dataMock);
+            // dispatch(handleSetInfoSurvey(dataMock));
         }
     }, [apiData]);
 
@@ -51,20 +54,20 @@ function SurveyCustomer() {
     }, []);
 
     useEffect(() => {
-        if(isVerified) {
+        if (isVerified) {
             dispatch(handleSetIsValid(false));
-        }else {
+        } else {
             dispatch(handleSetIsValid(true));
         }
-    }, [isVerified])
+    }, [isVerified]);
 
-    useEffect(() => {
-        if (!survey) return;
-        const handler = setTimeout(() => {
-            mutate(survey);
-        }, 2000);
-        return () => clearTimeout(handler);
-    }, [survey, mutate]);
+    // useEffect(() => {
+    //     if (!survey) return;
+    //     const handler = setTimeout(() => {
+    //         mutate(survey);
+    //     }, 2000);
+    //     return () => clearTimeout(handler);
+    // }, [survey, mutate]);
 
     if (!dataResponse) return null;
 
@@ -74,7 +77,7 @@ function SurveyCustomer() {
                 isVerified={isVerified}
                 setIsVerified={setIsVerified}
                 isRefetch={isRefetch}
-            /> 
+            />
             <div
                 className={`fixed top-0 left-0 w-full h-full bg-white z-50`}
                 style={{
@@ -109,7 +112,10 @@ function SurveyCustomer() {
                 }}
             >
                 <div className="w-full h-full flex flex-col items-center justify-center relative z-10">
-                    <HandleSlide setIsRefetch={setIsRefetch} dataResponse={dataResponse} />
+                    <HandleSlide
+                        setIsRefetch={setIsRefetch}
+                        dataResponse={dataResponse}
+                    />
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@ import { Box, Slider, Typography } from "@mui/material";
 import { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { handleChangeRangeSlide } from "../../../app/appSlice";
+import { useAppSelector } from "../../../app/hooks";
 
 interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const RangeSlideSlide = ({ data }: Props) => {
+    const config = useAppSelector((state) => state.appSlice.infoSurvey);
+
     const value = useMemo(
         () => [
             data?.ValueJson?.QuestionResponse?.Range?.Min ||
@@ -65,10 +68,10 @@ const RangeSlideSlide = ({ data }: Props) => {
                     step={step}
                     sx={{
                         "& .MuiSlider-thumb": {
-                            // backgroundColor: formData?.ConfigJson
-                            //     ?.ButtonBackgroundColor
-                            //     ? formData?.ConfigJson?.ButtonBackgroundColor
-                            //     : "#000",
+                            backgroundColor: config?.ConfigJson
+                                ?.ButtonBackgroundColor
+                                ? config?.ConfigJson?.ButtonBackgroundColor
+                                : "#000",
                             borderRadius: 0,
                             width: 26,
                             height: 26,

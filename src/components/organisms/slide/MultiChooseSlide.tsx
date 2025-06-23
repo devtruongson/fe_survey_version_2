@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import Error from "./Error";
 import { handleUpdateMutilChoice } from "../../../app/appSlice";
 
@@ -9,6 +9,7 @@ interface Props {
 }
 
 const MultiChooseSlide = ({ data }: Props) => {
+    const config = useAppSelector((state) => state.appSlice.infoSurvey);
     const dispatch = useAppDispatch();
     const idsSelected = useMemo(
         () => data?.ValueJson?.QuestionResponse?.MultipleChoice || [],
@@ -28,8 +29,6 @@ const MultiChooseSlide = ({ data }: Props) => {
         [data?.ValueJson?.QuestionContent?.Id, dispatch]
     );
 
-    console.log(idsSelected);
-
     return (
         <div className="flex flex-col gap-4 w-[90%] max-w-5xl mx-auto mt-6">
             {!isValid ? (
@@ -48,6 +47,9 @@ const MultiChooseSlide = ({ data }: Props) => {
                                 : "bg-transparent text-white border border-white"
                         }
                     `}
+                        style={{
+                            color: config?.ConfigJson?.ContentColor || "#000",
+                        }}
                     >
                         {op.Content}
                     </button>

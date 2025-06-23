@@ -4,11 +4,13 @@ interface Props {
 }
 
 import { useCallback, useMemo } from "react";
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { handleUpdateSigleChoose } from "../../../app/appSlice";
 // import Error from "./Error";
 
 const SigleChooseSlide = ({ data }: Props) => {
+    const config = useAppSelector((state) => state.appSlice.infoSurvey);
+
     const dispatch = useAppDispatch();
     const idSelected = useMemo(
         () => data?.ValueJson?.QuestionResponse?.SingleChoice || 0,
@@ -50,6 +52,9 @@ const SigleChooseSlide = ({ data }: Props) => {
                                 : "bg-transparent text-white border border-white"
                         }
                     `}
+                        style={{
+                            color: config?.ConfigJson?.ContentColor || "#000",
+                        }}
                     >
                         {op.Content}
                     </button>

@@ -7,6 +7,7 @@ import DateMonth from "../../molecules/date-month/DateMonth";
 import Year from "../../molecules/year/Year";
 import Time from "../../molecules/time/Time";
 import FullTime from "../../molecules/full-time/FullTime";
+import { useAppSelector } from "../../../app/hooks";
 
 interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -15,6 +16,7 @@ interface Props {
 
 const SigleInputSlide = ({ data }: Props) => {
     // console.log(data);
+    const config = useAppSelector((state) => state.appSlice.infoSurvey);
     const dispatch = useDispatch();
 
     const handleRender = useCallback(() => {
@@ -26,7 +28,10 @@ const SigleInputSlide = ({ data }: Props) => {
                     <input
                         type="text"
                         placeholder="Vui lòng nhập tại đây"
-                        className="text-input"
+                        className="text-input w-full px-5 py-3 border-white border-[1px] outline-none rounded-[4px]"
+                        style={{
+                            color: config?.ConfigJson?.ContentColor || "#000",
+                        }}
                         value={
                             data?.ValueJson?.QuestionResponse?.Input?.Value ||
                             ""
@@ -51,11 +56,16 @@ const SigleInputSlide = ({ data }: Props) => {
                             multiline
                             rows={4}
                             placeholder="Vui lòng nhập tại đây"
-                            variant="outlined"
+                            // variant="outlined"
                             size="small"
+                            className="w-full px-5 py-3 border-white border-[1px] outline-none rounded-[4px]"
+                            style={{
+                                color:
+                                    config?.ConfigJson?.ContentColor || "#000",
+                            }}
                             value={
-                                data?.ValueJson?.QuestionResponse?.SpeechText ||
-                                ""
+                                data?.ValueJson?.QuestionResponse?.Input
+                                    ?.Value || ""
                             }
                             onChange={(e) =>
                                 dispatch(
@@ -77,9 +87,14 @@ const SigleInputSlide = ({ data }: Props) => {
                         <TextField
                             fullWidth
                             placeholder="Nhập email tại đây"
+                            className="w-full px-5 py-3 border-white border-[1px] outline-none rounded-[4px]"
                             variant="outlined"
                             size="small"
                             type="email"
+                            style={{
+                                color:
+                                    config?.ConfigJson?.ContentColor || "#000",
+                            }}
                             value={
                                 data?.ValueJson?.QuestionResponse?.Input
                                     ?.Value || ""
@@ -107,6 +122,11 @@ const SigleInputSlide = ({ data }: Props) => {
                             variant="outlined"
                             size="small"
                             type="number"
+                            className="w-full px-5 py-3 border-white border-[1px] outline-none rounded-[4px]"
+                            style={{
+                                color:
+                                    config?.ConfigJson?.ContentColor || "#000",
+                            }}
                             value={
                                 data?.ValueJson?.QuestionResponse?.Input
                                     ?.Value || ""
@@ -126,7 +146,13 @@ const SigleInputSlide = ({ data }: Props) => {
                     </Box>
                 );
             case 5:
-                return <Date isUpdate data={data} />;
+                return (
+                    <Date
+                        isUpdate
+                        data={data}
+                        color={config?.ConfigJson?.ContentColor || "#000"}
+                    />
+                );
             case 6:
                 return <DateMonth isUpdate data={data} />;
             case 7:

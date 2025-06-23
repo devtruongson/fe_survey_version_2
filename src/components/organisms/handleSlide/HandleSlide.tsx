@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import "./styles.scss";
 import {
     useState,
@@ -5,7 +6,6 @@ import {
     type SetStateAction,
     type Dispatch,
     useMemo,
-    useEffect,
 } from "react";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
@@ -30,24 +30,85 @@ type Props = {
     setIsRefetch: Dispatch<SetStateAction<boolean>>;
 };
 
-const HandleSlide = ({ dataResponse , setIsRefetch}: Props) => {
+const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
     const [current, setCurrent] = useState(0);
     const surveyData = useAppSelector((state) => state.appSlice.surveyData);
     const dispatch = useAppDispatch();
 
+    // const handleNext = useCallback(() => {
+    //     dispatch(handleSetIsValid(true));
+    //     if(Math.random()  * 1000> 850 ) {
+    //         setIsRefetch(prev => !prev);
+    //     }
+    //     if (!surveyData?.SurveyResponses) return;
+    //     const index = surveyData.SurveyResponses.findIndex(
+    //         (item) => item.ValueJson?.QuestionContent?.Id === current
+    //     );
+    //     const question = surveyData?.SurveyResponses[index];
+    //     if (!question?.IsValid) {
+    //         return;
+    //     }
+
+    //     const configJson = question?.ValueJson?.QuestionContent
+    //         ?.ConfigJson as Record<string, any>;
+    //     const jump: JumpLogic[] = (configJson?.JumpLogics || []) as JumpLogic[];
+
+    //     if (jump.length) {
+    //         for (const logic of jump) {
+    //             let isMatch = true;
+    //             for (const cond of logic.Conditions) {
+    //                 const q = surveyData.SurveyResponses.find(
+    //                     (item) =>
+    //                         item.ValueJson.QuestionContent.Id ===
+    //                         cond.QuestionId
+    //                 );
+    //                 const questionResponse = q?.ValueJson
+    //                     .QuestionResponse as Record<string, any>;
+    //                 const selected = questionResponse?.SingleChoice;
+    //                 const match = selected === cond.OptionId;
+
+    //                 if (!match) {
+    //                     isMatch = false;
+    //                     break;
+    //                 }
+    //             }
+    //             if (isMatch) {
+    //                 const target = surveyData.SurveyResponses.find(
+    //                     (item) =>
+    //                         item.ValueJson.QuestionContent.Id ===
+    //                         logic.TargetQuestionId
+    //                 );
+    //                 if (target) {
+    //                     setCurrent(target.ValueJson.QuestionContent.Id);
+    //                     return;
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     if (index === -1 || index === surveyData.SurveyResponses.length - 1)
+    //         return;
+    //     setCurrent(
+    //         surveyData.SurveyResponses[index + 1]?.ValueJson?.QuestionContent
+    //             ?.Id ?? 0
+    //     );
+    // }, [surveyData, current]);
+
     const handleNext = useCallback(() => {
         dispatch(handleSetIsValid(true));
-        if(Math.random()  * 1000> 850 ) {
-            setIsRefetch(prev => !prev);
+
+        if (Math.random() * 1000 > 850) {
+            setIsRefetch((prev) => !prev);
         }
+
         if (!surveyData?.SurveyResponses) return;
+
         const index = surveyData.SurveyResponses.findIndex(
             (item) => item.ValueJson?.QuestionContent?.Id === current
         );
         const question = surveyData?.SurveyResponses[index];
-        if (!question?.IsValid) {
-            return;
-        }
+
+        if (!question?.IsValid) return;
 
         const configJson = question?.ValueJson?.QuestionContent
             ?.ConfigJson as Record<string, any>;
@@ -55,29 +116,74 @@ const HandleSlide = ({ dataResponse , setIsRefetch}: Props) => {
 
         if (jump.length) {
             for (const logic of jump) {
-                let isMatch = true;
-                for (const cond of logic.Conditions) {
+                let result: boolean | null = null;
+
+                for (let i = 0; i < logic.Conditions.length; i++) {
+                    const cond = logic.Conditions[i];
+
                     const q = surveyData.SurveyResponses.find(
                         (item) =>
                             item.ValueJson.QuestionContent.Id ===
                             cond.QuestionId
                     );
                     const questionResponse = q?.ValueJson
-                        .QuestionResponse as Record<string, any>;
-                    const selected = questionResponse?.SingleChoice;
-                    const match = selected === cond.OptionId;
+                        ?.QuestionResponse as Record<string, any>;
 
-                    if (!match) {
-                        isMatch = false;
-                        break;
+                    let isValid = false;
+
+                    if (
+                        q?.ValueJson.QuestionContent.QuestionTypeId === 1 ||
+                        q?.ValueJson.QuestionContent.QuestionTypeId === 2
+                    ) {
+                        const selected = questionResponse?.SingleChoice;
+                        if (cond.Operator === "Chọn") {
+                            isValid = selected === cond.OptionId;
+                        }
+                        if (cond.Operator === "Không Chọn") {
+                            isValid = selected !== cond.OptionId;
+                        }
+                    }
+
+                    if (q?.ValueJson.QuestionContent.QuestionTypeId === 6) {
+                        const value = questionResponse?.Input?.Value;
+                        if (cond.Operator === "=") {
+                            isValid = value === cond.CompareValue;
+                        }
+                        if (cond.Operator === ">=") {
+                            isValid = value >= cond.CompareValue;
+                        }
+                        if (cond.Operator === "<=") {
+                            isValid = value <= cond.CompareValue;
+                        }
+                        if (cond.Operator === ">") {
+                            isValid = value > cond.CompareValue;
+                        }
+                        if (cond.Operator === "<") {
+                            isValid = value < cond.CompareValue;
+                        }
+                    }
+
+                    if (i === 0) {
+                        result = isValid;
+                    } else {
+                        if (cond.Conjunction === "AND") {
+                            result = result && isValid;
+                        } else if (cond.Conjunction === "OR") {
+                            result = result || isValid;
+                        } else {
+                            // Mặc định là AND nếu không có Conjunction
+                            result = result && isValid;
+                        }
                     }
                 }
-                if (isMatch) {
+
+                if (result) {
                     const target = surveyData.SurveyResponses.find(
                         (item) =>
                             item.ValueJson.QuestionContent.Id ===
                             logic.TargetQuestionId
                     );
+
                     if (target) {
                         setCurrent(target.ValueJson.QuestionContent.Id);
                         return;
@@ -86,8 +192,10 @@ const HandleSlide = ({ dataResponse , setIsRefetch}: Props) => {
             }
         }
 
+        // Không có nhảy logic, đi tới câu tiếp theo
         if (index === -1 || index === surveyData.SurveyResponses.length - 1)
             return;
+
         setCurrent(
             surveyData.SurveyResponses[index + 1]?.ValueJson?.QuestionContent
                 ?.Id ?? 0
@@ -160,7 +268,7 @@ const Start = ({
                             Options: i?.Options || [],
                             TimeLimit: i?.TimeLimit || 0,
                             SpeechText: i?.SpeechText || "",
-                            IsVoice: i?.IsVoice || false
+                            IsVoice: i?.IsVoice || false,
                         },
                         QuestionResponse: {
                             Input: null,

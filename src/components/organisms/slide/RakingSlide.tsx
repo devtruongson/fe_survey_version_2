@@ -2,6 +2,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { handleUpdateRaking } from "../../../app/appSlice";
 import type { RootState } from "../../../app/store";
+import { useAppSelector } from "../../../app/hooks";
 
 interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -10,6 +11,8 @@ interface Props {
 
 const RakingSlide = ({ data }: Props) => {
     const dispatch = useDispatch();
+    const config = useAppSelector((state) => state.appSlice.infoSurvey);
+
     const questionId = data?.ValueJson?.QuestionContent?.Id;
 
     const ranking: { SurveyOptionId: number; RankIndex: number }[] =
@@ -66,6 +69,9 @@ const RakingSlide = ({ data }: Props) => {
                                 : "bg-transparent text-white border border-white"
                         }
                     `}
+                    style={{
+                        color: config?.ConfigJson?.ContentColor || "#000",
+                    }}
                 >
                     {selectedMap[op.Id] && (
                         <span className="mr-3 font-bold">
