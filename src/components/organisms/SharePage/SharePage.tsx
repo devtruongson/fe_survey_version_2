@@ -11,10 +11,10 @@ const SharePage = ({ formData }: SharePageProps) => {
     const getBackgroundMode = (data: SurveyType) => {
         if (data.Background === "custom" && data.CustomBackgroundImageUrl) {
             return "image";
-        } else if (data.Background.startsWith("/assets/start")) {
+        } else if (data.Background?.startsWith("/assets/start")) {
             return "image";
         } else if (
-            data.Background.startsWith("#") ||
+            data.Background?.startsWith("#") ||
             data.Background === "color_gradient"
         ) {
             return "color";
@@ -47,7 +47,7 @@ const SharePage = ({ formData }: SharePageProps) => {
                         backgroundColor: "transparent",
                     }),
                     ...(backgroundMode === "color" && {
-                        ...(formData.Background.startsWith("#")
+                        ...(formData.Background?.startsWith("#")
                             ? {
                                   backgroundColor: formData.Background,
                               }
@@ -63,8 +63,7 @@ const SharePage = ({ formData }: SharePageProps) => {
                             className="text-2xl font-semibold mb-4 text-center"
                             style={{
                                 color:
-                                    formData.ConfigJson.TitleColor ||
-                                    "#ffffff",
+                                    formData.ConfigJson.TitleColor || "#ffffff",
                             }}
                         >
                             CHIA SẺ KHẢO SÁT CỦA BẠN

@@ -4,14 +4,25 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { routesMap } from "../../../routes/routes";
 
 type Props = {
     formData: SurveyType;
 };
 
 const EndPage = ({ formData }: Props) => {
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [listBackground, setListBackground] = useState<any[]>([]);
+
+    const handleNavigate = useCallback(() => {
+        // console.log("run >>>>", id);
+        if (id) {
+            navigate(routesMap.SurveyCustomer.replace("/:id", `/${id}`));
+        }
+    }, [id, navigate]);
 
     useEffect(() => {
         setListBackground(
@@ -72,6 +83,7 @@ const EndPage = ({ formData }: Props) => {
                             backgroundColor: "#f0f0f0",
                         },
                     }}
+                    onClick={handleNavigate}
                 >
                     <PlayArrowIcon sx={{ fontSize: 50, color: "black" }} />
                 </Button>

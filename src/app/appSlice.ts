@@ -93,6 +93,15 @@ export const appSlice = createSlice({
                 if (state.surveyData && clone) {
                     state.surveyData.SurveyResponses = clone;
                 }
+            } else {
+                const mess = `. Câu ${action.payload.questionId} Thời điểm ghi nhận không hợp lệ`;
+                if (
+                    state.surveyData &&
+                    !state.surveyData.InvalidReason.includes(mess)
+                ) {
+                    state.surveyData.InvalidReason =
+                        state.surveyData.InvalidReason + mess;
+                }
             }
         },
         handleUpdateMutilChoice(
@@ -149,6 +158,15 @@ export const appSlice = createSlice({
                 if (state.surveyData && clone) {
                     state.surveyData.SurveyResponses = clone;
                 }
+            } else {
+                const mess = `. Câu ${action.payload.questionId} Thời điểm ghi nhận không hợp lệ`;
+                if (
+                    state.surveyData &&
+                    !state.surveyData.InvalidReason.includes(mess)
+                ) {
+                    state.surveyData.InvalidReason =
+                        state.surveyData.InvalidReason + mess;
+                }
             }
         },
 
@@ -187,6 +205,15 @@ export const appSlice = createSlice({
                 });
                 if (state.surveyData && clone) {
                     state.surveyData.SurveyResponses = clone;
+                }
+            } else {
+                const mess = `. Câu ${action.payload.idChoose} Thời điểm ghi nhận không hợp lệ`;
+                if (
+                    state.surveyData &&
+                    !state.surveyData.InvalidReason.includes(mess)
+                ) {
+                    state.surveyData.InvalidReason =
+                        state.surveyData.InvalidReason + mess;
                 }
             }
         },
@@ -231,6 +258,15 @@ export const appSlice = createSlice({
                 if (state.surveyData && clone) {
                     state.surveyData.SurveyResponses = clone;
                 }
+            } else {
+                const mess = `. Câu ${action.payload.idChoose} Thời điểm ghi nhận không hợp lệ`;
+                if (
+                    state.surveyData &&
+                    !state.surveyData.InvalidReason.includes(mess)
+                ) {
+                    state.surveyData.InvalidReason =
+                        state.surveyData.InvalidReason + mess;
+                }
             }
         },
 
@@ -273,6 +309,15 @@ export const appSlice = createSlice({
                 if (state.surveyData && clone) {
                     state.surveyData.SurveyResponses = clone;
                 }
+            } else {
+                const mess = `. Câu ${action.payload.idChoose} Thời điểm ghi nhận không hợp lệ`;
+                if (
+                    state.surveyData &&
+                    !state.surveyData.InvalidReason.includes(mess)
+                ) {
+                    state.surveyData.InvalidReason =
+                        state.surveyData.InvalidReason + mess;
+                }
             }
         },
         handleUpdateRaking(
@@ -310,6 +355,15 @@ export const appSlice = createSlice({
                 });
                 if (state.surveyData && clone) {
                     state.surveyData.SurveyResponses = clone;
+                }
+            } else {
+                const mess = `. Câu ${action.payload.idChoose} Thời điểm ghi nhận không hợp lệ`;
+                if (
+                    state.surveyData &&
+                    !state.surveyData.InvalidReason.includes(mess)
+                ) {
+                    state.surveyData.InvalidReason =
+                        state.surveyData.InvalidReason + mess;
                 }
             }
         },
@@ -356,6 +410,15 @@ export const appSlice = createSlice({
                 });
                 if (state.surveyData && clone) {
                     state.surveyData.SurveyResponses = clone;
+                }
+            } else {
+                const mess = `. Câu ${action.payload.idChoose} Thời điểm ghi nhận không hợp lệ`;
+                if (
+                    state.surveyData &&
+                    !state.surveyData.InvalidReason.includes(mess)
+                ) {
+                    state.surveyData.InvalidReason =
+                        state.surveyData.InvalidReason + mess;
                 }
             }
         },

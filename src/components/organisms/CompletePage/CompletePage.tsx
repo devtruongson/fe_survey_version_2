@@ -59,13 +59,13 @@ const CompletePage = ({ formData }: Props) => {
         <div
             className="complete-page flex-1 flex flex-col items-center justify-center min-h-[100%]"
             style={{
-                ...(formData.Background.startsWith("/") && {
-                    backgroundImage: `url(${formData.Background})`,
+                ...(formData?.Background?.startsWith("/") && {
+                    backgroundImage: `url(${formData?.Background})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
                     filter: `Brightness(${
-                        formData.ConfigJson.Brightness / 100
+                        formData?.ConfigJson?.Brightness / 100
                     })`,
                     backgroundColor: "transparent",
                 }),
@@ -75,7 +75,7 @@ const CompletePage = ({ formData }: Props) => {
                         formData.ConfigJson.Brightness / 100
                     })`,
                 }),
-                ...(formData.Background.startsWith("#") && {
+                ...(formData.Background?.startsWith("#") && {
                     backgroundColor: formData.Background,
                     filter: `Brightness(${
                         formData.ConfigJson.Brightness / 100
