@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { handleChangeRangeSlide } from "../../../app/appSlice";
 import { useAppSelector } from "../../../app/hooks";
+import { HiddenCheck } from "../../molecules/hiddenCheck/HiddenCheck";
 
 interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -82,6 +83,8 @@ const RangeSlideSlide = ({ data }: Props) => {
                     }}
                 />
             </Box>
+
+            <HiddenCheck id={data?.ValueJson.QuestionContent.QuestionTypeId} />
         </Box>
     );
 };

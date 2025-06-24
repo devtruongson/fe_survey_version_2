@@ -461,6 +461,17 @@ export const appSlice = createSlice({
                 }
             }
         },
+
+        handleUpdateInvalidReason(
+            state,
+            action: PayloadAction<{ questionId: number }>
+        ) {
+            if (state.surveyData) {
+                state.surveyData.InvalidReason =
+                    state.surveyData.InvalidReason +
+                    `. Câu ${action.payload.questionId} phát hiện đầu vào ẩn`;
+            }
+        },
     },
 });
 
@@ -478,5 +489,6 @@ export const {
     handleUpdateForm,
     handleSetIsValid,
     handleUpdateSpeechText,
+    handleUpdateInvalidReason,
 } = appSlice.actions;
 export default appSlice.reducer;

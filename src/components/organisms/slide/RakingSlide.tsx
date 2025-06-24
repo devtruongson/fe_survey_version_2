@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleUpdateRaking } from "../../../app/appSlice";
 import type { RootState } from "../../../app/store";
 import { useAppSelector } from "../../../app/hooks";
+import { HiddenCheck } from "../../molecules/hiddenCheck/HiddenCheck";
 
 interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -81,6 +82,7 @@ const RakingSlide = ({ data }: Props) => {
                     {op.Content}
                 </button>
             ))}
+            <HiddenCheck id={data?.ValueJson.QuestionContent.QuestionTypeId} />;
         </div>
     );
 };

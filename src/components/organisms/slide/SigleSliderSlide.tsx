@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { handleChangeSlider } from "../../../app/appSlice";
 import { useAppSelector } from "../../../app/hooks";
+import { HiddenCheck } from "../../molecules/hiddenCheck/HiddenCheck";
 
 interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -88,6 +89,8 @@ const SigleSliderSlide = ({ data }: Props) => {
                     }}
                 />
             </Box>
+
+            <HiddenCheck id={data?.ValueJson.QuestionContent.QuestionTypeId} />
         </Box>
     );
 };

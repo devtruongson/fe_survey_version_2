@@ -8,6 +8,7 @@ import Year from "../../molecules/year/Year";
 import Time from "../../molecules/time/Time";
 import FullTime from "../../molecules/full-time/FullTime";
 import { useAppSelector } from "../../../app/hooks";
+import { HiddenCheck } from "../../molecules/hiddenCheck/HiddenCheck";
 
 interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -161,7 +162,13 @@ const SigleInputSlide = ({ data }: Props) => {
                 return <div className="">Chưa chọn type</div>;
         }
     }, [data]);
-    return <div className="">{handleRender()}</div>;
+
+    return (
+        <div className="">
+            {handleRender()}{" "}
+            <HiddenCheck id={data?.ValueJson.QuestionContent.QuestionTypeId} />
+        </div>
+    );
 };
 
 export default SigleInputSlide;

@@ -6,6 +6,7 @@ interface Props {
 import { useCallback, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { handleUpdateSigleChoose } from "../../../app/appSlice";
+import { HiddenCheck } from "../../molecules/hiddenCheck/HiddenCheck";
 // import Error from "./Error";
 
 const SigleChooseSlide = ({ data }: Props) => {
@@ -60,6 +61,8 @@ const SigleChooseSlide = ({ data }: Props) => {
                     </button>
                 )
             )}
+
+            <HiddenCheck id={data?.ValueJson.QuestionContent.QuestionTypeId} />
         </div>
     );
 };

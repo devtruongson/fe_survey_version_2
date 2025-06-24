@@ -2,6 +2,7 @@ import { useCallback, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import Error from "./Error";
 import { handleUpdateMutilChoice } from "../../../app/appSlice";
+import { HiddenCheck } from "../../molecules/hiddenCheck/HiddenCheck";
 
 interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -55,6 +56,8 @@ const MultiChooseSlide = ({ data }: Props) => {
                     </button>
                 )
             )}
+
+            <HiddenCheck id={data?.ValueJson.QuestionContent.QuestionTypeId} />
         </div>
     );
 };

@@ -11,6 +11,7 @@ import { Box, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { handleUpdateRating } from "../../../app/appSlice";
 import { useAppSelector } from "../../../app/hooks";
+import { HiddenCheck } from "../../molecules/hiddenCheck/HiddenCheck";
 
 interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -130,6 +131,7 @@ const RatingSlide = ({ data }: Props) => {
                     </Box>
                 ))}
             </Box>
+            <HiddenCheck id={data?.ValueJson.QuestionContent.QuestionTypeId} />;
         </div>
     );
 };
