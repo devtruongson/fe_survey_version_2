@@ -24,18 +24,18 @@ const EndSurveyCustomer = () => {
                 ...(info?.Background === "color_gradient"
                     ? {
                           backgroundColor:
-                              info.ConfigJson.BackgroundGradient1Color,
+                              info?.ConfigJson?.BackgroundGradient1Color,
                       }
                     : info?.IsUseBackgroundImageBase64
                     ? {
-                          backgroundImage: `url(${info.BackgroundImageBase64})`,
+                          backgroundImage: `url(${info?.BackgroundImageBase64})`,
                       }
                     : {
                           backgroundImage: `url(${
                               listBackgroundImage.find(
                                   (item) =>
                                       item.id ===
-                                      info.ConfigJson.DefaultBackgroundImageId
+                                      info?.ConfigJson?.DefaultBackgroundImageId
                               )?.url
                           })`,
                       }),
@@ -43,8 +43,8 @@ const EndSurveyCustomer = () => {
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
                 filter: `brightness(${
-                    info.ConfigJson.Brightness
-                        ? info.ConfigJson.Brightness
+                    info?.ConfigJson?.Brightness
+                        ? info?.ConfigJson?.Brightness
                         : 100
                 }%)`,
             }}

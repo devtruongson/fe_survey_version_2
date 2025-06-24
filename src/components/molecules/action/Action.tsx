@@ -129,7 +129,7 @@ const Action = ({
 
             {/* Hoặc nhấn ENTER */}
             {!isEnd ? (
-                <span className="text-white font-semibold ml-2">
+                <span className="text-white font-semibold ml-2 bg-gray-300 px-4 py-2 rounded-[99px]">
                     hoặc nhấn <span className="font-bold">ENTER</span>
                 </span>
             ) : null}
