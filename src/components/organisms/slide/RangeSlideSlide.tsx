@@ -32,6 +32,10 @@ const RangeSlideSlide = ({ data }: Props) => {
         () => data?.ValueJson?.QuestionContent?.ConfigJson?.Max,
         [data]
     );
+    const unit = useMemo(
+        () => data?.ValueJson?.QuestionContent?.ConfigJson?.Unit || "",
+        [data?.ValueJson?.QuestionContent?.ConfigJson?.Unit]
+    );
     const step = useMemo(
         () => data?.ValueJson?.QuestionContent?.ConfigJson?.Step,
         [data]
@@ -52,11 +56,21 @@ const RangeSlideSlide = ({ data }: Props) => {
         <Box className="single-slider p-6 rounded-lg flex flex-col gap-6">
             <Box className="flex flex-col items-center w-full">
                 <Box className="flex justify-between w-full px-1 mb-2">
-                    <Typography variant="body2" color="white">
-                        {min}
+                    <Typography
+                        variant="body2"
+                        style={{
+                            color: config?.ConfigJson?.ContentColor || "#000",
+                        }}
+                    >
+                        {min} {unit}
                     </Typography>
-                    <Typography variant="body2" color="white">
-                        {max}
+                    <Typography
+                        variant="body2"
+                        style={{
+                            color: config?.ConfigJson?.ContentColor || "#000",
+                        }}
+                    >
+                        {max} {unit}
                     </Typography>
                 </Box>
                 <Slider
