@@ -13,6 +13,8 @@ import type { SurveyType } from "../../../types/survey";
 import Action from "../../molecules/action/Action";
 import Slide from "../slide/Slide";
 import { handleSetIsValid, setSurveyData } from "../../../app/appSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { routesMap } from "../../../routes/routes";
 
 type JumpLogic = {
     Conditions: {
@@ -34,6 +36,8 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
     const [current, setCurrent] = useState(0);
     const surveyData = useAppSelector((state) => state.appSlice.surveyData);
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const { id } = useParams();
 
     // const handleNext = useCallback(() => {
     //     dispatch(handleSetIsValid(true));
@@ -97,7 +101,7 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
     const handleNext = useCallback(() => {
         dispatch(handleSetIsValid(true));
 
-        if (Math.random() * 1000 > 850) {
+        if (Math.random() * 1000 > 900) {
             setIsRefetch((prev) => !prev);
         }
 
@@ -214,7 +218,11 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
         );
     }, [surveyData, current]);
 
-    const handleEnd = useCallback(() => {}, []);
+    const handleEnd = useCallback(() => {
+        if (id) {
+            navigate(routesMap.EndSurveyCustomer.replace("/:id", `/${id}`));
+        }
+    }, [id, navigate]);
 
     if (!surveyData?.SurveyResponses?.length) {
         return <Start dataResponse={dataResponse} setCurrent={setCurrent} />;

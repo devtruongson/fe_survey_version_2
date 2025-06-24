@@ -4,7 +4,6 @@ import { useAppSelector } from "../../../app/hooks";
 interface ActionProps {
     onPrev?: () => void;
     onNext?: () => void;
-    isFirst?: boolean;
     nextLabel?: string;
     currentQuestionId: number;
     onEnd: () => void;
@@ -13,7 +12,6 @@ interface ActionProps {
 const Action = ({
     onPrev,
     onNext,
-    isFirst = false,
     nextLabel = "Tiếp tục",
     currentQuestionId,
     onEnd,
@@ -99,19 +97,16 @@ const Action = ({
                 }}
                 className="btn-next group cursor-pointer"
                 style={{
-                    background: isValid
-                        ? buttonBgColor?.startsWith("linear-gradient") ||
-                          buttonBgColor?.startsWith("radial-gradient")
+                    background:
+                        buttonBgColor?.startsWith("linear-gradient") ||
+                        buttonBgColor?.startsWith("radial-gradient")
                             ? buttonBgColor
-                            : ""
-                        : "",
-                    backgroundColor: isValid
-                        ? !(
-                              buttonBgColor?.startsWith("linear-gradient") ||
-                              buttonBgColor?.startsWith("radial-gradient")
-                          )
-                            ? buttonBgColor
-                            : ""
+                            : "",
+                    backgroundColor: !(
+                        buttonBgColor?.startsWith("linear-gradient") ||
+                        buttonBgColor?.startsWith("radial-gradient")
+                    )
+                        ? buttonBgColor
                         : "",
                     color: isValid ? buttonTextColor : "white",
                 }}

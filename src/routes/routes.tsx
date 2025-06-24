@@ -1,4 +1,5 @@
 import {
+    EndSurveyCustomer,
     Home,
     MySurvey,
     SurveyCustomer,
@@ -48,6 +49,12 @@ export const routes = [
         name: "SurveyCustomer",
         path: "/public/survey/:id",
         element: <SurveyCustomer />,
+        requiresAuth: false,
+    },
+    {
+        name: "EndSurveyCustomer",
+        path: "/public/survey/end/:id",
+        element: <EndSurveyCustomer />,
         requiresAuth: false,
     },
 ] as const;

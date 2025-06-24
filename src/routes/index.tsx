@@ -13,3 +13,6 @@ export const SurveyShare = lazy(
 export const SurveyCustomer = lazy(
     () => import("../components/pages/SurveyCustomer")
 );
+export const EndSurveyCustomer = lazy(
+    () => import("../components/pages/EndSurveyCustomer")
+);
