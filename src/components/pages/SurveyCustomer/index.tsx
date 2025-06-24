@@ -64,7 +64,26 @@ function SurveyCustomer() {
     // useEffect(() => {
     //     if (!survey) return;
     //     const handler = setTimeout(() => {
-    //         mutate(survey);
+    //         const dataBuider = {
+    //             ...survey,
+    //             SurveyResponses: survey.SurveyResponses.map((i) => ({
+    //                 ...i,
+    //                 ValueJson: {
+    //                     ...i.ValueJson,
+    //                     QuestionContent: {
+    //                         Id: i.ValueJson.QuestionContent.Id,
+    //                         QuestionTypeId:
+    //                             i.ValueJson.QuestionContent.QuestionTypeId,
+    //                         Content: i.ValueJson.QuestionContent.Content,
+    //                         Description:
+    //                             i.ValueJson.QuestionContent.Description,
+    //                         ConfigJson: i.ValueJson.QuestionContent.ConfigJson,
+    //                         Options: i.ValueJson.QuestionContent.Options,
+    //                     },
+    //                 },
+    //             })),
+    //         };
+    //         mutate(dataBuider);
     //     }, 2000);
     //     return () => clearTimeout(handler);
     // }, [survey, mutate]);

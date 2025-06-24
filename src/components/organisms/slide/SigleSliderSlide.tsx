@@ -14,7 +14,7 @@ const SigleSliderSlide = ({ data }: Props) => {
 
     const value = useMemo(
         () =>
-            data?.ValueJson?.QuestionResponse?.Slider ??
+            data?.ValueJson?.QuestionResponse?.Input?.Value ??
             data?.ValueJson?.QuestionContent?.ConfigJson?.Min ??
             0,
         [data]
@@ -26,6 +26,10 @@ const SigleSliderSlide = ({ data }: Props) => {
     const max = useMemo(
         () => data?.ValueJson?.QuestionContent?.ConfigJson?.Max,
         [data]
+    );
+    const unit = useMemo(
+        () => data?.ValueJson?.QuestionContent?.ConfigJson?.Unit || "",
+        [data?.ValueJson?.QuestionContent?.ConfigJson?.Unit]
     );
     const step = useMemo(
         () => data?.ValueJson?.QuestionContent?.ConfigJson?.Step,
@@ -47,7 +51,7 @@ const SigleSliderSlide = ({ data }: Props) => {
             <Box className="flex flex-col items-center w-full">
                 <Box className="flex justify-between w-full px-1 mb-2">
                     <Typography variant="body2" color="white">
-                        {min}
+                        {min} {unit}
                     </Typography>
                     <Typography
                         variant="body2"
@@ -57,7 +61,7 @@ const SigleSliderSlide = ({ data }: Props) => {
                         {/* {1} */}
                     </Typography>
                     <Typography variant="body2" color="white">
-                        {max}
+                        {max} {unit}
                     </Typography>
                 </Box>
                 <Slider

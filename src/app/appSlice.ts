@@ -193,7 +193,10 @@ export const appSlice = createSlice({
                                         "object" &&
                                         i.ValueJson.QuestionResponse) ||
                                         {}),
-                                    Slider: action.payload.value,
+                                    Input: {
+                                        Value: action.payload.value,
+                                        ValueType: "number",
+                                    },
                                 },
                             },
                         };
