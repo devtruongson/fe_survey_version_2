@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useState } from "react";
 import useBlocker from "../../../hooks/useBlocker";
 import { useParams } from "react-router-dom";
 import { useGetSurvey } from "../../../services/survey/get";
@@ -9,7 +10,7 @@ import { handleSetInfoSurvey, handleSetIsValid } from "../../../app/appSlice";
 import HandleSlide from "../../organisms/handleSlide/HandleSlide";
 import { useUpdateSurveyPro } from "../../../services/survey/update-pro";
 import TurnstileWidget from "../../../hooks/useRecapcha";
-import { dataMock } from "../../../constants";
+// import { dataMock } from "../../../constants";
 
 function SurveyCustomer() {
     const [isVerified, setIsVerified] = useState(false);
@@ -61,32 +62,32 @@ function SurveyCustomer() {
         }
     }, [isVerified]);
 
-    // useEffect(() => {
-    //     if (!survey) return;
-    //     const handler = setTimeout(() => {
-    //         const dataBuider = {
-    //             ...survey,
-    //             SurveyResponses: survey.SurveyResponses.map((i) => ({
-    //                 ...i,
-    //                 ValueJson: {
-    //                     ...i.ValueJson,
-    //                     QuestionContent: {
-    //                         Id: i.ValueJson.QuestionContent.Id,
-    //                         QuestionTypeId:
-    //                             i.ValueJson.QuestionContent.QuestionTypeId,
-    //                         Content: i.ValueJson.QuestionContent.Content,
-    //                         Description:
-    //                             i.ValueJson.QuestionContent.Description,
-    //                         ConfigJson: i.ValueJson.QuestionContent.ConfigJson,
-    //                         Options: i.ValueJson.QuestionContent.Options,
-    //                     },
-    //                 },
-    //             })),
-    //         };
-    //         mutate(dataBuider);
-    //     }, 2000);
-    //     return () => clearTimeout(handler);
-    // }, [survey, mutate]);
+    useEffect(() => {
+        if (!survey) return;
+        const handler = setTimeout(() => {
+            const dataBuider = {
+                ...survey,
+                SurveyResponses: survey.SurveyResponses.map((i) => ({
+                    ...i,
+                    ValueJson: {
+                        ...i.ValueJson,
+                        QuestionContent: {
+                            Id: i.ValueJson.QuestionContent.Id,
+                            QuestionTypeId:
+                                i.ValueJson.QuestionContent.QuestionTypeId,
+                            Content: i.ValueJson.QuestionContent.Content,
+                            Description:
+                                i.ValueJson.QuestionContent.Description,
+                            ConfigJson: i.ValueJson.QuestionContent.ConfigJson,
+                            Options: i.ValueJson.QuestionContent.Options,
+                        },
+                    },
+                })),
+            };
+            mutate(dataBuider);
+        }, 2000);
+        return () => clearTimeout(handler);
+    }, [survey, mutate]);
 
     if (!dataResponse) return null;
 
@@ -100,13 +101,13 @@ function SurveyCustomer() {
             <div
                 className={`fixed top-0 left-0 w-full h-full bg-white z-50`}
                 style={{
-                    ...(dataResponse?.Background === "color_gradient"
+                    ...((dataResponse as any)?.Background === "color_gradient"
                         ? {
                               backgroundColor:
                                   dataResponse.ConfigJson
                                       .BackgroundGradient1Color,
                           }
-                        : dataResponse?.IsUseBackgroundImageBase64
+                        : (dataResponse as any)?.IsUseBackgroundImageBase64
                         ? {
                               backgroundImage: `url(${dataResponse.BackgroundImageBase64})`,
                           }

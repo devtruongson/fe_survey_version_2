@@ -10,7 +10,7 @@ import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import { Box, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { handleUpdateRating } from "../../../app/appSlice";
-import { useAppSelector } from "../../../app/hooks";
+// import { useAppSelector } from "../../../app/hooks";
 import { HiddenCheck } from "../../molecules/hiddenCheck/HiddenCheck";
 
 interface Props {
@@ -19,7 +19,7 @@ interface Props {
 }
 
 const RatingSlide = ({ data }: Props) => {
-    const config = useAppSelector((state) => state.appSlice.infoSurvey);
+    // const config = useAppSelector((state) => state.appSlice.infoSurvey);
 
     const length = useMemo(
         () => data?.ValueJson?.QuestionContent?.ConfigJson?.RatingLength || 0,

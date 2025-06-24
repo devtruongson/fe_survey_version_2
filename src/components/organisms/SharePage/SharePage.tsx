@@ -35,8 +35,8 @@ const SharePage = ({ formData }: SharePageProps) => {
                 style={{
                     ...(backgroundMode === "image" && {
                         backgroundImage: `url(${
-                            formData.CustomBackgroundImageUrl ||
-                            formData.Background
+                            formData?.CustomBackgroundImageUrl ||
+                            formData?.Background
                         })`,
                         backgroundSize: "cover",
                         backgroundPosition: "center",

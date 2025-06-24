@@ -68,7 +68,8 @@ export type SurveyType = {
         SkipStartPage: boolean;
     };
     Questions: QuestionType[];
-};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+} & any;
 
 export interface PageProps {
     isDisable: boolean;
