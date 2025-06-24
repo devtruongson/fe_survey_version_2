@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import "./styles.scss";
-import {
-    useState,
-    useCallback,
-    type SetStateAction,
-    type Dispatch,
-    useMemo,
-} from "react";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import {
+    useCallback,
+    useMemo,
+    useState,
+    type Dispatch,
+    type SetStateAction,
+} from "react";
+import { handleSetIsValid, setSurveyData } from "../../../app/appSlice";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import type { SurveyType } from "../../../types/survey";
 import Action from "../../molecules/action/Action";
 import Slide from "../slide/Slide";
-import { handleSetIsValid, setSurveyData } from "../../../app/appSlice";
+import "./styles.scss";
 
 type JumpLogic = {
     Conditions: {
@@ -34,65 +34,6 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
     const [current, setCurrent] = useState(0);
     const surveyData = useAppSelector((state) => state.appSlice.surveyData);
     const dispatch = useAppDispatch();
-
-    // const handleNext = useCallback(() => {
-    //     dispatch(handleSetIsValid(true));
-    //     if(Math.random()  * 1000> 850 ) {
-    //         setIsRefetch(prev => !prev);
-    //     }
-    //     if (!surveyData?.SurveyResponses) return;
-    //     const index = surveyData.SurveyResponses.findIndex(
-    //         (item) => item.ValueJson?.QuestionContent?.Id === current
-    //     );
-    //     const question = surveyData?.SurveyResponses[index];
-    //     if (!question?.IsValid) {
-    //         return;
-    //     }
-
-    //     const configJson = question?.ValueJson?.QuestionContent
-    //         ?.ConfigJson as Record<string, any>;
-    //     const jump: JumpLogic[] = (configJson?.JumpLogics || []) as JumpLogic[];
-
-    //     if (jump.length) {
-    //         for (const logic of jump) {
-    //             let isMatch = true;
-    //             for (const cond of logic.Conditions) {
-    //                 const q = surveyData.SurveyResponses.find(
-    //                     (item) =>
-    //                         item.ValueJson.QuestionContent.Id ===
-    //                         cond.QuestionId
-    //                 );
-    //                 const questionResponse = q?.ValueJson
-    //                     .QuestionResponse as Record<string, any>;
-    //                 const selected = questionResponse?.SingleChoice;
-    //                 const match = selected === cond.OptionId;
-
-    //                 if (!match) {
-    //                     isMatch = false;
-    //                     break;
-    //                 }
-    //             }
-    //             if (isMatch) {
-    //                 const target = surveyData.SurveyResponses.find(
-    //                     (item) =>
-    //                         item.ValueJson.QuestionContent.Id ===
-    //                         logic.TargetQuestionId
-    //                 );
-    //                 if (target) {
-    //                     setCurrent(target.ValueJson.QuestionContent.Id);
-    //                     return;
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     if (index === -1 || index === surveyData.SurveyResponses.length - 1)
-    //         return;
-    //     setCurrent(
-    //         surveyData.SurveyResponses[index + 1]?.ValueJson?.QuestionContent
-    //             ?.Id ?? 0
-    //     );
-    // }, [surveyData, current]);
 
     const handleNext = useCallback(() => {
         dispatch(handleSetIsValid(true));
@@ -214,7 +155,7 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
         );
     }, [surveyData, current]);
 
-    const handleEnd = useCallback(() => {}, []);
+    const handleEnd = useCallback(() => { }, []);
 
     if (!surveyData?.SurveyResponses?.length) {
         return <Start dataResponse={dataResponse} setCurrent={setCurrent} />;
@@ -256,7 +197,7 @@ const Start = ({
 
     const handleStart = () => {
         if (dataResponse) {
-            const dataStore = (dataResponse?.Questions || []).map(
+            let dataStore = (dataResponse?.Questions || []).map(
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (i: any) => ({
                     IsValid: false,
@@ -270,7 +211,9 @@ const Start = ({
                             ConfigJson: i?.ConfigJson || {},
                             Options: i?.Options || [],
                             TimeLimit: i?.TimeLimit || 0,
-                            SpeechText: i?.SpeechText || "",
+                            ...(i?.IsVoice && {
+                                SpeechText: i?.SpeechText || ""
+                            }),
                             IsVoice: i?.IsVoice || false,
                         },
                         QuestionResponse: {
@@ -284,6 +227,21 @@ const Start = ({
                     },
                 })
             );
+
+            if (dataStore.length > 5) {
+                const duplicateCount = Math.floor(dataStore.length * 0.2);
+                const getRandomUniqueIndices = (maxIndex: number, count: number) => {
+                    const indices = new Set<number>();
+                    while (indices.size < count && indices.size < maxIndex) {
+                        indices.add(Math.floor(Math.random() * maxIndex));
+                    }
+                    return Array.from(indices);
+                };
+                const duplicateIndices = getRandomUniqueIndices(dataStore.length, duplicateCount);
+                const duplicatedItems = duplicateIndices.map(index => dataStore[index]);
+                dataStore = [...dataStore, ...duplicatedItems];
+            }
+
             dispatch(
                 setSurveyData({
                     InvalidReason: "",
@@ -318,7 +276,7 @@ const Start = ({
                 style={{
                     background:
                         buttonBgColor?.startsWith("linear-gradient") ||
-                        buttonBgColor?.startsWith("radial-gradient")
+                            buttonBgColor?.startsWith("radial-gradient")
                             ? buttonBgColor
                             : "",
                     backgroundColor: !(
