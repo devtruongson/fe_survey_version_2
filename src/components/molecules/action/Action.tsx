@@ -2,7 +2,6 @@ import { useMemo, useEffect } from "react";
 import { useAppSelector } from "../../../app/hooks";
 
 interface ActionProps {
-    onPrev?: () => void;
     onNext?: () => void;
     nextLabel?: string;
     currentQuestionId: number;
@@ -10,7 +9,6 @@ interface ActionProps {
 }
 
 const Action = ({
-    onPrev,
     onNext,
     nextLabel = "Tiếp tục",
     currentQuestionId,
@@ -48,9 +46,9 @@ const Action = ({
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Enter") {
                 if (isEnd) {
-                    onEnd();
+                    if (onEnd) onEnd();
                 } else {
-                    onNext();
+                    if (onNext) onNext();
                 }
             }
         };
@@ -90,9 +88,9 @@ const Action = ({
             <button
                 onClick={() => {
                     if (isEnd) {
-                        onEnd && onEnd();
+                        if (onEnd) onEnd();
                     } else {
-                        onNext && onNext();
+                        if (onNext) onNext();
                     }
                 }}
                 className="btn-next group cursor-pointer"

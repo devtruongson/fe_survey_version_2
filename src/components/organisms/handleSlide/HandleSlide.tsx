@@ -147,17 +147,17 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
         );
     }, [surveyData, current]);
 
-    const handleBack = useCallback(() => {
-        if (!surveyData?.SurveyResponses) return;
-        const index = surveyData.SurveyResponses.findIndex(
-            (item) => item.ValueJson?.QuestionContent?.Id === current
-        );
-        if (index <= 0) return;
-        setCurrent(
-            surveyData.SurveyResponses[index - 1]?.ValueJson?.QuestionContent
-                ?.Id ?? 0
-        );
-    }, [surveyData, current]);
+    // const handleBack = useCallback(() => {
+    //     if (!surveyData?.SurveyResponses) return;
+    //     const index = surveyData.SurveyResponses.findIndex(
+    //         (item) => item.ValueJson?.QuestionContent?.Id === current
+    //     );
+    //     if (index <= 0) return;
+    //     setCurrent(
+    //         surveyData.SurveyResponses[index - 1]?.ValueJson?.QuestionContent
+    //             ?.Id ?? 0
+    //     );
+    // }, [surveyData, current]);
 
     const handleEnd = useCallback(() => {
         if (id) {
@@ -174,7 +174,7 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
             <Slide currentQuestionId={current} />
             <Action
                 onNext={handleNext}
-                onPrev={handleBack}
+                // onPrev={handleBack}
                 currentQuestionId={current}
                 onEnd={handleEnd}
             />
