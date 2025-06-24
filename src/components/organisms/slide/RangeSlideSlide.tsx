@@ -49,7 +49,7 @@ const RangeSlideSlide = ({ data }: Props) => {
         }
     };
     return (
-        <Box className="single-slider bg-gray-500 p-6 rounded-lg flex flex-col gap-6">
+        <Box className="single-slider p-6 rounded-lg flex flex-col gap-6">
             <Box className="flex flex-col items-center w-full">
                 <Box className="flex justify-between w-full px-1 mb-2">
                     <Typography variant="body2" color="white">
