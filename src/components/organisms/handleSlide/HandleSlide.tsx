@@ -116,7 +116,6 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
                         } else if (cond.Conjunction === "OR") {
                             result = result || isValid;
                         } else {
-                            // Mặc định là AND nếu không có Conjunction
                             result = result && isValid;
                         }
                     }
@@ -137,7 +136,6 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
             }
         }
 
-        // Không có nhảy logic, đi tới câu tiếp theo
         if (index === -1 || index === surveyData.SurveyResponses.length - 1)
             return;
 
@@ -220,7 +218,7 @@ const Start = ({
                             Options: i?.Options || [],
                             TimeLimit: i?.TimeLimit || 0,
                             ...(i?.IsVoice && {
-                                SpeechText: i?.SpeechText || ""
+                                SpeechText: i?.SpeechText || "",
                             }),
                             IsVoice: i?.IsVoice || false,
                         },
@@ -238,15 +236,23 @@ const Start = ({
 
             if (dataStore.length > 5) {
                 const duplicateCount = Math.floor(dataStore.length * 0.2);
-                const getRandomUniqueIndices = (maxIndex: number, count: number) => {
+                const getRandomUniqueIndices = (
+                    maxIndex: number,
+                    count: number
+                ) => {
                     const indices = new Set<number>();
                     while (indices.size < count && indices.size < maxIndex) {
                         indices.add(Math.floor(Math.random() * maxIndex));
                     }
                     return Array.from(indices);
                 };
-                const duplicateIndices = getRandomUniqueIndices(dataStore.length, duplicateCount);
-                const duplicatedItems = duplicateIndices.map(index => dataStore[index]);
+                const duplicateIndices = getRandomUniqueIndices(
+                    dataStore.length,
+                    duplicateCount
+                );
+                const duplicatedItems = duplicateIndices.map(
+                    (index) => dataStore[index]
+                );
                 dataStore = [...dataStore, ...duplicatedItems];
             }
 
@@ -284,7 +290,7 @@ const Start = ({
                 style={{
                     background:
                         buttonBgColor?.startsWith("linear-gradient") ||
-                            buttonBgColor?.startsWith("radial-gradient")
+                        buttonBgColor?.startsWith("radial-gradient")
                             ? buttonBgColor
                             : "",
                     backgroundColor: !(

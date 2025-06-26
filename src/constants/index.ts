@@ -33,6 +33,8 @@ export const dataMock = {
             QuestionTypeId: 1,
             Content: "C1",
             Description: "c1",
+            MainImageUrl:
+                "https://fstack.io.vn/wp-content/uploads/2025/06/start1.webp",
             TimeLimit: 4,
             IsVoice: false,
             Order: 1,

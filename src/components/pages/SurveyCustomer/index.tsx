@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import useBlocker from "../../../hooks/useBlocker";
 import { useParams } from "react-router-dom";
-import { useGetSurvey } from "../../../services/survey/get";
 import axios from "../../../libs/axios";
 import type { SurveyType } from "../../../types/survey";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
@@ -10,6 +9,7 @@ import { handleSetInfoSurvey, handleSetIsValid } from "../../../app/appSlice";
 import HandleSlide from "../../organisms/handleSlide/HandleSlide";
 import { useUpdateSurveyPro } from "../../../services/survey/update-pro";
 import TurnstileWidget from "../../../hooks/useRecapcha";
+import { useGetSlide } from "../../../services/survey/get-slide";
 // import { dataMock } from "../../../constants";
 
 function SurveyCustomer() {
@@ -29,22 +29,16 @@ function SurveyCustomer() {
         },
     });
 
-    // console.log("surveyData >>>>", surveyData);
-
-    useBlocker(true);
-
     const { id } = useParams();
 
-    const { data: apiData } = useGetSurvey({ id: Number(id) || 0 });
+    const { data: apiData } = useGetSlide({ id: Number(id) || 0 });
 
     useEffect(() => {
         if (apiData) {
             setDataResponse(apiData.data);
             dispatch(handleSetInfoSurvey(apiData.data));
-            // setDataResponse(dataMock);
-            // dispatch(handleSetInfoSurvey(dataMock));
         }
-    }, [apiData]);
+    }, [apiData, dispatch]);
 
     useEffect(() => {
         const fetchBackgrounds = async () => {
@@ -61,6 +55,8 @@ function SurveyCustomer() {
             dispatch(handleSetIsValid(true));
         }
     }, [isVerified]);
+
+    useBlocker(true);
 
     useEffect(() => {
         if (!survey) return;
@@ -99,7 +95,7 @@ function SurveyCustomer() {
                 isRefetch={isRefetch}
             />
             <div
-                className={`fixed top-0 left-0 w-full h-full bg-white z-50`}
+                className={`py-[60px] w-full min-h-[100vh] bg-white z-50`}
                 style={{
                     ...((dataResponse as any)?.Background === "color_gradient"
                         ? {

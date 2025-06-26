@@ -257,7 +257,7 @@ const Slide = ({ currentQuestionId }: Props) => {
             )}
 
             <div className="">
-                <div className="mb-[20px]">
+                <div className="mb-[20px] flex flex-col items-center">
                     <p
                         className="text-center text-[28px]"
                         style={{
@@ -274,6 +274,12 @@ const Slide = ({ currentQuestionId }: Props) => {
                     >
                         {data?.ValueJson?.QuestionContent?.Description || ""}
                     </p>
+                    {data?.ValueJson?.QuestionContent?.MainImageUrl ? (
+                        <img
+                            src={data?.ValueJson?.QuestionContent?.MainImageUrl}
+                            alt=""
+                        />
+                    ) : null}
                 </div>
             </div>
 

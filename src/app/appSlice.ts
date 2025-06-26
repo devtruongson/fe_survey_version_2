@@ -170,11 +170,13 @@ export const appSlice = createSlice({
                     );
                 }
             } else {
-                const mess = `. Câu ${action.payload.questionId} Thời điểm ghi nhận không hợp lệ`;
-                if (
-                    state.surveyData &&
-                    !state.surveyData.InvalidReason.includes(mess)
-                ) {
+                if (!state.surveyData) return;
+                const mess = `${
+                    state.surveyData.InvalidReason ? ". " : ""
+                }Câu ${
+                    action.payload.questionId
+                } Thời điểm ghi nhận không hợp lệ`;
+                if (!state.surveyData.InvalidReason.includes(mess)) {
                     state.surveyData.InvalidReason =
                         state.surveyData.InvalidReason + mess;
                 }
@@ -242,11 +244,13 @@ export const appSlice = createSlice({
                     );
                 }
             } else {
-                const mess = `. Câu ${action.payload.questionId} Thời điểm ghi nhận không hợp lệ`;
-                if (
-                    state.surveyData &&
-                    !state.surveyData.InvalidReason.includes(mess)
-                ) {
+                if (!state.surveyData) return;
+                const mess = `${
+                    state.surveyData.InvalidReason ? ". " : ""
+                }Câu ${
+                    action.payload.questionId
+                } Thời điểm ghi nhận không hợp lệ`;
+                if (!state.surveyData.InvalidReason.includes(mess)) {
                     state.surveyData.InvalidReason =
                         state.surveyData.InvalidReason + mess;
                 }
@@ -299,11 +303,13 @@ export const appSlice = createSlice({
                     );
                 }
             } else {
-                const mess = `. Câu ${action.payload.idChoose} Thời điểm ghi nhận không hợp lệ`;
-                if (
-                    state.surveyData &&
-                    !state.surveyData.InvalidReason.includes(mess)
-                ) {
+                if (!state.surveyData) return;
+                const mess = `${
+                    state.surveyData.InvalidReason ? ". " : ""
+                }Câu ${
+                    action.payload.idChoose
+                } Thời điểm ghi nhận không hợp lệ`;
+                if (!state.surveyData.InvalidReason.includes(mess)) {
                     state.surveyData.InvalidReason =
                         state.surveyData.InvalidReason + mess;
                 }
@@ -357,11 +363,13 @@ export const appSlice = createSlice({
                     );
                 }
             } else {
-                const mess = `. Câu ${action.payload.idChoose} Thời điểm ghi nhận không hợp lệ`;
-                if (
-                    state.surveyData &&
-                    !state.surveyData.InvalidReason.includes(mess)
-                ) {
+                if (!state.surveyData) return;
+                const mess = `${
+                    state.surveyData.InvalidReason ? ". " : ""
+                }Câu ${
+                    action.payload.idChoose
+                } Thời điểm ghi nhận không hợp lệ`;
+                if (!state.surveyData.InvalidReason.includes(mess)) {
                     state.surveyData.InvalidReason =
                         state.surveyData.InvalidReason + mess;
                 }
@@ -414,11 +422,13 @@ export const appSlice = createSlice({
                     );
                 }
             } else {
-                const mess = `. Câu ${action.payload.idChoose} Thời điểm ghi nhận không hợp lệ`;
-                if (
-                    state.surveyData &&
-                    !state.surveyData.InvalidReason.includes(mess)
-                ) {
+                if (!state.surveyData) return;
+                const mess = `${
+                    state.surveyData.InvalidReason ? ". " : ""
+                }Câu ${
+                    action.payload.idChoose
+                } Thời điểm ghi nhận không hợp lệ`;
+                if (!state.surveyData.InvalidReason.includes(mess)) {
                     state.surveyData.InvalidReason =
                         state.surveyData.InvalidReason + mess;
                 }
@@ -468,11 +478,13 @@ export const appSlice = createSlice({
                     );
                 }
             } else {
-                const mess = `. Câu ${action.payload.idChoose} Thời điểm ghi nhận không hợp lệ`;
-                if (
-                    state.surveyData &&
-                    !state.surveyData.InvalidReason.includes(mess)
-                ) {
+                if (!state.surveyData) return;
+                const mess = `${
+                    state.surveyData.InvalidReason ? ". " : ""
+                }Câu ${
+                    action.payload.idChoose
+                } Thời điểm ghi nhận không hợp lệ`;
+                if (!state.surveyData.InvalidReason.includes(mess)) {
                     state.surveyData.InvalidReason =
                         state.surveyData.InvalidReason + mess;
                 }
@@ -529,11 +541,13 @@ export const appSlice = createSlice({
                     );
                 }
             } else {
-                const mess = `. Câu ${action.payload.idChoose} Thời điểm ghi nhận không hợp lệ`;
-                if (
-                    state.surveyData &&
-                    !state.surveyData.InvalidReason.includes(mess)
-                ) {
+                if (!state.surveyData) return;
+                const mess = `${
+                    state.surveyData.InvalidReason ? ". " : ""
+                }Câu ${
+                    action.payload.idChoose
+                } Thời điểm ghi nhận không hợp lệ`;
+                if (!state.surveyData.InvalidReason.includes(mess)) {
                     state.surveyData.InvalidReason =
                         state.surveyData.InvalidReason + mess;
                 }
@@ -583,7 +597,9 @@ export const appSlice = createSlice({
             if (state.surveyData) {
                 state.surveyData.InvalidReason =
                     state.surveyData.InvalidReason +
-                    `. Câu ${action.payload.questionId} phát hiện đầu vào ẩn`;
+                    `${state.surveyData.InvalidReason ? ". " : ""}Câu ${
+                        action.payload.questionId
+                    } phát hiện đầu vào ẩn`;
             }
         },
     },
