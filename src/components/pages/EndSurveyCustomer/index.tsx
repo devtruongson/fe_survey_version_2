@@ -50,18 +50,22 @@ const EndSurveyCustomer = () => {
             }}
         >
             <div className="w-full h-full flex flex-col items-center justify-center relative z-10">
-                {survey &&
-                typeof survey.InvalidReason === "string" &&
-                survey.InvalidReason.trim() !== "" ? (
-                    survey.InvalidReason.split(". ").map((i, index) =>
-                        i.trim() !== "" ? (
-                            <div
-                                className="w-full px-5 py-3 rounded-[8px] bg-red-500 text-white mb-4"
-                                key={index}
-                            >
-                                {i}
-                            </div>
-                        ) : null
+                {survey && typeof survey.InvalidReason === "string" ? (
+                    survey.InvalidReason.trim() !== "" ? (
+                        survey.InvalidReason.split(". ").map((i, index) =>
+                            i.trim() !== "" ? (
+                                <div
+                                    className="w-full px-5 py-3 rounded-[8px] bg-red-500 text-white mb-4"
+                                    key={index}
+                                >
+                                    {i}
+                                </div>
+                            ) : null
+                        )
+                    ) : (
+                        <div className="text-green-600 text-xl font-semibold">
+                            Cảm ơn bạn đã hoàn thành khảo sát!
+                        </div>
                     )
                 ) : (
                     <div className="text-gray-500">
