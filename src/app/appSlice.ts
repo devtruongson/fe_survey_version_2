@@ -21,6 +21,7 @@ interface SurveyResponse {
 }
 
 interface SurveyData {
+    taken_subject: string;
     InvalidReason: string;
     SurveyResponses: SurveyResponse[];
 }

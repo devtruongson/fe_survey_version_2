@@ -4,13 +4,11 @@ import useBlocker from "../../../hooks/useBlocker";
 import { useParams } from "react-router-dom";
 import axios from "../../../libs/axios";
 import type { SurveyType } from "../../../types/survey";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { useAppDispatch } from "../../../app/hooks";
 import { handleSetInfoSurvey, handleSetIsValid } from "../../../app/appSlice";
 import HandleSlide from "../../organisms/handleSlide/HandleSlide";
-import { useUpdateSurveyPro } from "../../../services/survey/update-pro";
 import TurnstileWidget from "../../../hooks/useRecapcha";
 import { useGetSlide } from "../../../services/survey/get-slide";
-// import { dataMock } from "../../../constants";
 
 function SurveyCustomer() {
     const [isVerified, setIsVerified] = useState(false);
@@ -20,14 +18,7 @@ function SurveyCustomer() {
         { id: number; url: string }[]
     >([]);
 
-    const survey = useAppSelector((state) => state.appSlice.surveyData);
     const dispatch = useAppDispatch();
-
-    const { mutate } = useUpdateSurveyPro({
-        mutationConfig: {
-            onSuccess() {},
-        },
-    });
 
     const { id } = useParams();
 
@@ -57,33 +48,6 @@ function SurveyCustomer() {
     }, [isVerified]);
 
     useBlocker(true);
-
-    useEffect(() => {
-        if (!survey) return;
-        const handler = setTimeout(() => {
-            const dataBuider = {
-                ...survey,
-                SurveyResponses: survey.SurveyResponses.map((i) => ({
-                    ...i,
-                    ValueJson: {
-                        ...i.ValueJson,
-                        QuestionContent: {
-                            Id: i.ValueJson.QuestionContent.Id,
-                            QuestionTypeId:
-                                i.ValueJson.QuestionContent.QuestionTypeId,
-                            Content: i.ValueJson.QuestionContent.Content,
-                            Description:
-                                i.ValueJson.QuestionContent.Description,
-                            ConfigJson: i.ValueJson.QuestionContent.ConfigJson,
-                            Options: i.ValueJson.QuestionContent.Options,
-                        },
-                    },
-                })),
-            };
-            mutate(dataBuider);
-        }, 2000);
-        return () => clearTimeout(handler);
-    }, [survey, mutate]);
 
     if (!dataResponse) return null;
 

@@ -15,6 +15,7 @@ import type { SurveyType } from "../../../types/survey";
 import Action from "../../molecules/action/Action";
 import Slide from "../slide/Slide";
 import "./styles.scss";
+import { useUpdateSurveyPro } from "../../../services/survey/update-pro";
 
 type JumpLogic = {
     Conditions: {
@@ -38,6 +39,12 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { id } = useParams();
+
+    const { mutate } = useUpdateSurveyPro({
+        mutationConfig: {
+            onSuccess() {},
+        },
+    });
 
     const handleNext = useCallback(() => {
         dispatch(handleSetIsValid(true));
@@ -145,23 +152,29 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
         );
     }, [surveyData, current]);
 
-    // const handleBack = useCallback(() => {
-    //     if (!surveyData?.SurveyResponses) return;
-    //     const index = surveyData.SurveyResponses.findIndex(
-    //         (item) => item.ValueJson?.QuestionContent?.Id === current
-    //     );
-    //     if (index <= 0) return;
-    //     setCurrent(
-    //         surveyData.SurveyResponses[index - 1]?.ValueJson?.QuestionContent
-    //             ?.Id ?? 0
-    //     );
-    // }, [surveyData, current]);
-
     const handleEnd = useCallback(() => {
-        if (id) {
-            navigate(routesMap.EndSurveyCustomer.replace("/:id", `/${id}`));
-        }
-    }, [id, navigate]);
+        if (!surveyData || !id) return;
+        const dataBuider = {
+            ...surveyData,
+            SurveyResponses: surveyData?.SurveyResponses?.map((i) => ({
+                ...i,
+                ValueJson: {
+                    ...i.ValueJson,
+                    QuestionContent: {
+                        Id: i.ValueJson.QuestionContent.Id,
+                        QuestionTypeId:
+                            i.ValueJson.QuestionContent.QuestionTypeId,
+                        Content: i.ValueJson.QuestionContent.Content,
+                        Description: i.ValueJson.QuestionContent.Description,
+                        ConfigJson: i.ValueJson.QuestionContent.ConfigJson,
+                        Options: i.ValueJson.QuestionContent.Options,
+                    },
+                },
+            })),
+        };
+        mutate(dataBuider);
+        navigate(routesMap.EndSurveyCustomer.replace(":id", `/${id}`));
+    }, [id, mutate, navigate, surveyData]);
 
     if (!surveyData?.SurveyResponses?.length) {
         return <Start dataResponse={dataResponse} setCurrent={setCurrent} />;
@@ -172,7 +185,6 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
             <Slide currentQuestionId={current} />
             <Action
                 onNext={handleNext}
-                // onPrev={handleBack}
                 currentQuestionId={current}
                 onEnd={handleEnd}
             />
@@ -258,6 +270,7 @@ const Start = ({
 
             dispatch(
                 setSurveyData({
+                    taken_subject: "Preview",
                     InvalidReason: "",
                     SurveyResponses: dataStore,
                 })
