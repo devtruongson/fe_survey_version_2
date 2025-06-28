@@ -12,6 +12,7 @@ type Props = {
 };
 
 const EndPage = ({ formData }: Props) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [listBackground, setListBackground] = useState<any[]>([]);
 
     const handleNavigate = useCallback(() => {
