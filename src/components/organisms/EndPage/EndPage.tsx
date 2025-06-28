@@ -35,9 +35,9 @@ const EndPage = ({ formData }: Props) => {
         <div
             className="min-h-[100%] question-main flex-1 flex flex-col overflow-y-auto relative items-center justify-center"
             style={{
-                ...(formData?.Background === "image" && {
+                ...(formData?.ConfigJson?.Background === "image" && {
                     backgroundImage: `url(${
-                        formData?.IsUseBackgroundImageBase64 &&
+                        formData?.ConfigJson?.IsUseBackgroundImageBase64 &&
                         formData.BackgroundImageBase64
                             ? formData.BackgroundImageBase64
                             : formData?.ConfigJson?.DefaultBackgroundImageId

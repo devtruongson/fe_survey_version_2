@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { SurveyType } from "../../../types/survey";
 import "./styles.scss";
 
@@ -8,21 +9,27 @@ interface SharePageProps {
 }
 
 const SharePage = ({ formData }: SharePageProps) => {
-    const getBackgroundMode = (data: SurveyType) => {
-        if (data.Background === "custom" && data.CustomBackgroundImageUrl) {
-            return "image";
-        } else if (data.Background?.startsWith("/assets/start")) {
-            return "image";
-        } else if (
-            data.Background?.startsWith("#") ||
-            data.Background === "color_gradient"
-        ) {
-            return "color";
-        }
-        return "image"; // Default to image mode
-    };
+    const [listBackground, setListBackground] = useState<any[]>([]);
+    useEffect(() => {
+        setListBackground(
+            JSON.parse(localStorage.getItem("listBackground") || "[]")
+        );
+    }, []);
+    // const getBackgroundMode = (data: SurveyType) => {
+    //     if (data.Background === "custom" && data.CustomBackgroundImageUrl) {
+    //         return "image";
+    //     } else if (data.Background?.startsWith("/assets/start")) {
+    //         return "image";
+    //     } else if (
+    //         data.Background?.startsWith("#") ||
+    //         data.Background === "color_gradient"
+    //     ) {
+    //         return "color";
+    //     }
+    //     return "image"; // Default to image mode
+    // };
 
-    const backgroundMode = getBackgroundMode(formData);
+    // const backgroundMode = getBackgroundMode(formData);
     const [isCopyLink, setIsCopyLink] = useState(false);
 
     return (
@@ -31,12 +38,21 @@ const SharePage = ({ formData }: SharePageProps) => {
             style={{ height: "100vh", overflow: "hidden" }}
         >
             <div
-                className="relative flex-1 flex items-center justify-center"
+                className="min-h-[100%] question-main flex-1 flex flex-col overflow-y-auto relative items-center justify-center"
                 style={{
-                    ...(backgroundMode === "image" && {
+                    ...(formData?.ConfigJson?.Background === "image" && {
                         backgroundImage: `url(${
-                            formData?.CustomBackgroundImageUrl ||
-                            formData?.Background
+                            formData?.ConfigJson?.IsUseBackgroundImageBase64 &&
+                            formData.BackgroundImageBase64
+                                ? formData.BackgroundImageBase64
+                                : formData?.ConfigJson?.DefaultBackgroundImageId
+                                ? listBackground.find(
+                                      (item) =>
+                                          item.id ===
+                                          formData?.ConfigJson
+                                              ?.DefaultBackgroundImageId
+                                  )?.url
+                                : ""
                         })`,
                         backgroundSize: "cover",
                         backgroundPosition: "center",
@@ -46,19 +62,22 @@ const SharePage = ({ formData }: SharePageProps) => {
                         })`,
                         backgroundColor: "transparent",
                     }),
-                    ...(backgroundMode === "color" && {
-                        ...(formData.Background?.startsWith("#")
-                            ? {
-                                  backgroundColor: formData.Background,
-                              }
-                            : {
-                                  background: `linear-gradient(to right, ${formData.ConfigJson.BackgroundGradient1Color}, ${formData.ConfigJson.BackgroundGradient2Color})`,
-                              }),
+                    ...(formData.Background === "color_gradient" && {
+                        background: `linear-gradient(to right, ${formData.ConfigJson.BackgroundGradient1Color}, ${formData.ConfigJson.BackgroundGradient2Color})`,
+                        filter: `Brightness(${
+                            formData.ConfigJson.Brightness / 100
+                        })`,
+                    }),
+                    ...(formData.Background?.startsWith("#") && {
+                        backgroundColor: formData.Background,
+                        filter: `Brightness(${
+                            formData.ConfigJson.Brightness / 100
+                        })`,
                     }),
                 }}
             >
                 <div className="flex justify-center">
-                    <div className="bg-white p-5 rounded-lg w-[1200px]">
+                    <div className="bg-white p-5 rounded-lg ">
                         <h3
                             className="text-2xl font-semibold mb-4 text-center"
                             style={{

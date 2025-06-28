@@ -3,6 +3,7 @@ import "./styles.scss";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import WarningIcon from "@mui/icons-material/Warning";
+import { useEffect, useState } from "react";
 
 type Props = {
     formData: SurveyType;
@@ -53,19 +54,40 @@ const getErrors = (formData: SurveyType): string[] => {
 };
 
 const CompletePage = ({ formData }: Props) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [listBackground, setListBackground] = useState<any[]>([]);
+
     const errors = getErrors(formData);
+
+    useEffect(() => {
+        setListBackground(
+            JSON.parse(localStorage.getItem("listBackground") || "[]")
+        );
+    }, []);
 
     return (
         <div
-            className="complete-page flex-1 flex flex-col items-center justify-center min-h-[100%]"
+            className="min-h-[100%] question-main flex-1 flex flex-col overflow-y-auto relative items-center justify-center"
             style={{
-                ...(formData?.Background?.startsWith("/") && {
-                    backgroundImage: `url(${formData?.Background})`,
+                ...(formData?.ConfigJson?.Background === "image" && {
+                    backgroundImage: `url(${
+                        formData?.ConfigJson?.IsUseBackgroundImageBase64 &&
+                        formData.BackgroundImageBase64
+                            ? formData.BackgroundImageBase64
+                            : formData?.ConfigJson?.DefaultBackgroundImageId
+                            ? listBackground.find(
+                                  (item) =>
+                                      item.id ===
+                                      formData?.ConfigJson
+                                          ?.DefaultBackgroundImageId
+                              )?.url
+                            : ""
+                    })`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
                     filter: `Brightness(${
-                        formData?.ConfigJson?.Brightness / 100
+                        formData.ConfigJson.Brightness / 100
                     })`,
                     backgroundColor: "transparent",
                 }),
