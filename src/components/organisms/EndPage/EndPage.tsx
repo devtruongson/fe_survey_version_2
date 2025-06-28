@@ -5,7 +5,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { routesMap } from "../../../routes/routes";
 
 type Props = {
@@ -13,16 +12,17 @@ type Props = {
 };
 
 const EndPage = ({ formData }: Props) => {
-    const { id } = useParams();
-    const navigate = useNavigate();
     const [listBackground, setListBackground] = useState<any[]>([]);
 
     const handleNavigate = useCallback(() => {
-        // console.log("run >>>>", id);
-        if (id) {
-            navigate(routesMap.SurveyCustomer.replace("/:id", `/${id}`));
+        if (formData.Id) {
+            const url = routesMap.SurveyCustomer.replace(
+                "/:id",
+                `/${formData.Id}?taking_subject=Preview`
+            );
+            window.open(url, "_blank");
         }
-    }, [id, navigate]);
+    }, [formData.Id]);
 
     useEffect(() => {
         setListBackground(
