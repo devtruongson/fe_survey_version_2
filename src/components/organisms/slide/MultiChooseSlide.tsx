@@ -53,13 +53,20 @@ const MultiChooseSlide = ({ data }: Props) => {
                             className={`text-left px-5 py-2 rounded transition-all duration-150 font-medium text-lg flex-1
                         ${
                             idsSelected.includes(op?.Id)
-                                ? "bg-[#24738a] text-white border-none"
+                                ? "text-white border-none"
                                 : "bg-transparent text-white border border-white"
                         }
                     `}
                             style={{
-                                color:
-                                    config?.ConfigJson?.ContentColor || "#000",
+                                background: idsSelected.includes(op?.Id)
+                                    ? config?.ConfigJson
+                                          ?.ButtonBackgroundColor || "#24738a"
+                                    : "transparent",
+                                color: idsSelected.includes(op?.Id)
+                                    ? config?.ConfigJson?.ButtonContentColor ||
+                                      "#ffffff"
+                                    : config?.ConfigJson?.ContentColor ||
+                                      "#000",
                             }}
                         >
                             {op.Content}

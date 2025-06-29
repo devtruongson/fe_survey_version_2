@@ -57,13 +57,23 @@ const SigleChooseSlide = ({ data }: Props) => {
                             className={`text-left px-5 py-2 rounded transition-all duration-150 font-medium text-lg flex-1
                         ${
                             idSelected === op?.Id
-                                ? "bg-[#24738a] text-white border-none"
+                                ? "text-white border-none"
                                 : "bg-transparent text-white border border-white"
                         }
                     `}
                             style={{
+                                background:
+                                    idSelected === op?.Id
+                                        ? config?.ConfigJson
+                                              ?.ButtonBackgroundColor ||
+                                          "#24738a"
+                                        : "transparent",
                                 color:
-                                    config?.ConfigJson?.ContentColor || "#000",
+                                    idSelected === op?.Id
+                                        ? config?.ConfigJson
+                                              ?.ButtonContentColor || "#ffffff"
+                                        : config?.ConfigJson?.ContentColor ||
+                                          "#000",
                             }}
                         >
                             {op.Content}

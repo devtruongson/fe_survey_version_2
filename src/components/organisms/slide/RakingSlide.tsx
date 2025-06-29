@@ -77,12 +77,19 @@ const RakingSlide = ({ data }: Props) => {
                         className={`text-left px-5 py-2 rounded transition-all duration-150 font-medium text-lg flex items-center flex-1
                         ${
                             selectedMap[op.Id]
-                                ? "bg-[#24738a] text-white"
+                                ? "text-white"
                                 : "bg-transparent text-white border border-white"
                         }
                     `}
                         style={{
-                            color: config?.ConfigJson?.ContentColor || "#000",
+                            background: selectedMap[op.Id]
+                                ? config?.ConfigJson?.ButtonBackgroundColor ||
+                                  "#24738a"
+                                : "transparent",
+                            color: selectedMap[op.Id]
+                                ? config?.ConfigJson?.ButtonContentColor ||
+                                  "#ffffff"
+                                : config?.ConfigJson?.ContentColor || "#000",
                         }}
                     >
                         {selectedMap[op.Id] && (
