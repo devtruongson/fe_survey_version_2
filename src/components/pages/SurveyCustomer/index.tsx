@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import useBlocker from "../../../hooks/useBlocker";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import axios from "../../../libs/axios";
 import type { SurveyType } from "../../../types/survey";
 import { useAppDispatch } from "../../../app/hooks";
@@ -13,6 +13,7 @@ import { useGetSlide } from "../../../services/survey/get-slide";
 function SurveyCustomer() {
     const [isVerified, setIsVerified] = useState(false);
     const [isRefetch, setIsRefetch] = useState(false);
+    const [searchParams, setSearchParams] = useSearchParams();
     const [dataResponse, setDataResponse] = useState<SurveyType | null>(null);
     const [listBackgroundImage, setListBackgroundImage] = useState<
         { id: number; url: string }[]
@@ -28,8 +29,14 @@ function SurveyCustomer() {
         if (apiData) {
             setDataResponse(apiData.data);
             dispatch(handleSetInfoSurvey(apiData.data));
+
+            if (apiData.data?.Version) {
+                const currentParams = new URLSearchParams(searchParams);
+                currentParams.set("Version", apiData.data.Version.toString());
+                setSearchParams(currentParams);
+            }
         }
-    }, [apiData, dispatch]);
+    }, [apiData, dispatch, searchParams, setSearchParams]);
 
     useEffect(() => {
         const fetchBackgrounds = async () => {
