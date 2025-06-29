@@ -12,6 +12,7 @@ interface Props {
 
 const SigleSliderSlide = ({ data }: Props) => {
     const config = useAppSelector((state) => state.appSlice.infoSurvey);
+    const isValid = useAppSelector((state) => state.appSlice?.isValid || true);
 
     const value = useMemo(
         () =>
@@ -38,6 +39,7 @@ const SigleSliderSlide = ({ data }: Props) => {
     );
     const dispatch = useDispatch();
     const handleSliderChange = (_event: Event, newValue: number | number[]) => {
+        if (!isValid) return;
         if (typeof newValue === "number") {
             dispatch(
                 handleChangeSlider({

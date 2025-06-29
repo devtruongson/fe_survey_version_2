@@ -11,6 +11,7 @@ import { HiddenCheck } from "../../molecules/hiddenCheck/HiddenCheck";
 
 const SigleChooseSlide = ({ data }: Props) => {
     const config = useAppSelector((state) => state.appSlice.infoSurvey);
+    const isValid = useAppSelector((state) => state.appSlice?.isValid || true);
 
     const dispatch = useAppDispatch();
     const idSelected = useMemo(
@@ -21,6 +22,7 @@ const SigleChooseSlide = ({ data }: Props) => {
 
     const handleSelect = useCallback(
         (id: number) => {
+            if (!isValid) return;
             dispatch(
                 handleUpdateSigleChoose({
                     idChoose: id,
@@ -54,7 +56,9 @@ const SigleChooseSlide = ({ data }: Props) => {
                                     ? null
                                     : handleSelect(op?.Id || 0)
                             }
-                            className={`text-left px-5 py-2 rounded transition-all duration-150 font-medium text-lg flex-1
+                            className={`text-left px-5 py-2 rounded transition-all duration-150 font-medium text-lg flex-1 ${
+                                !isValid && "opacity-[0.6] cursor-not-allowed"
+                            }
                         ${
                             idSelected === op?.Id
                                 ? "text-white border-none"

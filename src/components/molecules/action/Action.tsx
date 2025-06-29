@@ -17,6 +17,10 @@ const Action = ({
     const info = useAppSelector((state) => state.appSlice.infoSurvey);
     const surveyData = useAppSelector((state) => state.appSlice.surveyData);
 
+    const isNext = useMemo(() => {
+        return surveyData?.SurveyResponses?.[currentIndex]?.isNext;
+    }, [currentIndex, surveyData?.SurveyResponses]);
+
     const buttonBgColor = useMemo(
         () => info?.ConfigJson?.ButtonBackgroundColor || "#007bff",
         [info?.ConfigJson?.ButtonBackgroundColor]
@@ -40,6 +44,7 @@ const Action = ({
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Enter") {
+                if (!isNext) return;
                 if (isEnd) {
                     if (onEnd) onEnd();
                 } else {
@@ -49,19 +54,22 @@ const Action = ({
         };
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [isEnd, onEnd, onNext]);
+    }, [isEnd, onEnd, onNext, isNext]);
 
     return (
         <div className="flex items-center justify-center gap-6 py-6 bg-transparent">
             <button
                 onClick={() => {
+                    if (!isNext) return;
                     if (isEnd) {
                         if (onEnd) onEnd();
                     } else {
                         if (onNext) onNext();
                     }
                 }}
-                className="btn-next group cursor-pointer"
+                className={`btn-next group cursor-pointer ${
+                    !isNext && "opacity-[0.5] cursor-not-allowed"
+                }`}
                 style={{
                     background:
                         buttonBgColor?.startsWith("linear-gradient") ||
@@ -76,6 +84,7 @@ const Action = ({
                         : "",
                     color: isValid ? buttonTextColor : "white",
                 }}
+                disabled={isNext === false}
             >
                 {!isEnd ? nextLabel : "Kết thúc"}
                 <svg

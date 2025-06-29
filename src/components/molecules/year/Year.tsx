@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useMemo } from "react";
 import "./styles.scss";
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { handleUpdateForm } from "../../../app/appSlice";
 
 type Props = {
@@ -10,6 +10,7 @@ type Props = {
 };
 const Year = ({ data, isUpdate }: Props) => {
     const dispatch = useAppDispatch();
+    const isValid = useAppSelector((state) => state.appSlice?.isValid || true);
 
     const year = useMemo(
         () => data?.ValueJson?.QuestionResponse?.Input?.Value || "",
@@ -18,7 +19,7 @@ const Year = ({ data, isUpdate }: Props) => {
 
     const hadnleUpdate = useCallback(
         (value: string) => {
-            if (!isUpdate) return;
+            if (!isUpdate || !isValid) return;
 
             dispatch(
                 handleUpdateForm({

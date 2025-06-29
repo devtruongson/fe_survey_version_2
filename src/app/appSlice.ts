@@ -14,6 +14,7 @@ interface IQuestionContent {
 
 interface SurveyResponse {
     isEnd?: boolean;
+    isNext?: boolean;
     IsValid: boolean;
     ValueJson: {
         QuestionContent: IQuestionContent;
@@ -145,6 +146,7 @@ export const appSlice = createSlice({
                     ) {
                         return {
                             ...i,
+                            isNext: true,
                             ValueJson: {
                                 ...i.ValueJson,
                                 QuestionResponse: {
@@ -227,6 +229,7 @@ export const appSlice = createSlice({
                         return {
                             // IsValid: true,
                             ...i,
+                            isNext: true,
                             ValueJson: {
                                 ...i.ValueJson,
                                 QuestionResponse: {
@@ -289,7 +292,7 @@ export const appSlice = createSlice({
                     ) {
                         return {
                             ...i,
-                            // IsValid: true,
+                            isNext: true,
                             ValueJson: {
                                 ...i.ValueJson,
                                 QuestionResponse: {
@@ -356,7 +359,7 @@ export const appSlice = createSlice({
                     ) {
                         return {
                             ...i,
-                            // IsValid: true,
+                            isNext: true,
                             ValueJson: {
                                 ...i.ValueJson,
                                 QuestionResponse: {
@@ -422,7 +425,7 @@ export const appSlice = createSlice({
                     ) {
                         return {
                             ...i,
-                            // IsValid: true,
+                            isNext: true,
                             ValueJson: {
                                 ...i.ValueJson,
                                 QuestionResponse: {
@@ -488,7 +491,7 @@ export const appSlice = createSlice({
                     ) {
                         return {
                             ...i,
-                            // IsValid: true,
+                            isNext: true,
                             ValueJson: {
                                 ...i.ValueJson,
                                 QuestionResponse: {
@@ -554,7 +557,7 @@ export const appSlice = createSlice({
                     ) {
                         return {
                             ...i,
-                            // IsValid: true,
+                            isNext: true,
                             ValueJson: {
                                 ...i.ValueJson,
                                 QuestionResponse: {

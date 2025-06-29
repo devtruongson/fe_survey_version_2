@@ -17,6 +17,7 @@ interface Props {
 
 const SigleInputSlide = ({ data }: Props) => {
     // console.log(data);
+    const isValid = useAppSelector((state) => state.appSlice?.isValid || true);
     const config = useAppSelector((state) => state.appSlice.infoSurvey);
     const dispatch = useDispatch();
 
@@ -37,7 +38,8 @@ const SigleInputSlide = ({ data }: Props) => {
                             data?.ValueJson?.QuestionResponse?.Input?.Value ||
                             ""
                         }
-                        onChange={(e) =>
+                        onChange={(e) => {
+                            if (!isValid) return;
                             dispatch(
                                 handleUpdateForm({
                                     idChoose:
@@ -45,8 +47,8 @@ const SigleInputSlide = ({ data }: Props) => {
                                     type: 1,
                                     value: e.target.value || "",
                                 })
-                            )
-                        }
+                            );
+                        }}
                     />
                 );
             case 2:
@@ -66,7 +68,8 @@ const SigleInputSlide = ({ data }: Props) => {
                             data?.ValueJson?.QuestionResponse?.Input?.Value ||
                             ""
                         }
-                        onChange={(e) =>
+                        onChange={(e) => {
+                            if (!isValid) return;
                             dispatch(
                                 handleUpdateForm({
                                     idChoose:
@@ -74,8 +77,8 @@ const SigleInputSlide = ({ data }: Props) => {
                                     type: 2,
                                     value: e.target.value || "",
                                 })
-                            )
-                        }
+                            );
+                        }}
                     />
                     // <Box className="text-area w-full">
                     // </Box>
@@ -98,7 +101,8 @@ const SigleInputSlide = ({ data }: Props) => {
                             data?.ValueJson?.QuestionResponse?.Input?.Value ||
                             ""
                         }
-                        onChange={(e) =>
+                        onChange={(e) => {
+                            if (!isValid) return;
                             dispatch(
                                 handleUpdateForm({
                                     idChoose:
@@ -106,8 +110,8 @@ const SigleInputSlide = ({ data }: Props) => {
                                     type: 3,
                                     value: e.target.value || "",
                                 })
-                            )
-                        }
+                            );
+                        }}
                     />
                 );
             case 4:
@@ -128,7 +132,8 @@ const SigleInputSlide = ({ data }: Props) => {
                                 data?.ValueJson?.QuestionResponse?.Input
                                     ?.Value || ""
                             }
-                            onChange={(e) =>
+                            onChange={(e) => {
+                                if (!isValid) return;
                                 dispatch(
                                     handleUpdateForm({
                                         idChoose:
@@ -137,8 +142,8 @@ const SigleInputSlide = ({ data }: Props) => {
                                         type: 4,
                                         value: e.target.value || "",
                                     })
-                                )
-                            }
+                                );
+                            }}
                         />
                     </Box>
                 );

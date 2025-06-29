@@ -252,6 +252,7 @@ const Start = ({
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (i: any) => ({
                     isEnd: false,
+                    isNext: false,
                     IsValid: true,
                     ValueJson: {
                         QuestionContent: {

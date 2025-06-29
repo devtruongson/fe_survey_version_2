@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useMemo } from "react";
 import "./styles.scss";
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { handleUpdateForm } from "../../../app/appSlice";
 
 type Props = {
@@ -9,8 +9,9 @@ type Props = {
     data?: any;
     color?: string;
 };
-const Date = ({ isUpdate, data, color }: Props) => {
+const Date = ({ isUpdate, data }: Props) => {
     const dispatch = useAppDispatch();
+    const isValid = useAppSelector((state) => state.appSlice?.isValid || true);
 
     const date = useMemo(
         () =>
@@ -33,7 +34,7 @@ const Date = ({ isUpdate, data, color }: Props) => {
 
     const hadnleUpdate = useCallback(
         (type: "date" | "month" | "year", value: string) => {
-            if (!isUpdate) return;
+            if (!isUpdate || !isValid) return;
             let result = "";
             if (type === "date") {
                 result = `${value}/${month}/${year}`;
@@ -58,6 +59,7 @@ const Date = ({ isUpdate, data, color }: Props) => {
             date,
             dispatch,
             isUpdate,
+            isValid,
             month,
             year,
         ]

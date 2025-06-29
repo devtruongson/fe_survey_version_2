@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useMemo } from "react";
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import "./styles.scss";
 import { handleUpdateForm } from "../../../app/appSlice";
 
@@ -10,6 +10,7 @@ type Props = {
 };
 const Time = ({ data, isUpdate }: Props) => {
     const dispatch = useAppDispatch();
+    const isValid = useAppSelector((state) => state.appSlice?.isValid || true);
 
     const hour = useMemo(
         () =>
@@ -26,7 +27,7 @@ const Time = ({ data, isUpdate }: Props) => {
 
     const hadnleUpdate = useCallback(
         (type: "hour" | "minute", value: string) => {
-            if (!isUpdate) return;
+            if (!isUpdate || !isValid) return;
             let result = "";
             if (type === "hour") {
                 result = `${value}/${minute}`;
