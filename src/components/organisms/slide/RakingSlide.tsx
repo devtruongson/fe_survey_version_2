@@ -60,27 +60,37 @@ const RakingSlide = ({ data }: Props) => {
     return (
         <div className="flex flex-col gap-4 w-[90%] max-w-5xl mx-auto mt-6">
             {options.map((op: any) => (
-                <button
-                    key={op.Id}
-                    onClick={() => handleRank(op.Id, op.Content)}
-                    className={`text-left px-5 py-2 rounded transition-all duration-150 font-medium text-lg flex items-center
+                <div className="flex justify-center items-center gap-5 w-[100%]">
+                    {op?.MainImageUrl ? (
+                        <img
+                            alt="image"
+                            src={op?.MainImageUrl}
+                            className="w-[100px] object-contain"
+                        />
+                    ) : null}
+
+                    <button
+                        key={op.Id}
+                        onClick={() => handleRank(op.Id, op.Content)}
+                        className={`text-left px-5 py-2 rounded transition-all duration-150 font-medium text-lg flex items-center flex-1
                         ${
                             selectedMap[op.Id]
                                 ? "bg-[#24738a] text-white"
                                 : "bg-transparent text-white border border-white"
                         }
                     `}
-                    style={{
-                        color: config?.ConfigJson?.ContentColor || "#000",
-                    }}
-                >
-                    {selectedMap[op.Id] && (
-                        <span className="mr-3 font-bold">
-                            #{selectedMap[op.Id]}
-                        </span>
-                    )}
-                    {op.Content}
-                </button>
+                        style={{
+                            color: config?.ConfigJson?.ContentColor || "#000",
+                        }}
+                    >
+                        {selectedMap[op.Id] && (
+                            <span className="mr-3 font-bold">
+                                #{selectedMap[op.Id]}
+                            </span>
+                        )}
+                        {op.Content}
+                    </button>
+                </div>
             ))}
             <HiddenCheck id={data?.ValueJson.QuestionContent.QuestionTypeId} />;
         </div>
