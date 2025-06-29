@@ -413,7 +413,7 @@ export const appSlice = createSlice({
         handleUpdateRating(
             state,
             action: PayloadAction<{
-                idChoose: number; // questionId
+                idChoose: number;
                 value: number;
             }>
         ) {
@@ -489,9 +489,12 @@ export const appSlice = createSlice({
                         i.ValueJson.QuestionContent.Id ===
                         action.payload.idChoose
                     ) {
+                        const isNext =
+                            action.payload.ranking.length ===
+                            i?.ValueJson?.QuestionContent?.Options?.length;
                         return {
                             ...i,
-                            isNext: true,
+                            isNext: isNext,
                             ValueJson: {
                                 ...i.ValueJson,
                                 QuestionResponse: {
