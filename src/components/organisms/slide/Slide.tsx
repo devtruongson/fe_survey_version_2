@@ -235,6 +235,8 @@ const Slide = ({ currentQuestionId }: Props) => {
         }
     }, [data]);
 
+    console.log("check data : ", data)
+
     return (
         <div className="">
             {/* Timer overlay - chỉ hiển thị khi timer > 0 */}
@@ -284,33 +286,36 @@ const Slide = ({ currentQuestionId }: Props) => {
             </div>
 
             {/* Microphone Button */}
-            <div className="flex justify-center mb-4">
-                <button
-                    onClick={handleToggleMicrophone}
-                    className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg`}
-                    style={{
-                        background: isActiveAudio
-                            ? "#ef4444" // red-500
-                            : config?.ConfigJson?.ButtonBackgroundColor ||
-                              "#3b82f6", // blue-500 default
-                        boxShadow: isActiveAudio
-                            ? "0 10px 15px -3px rgba(239, 68, 68, 0.5)" // shadow-red-500/50
-                            : `0 10px 15px -3px ${
-                                  config?.ConfigJson?.ButtonBackgroundColor ||
-                                  "#3b82f6"
-                              }80`, // shadow với opacity
-                    }}
-                >
-                    <svg
-                        className="w-8 h-8 text-white"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
+            {
+                (data?.ValueJson.QuestionContent as any).IsVoice &&
+                <div className="flex justify-center mb-4">
+                    <button
+                        onClick={handleToggleMicrophone}
+                        className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg`}
+                        style={{
+                            background: isActiveAudio
+                                ? "#ef4444" // red-500
+                                : config?.ConfigJson?.ButtonBackgroundColor ||
+                                "#3b82f6", // blue-500 default
+                            boxShadow: isActiveAudio
+                                ? "0 10px 15px -3px rgba(239, 68, 68, 0.5)" // shadow-red-500/50
+                                : `0 10px 15px -3px ${
+                                    config?.ConfigJson?.ButtonBackgroundColor ||
+                                    "#3b82f6"
+                                }80`, // shadow với opacity
+                        }}
                     >
-                        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
-                        <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
-                    </svg>
-                </button>
-            </div>
+                        <svg
+                            className="w-8 h-8 text-white"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
+                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+                        </svg>
+                    </button>
+                </div>
+            }
 
             {/* Display transcribed text */}
             {inputText &&
