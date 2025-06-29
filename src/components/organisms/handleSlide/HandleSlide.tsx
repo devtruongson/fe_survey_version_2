@@ -313,8 +313,6 @@ const Start = ({
                 };
             }
 
-            console.log("dataStore >>>> ", dataStore);
-
             dispatch(
                 setSurveyData({
                     taken_subject: "Preview",
