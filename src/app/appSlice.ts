@@ -13,6 +13,7 @@ interface IQuestionContent {
 }
 
 interface SurveyResponse {
+    isEnd?: boolean;
     IsValid: boolean;
     ValueJson: {
         QuestionContent: IQuestionContent;
@@ -143,7 +144,8 @@ export const appSlice = createSlice({
                         action.payload.questionId
                     ) {
                         return {
-                            IsValid: true,
+                            // IsValid: true,
+                            ...i,
                             ValueJson: {
                                 ...i.ValueJson,
                                 QuestionResponse: {
@@ -158,7 +160,7 @@ export const appSlice = createSlice({
                     }
                     return {
                         ...i,
-                        IsValid: true,
+                        // IsValid: true,
                     };
                 });
                 if (state.surveyData && clone) {
@@ -217,7 +219,8 @@ export const appSlice = createSlice({
                             newArr = [...prevArr, action.payload.idChoose];
                         }
                         return {
-                            IsValid: true,
+                            // IsValid: true,
+                            ...i,
                             ValueJson: {
                                 ...i.ValueJson,
                                 QuestionResponse: {
@@ -232,7 +235,7 @@ export const appSlice = createSlice({
                     }
                     return {
                         ...i,
-                        IsValid: true,
+                        // IsValid: true,
                     };
                 });
                 if (state.surveyData && clone) {
@@ -273,7 +276,7 @@ export const appSlice = createSlice({
                     ) {
                         return {
                             ...i,
-                            IsValid: true,
+                            // IsValid: true,
                             ValueJson: {
                                 ...i.ValueJson,
                                 QuestionResponse: {
@@ -291,7 +294,7 @@ export const appSlice = createSlice({
                     }
                     return {
                         ...i,
-                        IsValid: true,
+                        // IsValid: true,
                     };
                 });
                 if (state.surveyData && clone) {
@@ -333,7 +336,7 @@ export const appSlice = createSlice({
                     ) {
                         return {
                             ...i,
-                            IsValid: true,
+                            // IsValid: true,
                             ValueJson: {
                                 ...i.ValueJson,
                                 QuestionResponse: {
@@ -351,7 +354,7 @@ export const appSlice = createSlice({
                     }
                     return {
                         ...i,
-                        IsValid: true,
+                        // IsValid: true,
                     };
                 });
                 if (state.surveyData && clone) {
@@ -392,7 +395,7 @@ export const appSlice = createSlice({
                     ) {
                         return {
                             ...i,
-                            IsValid: true,
+                            // IsValid: true,
                             ValueJson: {
                                 ...i.ValueJson,
                                 QuestionResponse: {
@@ -410,7 +413,7 @@ export const appSlice = createSlice({
                     }
                     return {
                         ...i,
-                        IsValid: true,
+                        // IsValid: true,
                     };
                 });
                 if (state.surveyData && clone) {
@@ -451,7 +454,7 @@ export const appSlice = createSlice({
                     ) {
                         return {
                             ...i,
-                            IsValid: true,
+                            // IsValid: true,
                             ValueJson: {
                                 ...i.ValueJson,
                                 QuestionResponse: {
@@ -466,7 +469,7 @@ export const appSlice = createSlice({
                     }
                     return {
                         ...i,
-                        IsValid: true,
+                        // IsValid: true,
                     };
                 });
                 if (state.surveyData && clone) {
@@ -510,7 +513,7 @@ export const appSlice = createSlice({
                     ) {
                         return {
                             ...i,
-                            IsValid: true,
+                            // IsValid: true,
                             ValueJson: {
                                 ...i.ValueJson,
                                 QuestionResponse: {
@@ -529,7 +532,7 @@ export const appSlice = createSlice({
                     }
                     return {
                         ...i,
-                        IsValid: true,
+                        // IsValid: true,
                     };
                 });
                 if (state.surveyData && clone) {

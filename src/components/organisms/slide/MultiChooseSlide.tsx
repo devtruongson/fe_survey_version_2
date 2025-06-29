@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import Error from "./Error";
+// import Error from "./Error";
 import { handleUpdateMutilChoice } from "../../../app/appSlice";
 import { HiddenCheck } from "../../molecules/hiddenCheck/HiddenCheck";
 
@@ -16,7 +16,7 @@ const MultiChooseSlide = ({ data }: Props) => {
         () => data?.ValueJson?.QuestionResponse?.MultipleChoice || [],
         [data]
     );
-    const isValid = useMemo(() => data?.IsValid, [data]);
+    // const isValid = useMemo(() => data?.IsValid, [data]);
 
     const handleSelect = useCallback(
         (id: number) => {
@@ -32,9 +32,9 @@ const MultiChooseSlide = ({ data }: Props) => {
 
     return (
         <div className="flex flex-col gap-4 w-[90%] max-w-5xl mx-auto mt-6">
-            {!isValid ? (
+            {/* {!isValid ? (
                 <Error message="Câu hỏi này chưa được trả lời" />
-            ) : null}
+            ) : null} */}
             {(data?.ValueJson?.QuestionContent?.Options || []).map(
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (op: any) => (

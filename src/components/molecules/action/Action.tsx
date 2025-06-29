@@ -4,14 +4,14 @@ import { useAppSelector } from "../../../app/hooks";
 interface ActionProps {
     onNext?: () => void;
     nextLabel?: string;
-    currentQuestionId: number;
+    currentIndex: number;
     onEnd: () => void;
 }
 
 const Action = ({
     onNext,
     nextLabel = "Tiếp tục",
-    currentQuestionId,
+    currentIndex,
     onEnd,
 }: ActionProps) => {
     const info = useAppSelector((state) => state.appSlice.infoSurvey);
@@ -27,20 +27,15 @@ const Action = ({
     );
     const data = useAppSelector((state) => state.appSlice.surveyData);
     const isValid = useMemo(
-        () =>
-            (data?.SurveyResponses || []).find(
-                (i) => i.ValueJson.QuestionContent.Id === currentQuestionId
-            )?.IsValid,
-        [currentQuestionId, data?.SurveyResponses]
+        () => (data?.SurveyResponses || [])[currentIndex]?.IsValid,
+        [currentIndex, data?.SurveyResponses]
     );
 
-    const isEnd = useMemo(
-        () =>
-            currentQuestionId ===
-            surveyData?.SurveyResponses[surveyData?.SurveyResponses.length - 1]
-                ?.ValueJson?.QuestionContent?.Id,
-        [currentQuestionId, surveyData?.SurveyResponses]
-    );
+    const isEnd = useMemo(() => {
+        const current = surveyData?.SurveyResponses?.[currentIndex];
+        console.log("current >>> ", current);
+        return current?.isEnd;
+    }, [currentIndex, surveyData?.SurveyResponses]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {

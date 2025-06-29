@@ -35,6 +35,7 @@ type Props = {
 
 const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
     const [current, setCurrent] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(0);
     const [searchParams] = useSearchParams();
     const taken_subject = useMemo(
         () => searchParams.get("taking_subject"),
@@ -60,12 +61,9 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
 
         if (!surveyData?.SurveyResponses) return;
 
-        const index = surveyData.SurveyResponses.findIndex(
-            (item) => item.ValueJson?.QuestionContent?.Id === current
-        );
-        const question = surveyData?.SurveyResponses[index];
+        const question = surveyData?.SurveyResponses[currentIndex];
 
-        if (!question?.IsValid) return;
+        // if (!question?.IsValid) return;
 
         const configJson = question?.ValueJson?.QuestionContent
             ?.ConfigJson as Record<string, any>;
@@ -134,28 +132,42 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
                 }
 
                 if (result) {
-                    const target = surveyData.SurveyResponses.find(
-                        (item) =>
-                            item.ValueJson.QuestionContent.Id ===
-                            logic.TargetQuestionId
-                    );
+                    let targetIndex = -1;
+                    for (
+                        let i = surveyData.SurveyResponses.length - 1;
+                        i >= 0;
+                        i--
+                    ) {
+                        if (
+                            surveyData.SurveyResponses[i].ValueJson
+                                .QuestionContent.Id === logic.TargetQuestionId
+                        ) {
+                            targetIndex = i;
+                            break;
+                        }
+                    }
 
-                    if (target) {
+                    if (targetIndex !== -1) {
+                        const target = surveyData.SurveyResponses[targetIndex];
                         setCurrent(target.ValueJson.QuestionContent.Id);
+                        setCurrentIndex(targetIndex);
                         return;
                     }
                 }
             }
         }
 
-        if (index === -1 || index === surveyData.SurveyResponses.length - 1)
+        if (
+            currentIndex === -1 ||
+            currentIndex === surveyData.SurveyResponses.length - 1
+        )
             return;
 
-        setCurrent(
-            surveyData.SurveyResponses[index + 1]?.ValueJson?.QuestionContent
-                ?.Id ?? 0
-        );
-    }, [surveyData, current]);
+        const nextIndex = currentIndex + 1;
+        const nextQuestion = surveyData.SurveyResponses[nextIndex];
+        setCurrentIndex(nextIndex);
+        setCurrent(nextQuestion?.ValueJson?.QuestionContent?.Id ?? 0);
+    }, [surveyData, currentIndex]);
 
     const handleEnd = useCallback(() => {
         if (!surveyData || !id) return;
@@ -163,7 +175,7 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
             ...surveyData,
             taken_subject: taken_subject,
             SurveyResponses: surveyData?.SurveyResponses?.map((i) => ({
-                ...i,
+                IsValid: i.IsValid,
                 ValueJson: {
                     ...i.ValueJson,
                     QuestionContent: {
@@ -183,7 +195,13 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
     }, [id, mutate, navigate, surveyData, taken_subject]);
 
     if (!surveyData?.SurveyResponses?.length) {
-        return <Start dataResponse={dataResponse} setCurrent={setCurrent} />;
+        return (
+            <Start
+                dataResponse={dataResponse}
+                setCurrent={setCurrent}
+                setCurrentIndex={setCurrentIndex}
+            />
+        );
     }
 
     return (
@@ -191,7 +209,7 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
             <Slide currentQuestionId={current} />
             <Action
                 onNext={handleNext}
-                currentQuestionId={current}
+                currentIndex={currentIndex}
                 onEnd={handleEnd}
             />
         </div>
@@ -203,9 +221,11 @@ export default HandleSlide;
 const Start = ({
     dataResponse,
     setCurrent,
+    setCurrentIndex,
 }: {
     dataResponse: SurveyType | null;
     setCurrent: Dispatch<SetStateAction<number>>;
+    setCurrentIndex: Dispatch<SetStateAction<number>>;
 }) => {
     const data = useAppSelector((state) => state.appSlice.infoSurvey);
     const dispatch = useAppDispatch();
@@ -224,6 +244,7 @@ const Start = ({
             let dataStore = (dataResponse?.Questions || []).map(
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (i: any) => ({
+                    isEnd: false,
                     IsValid: false,
                     ValueJson: {
                         QuestionContent: {
@@ -268,11 +289,31 @@ const Start = ({
                     dataStore.length,
                     duplicateCount
                 );
+
                 const duplicatedItems = duplicateIndices.map(
                     (index) => dataStore[index]
                 );
-                dataStore = [...dataStore, ...duplicatedItems];
+                const newData = duplicatedItems.map((i, indexChild) => {
+                    if (indexChild === duplicatedItems.length - 1) {
+                        return {
+                            ...i,
+                            isEnd: true,
+                        };
+                    }
+                    return i;
+                });
+                dataStore = [...dataStore, ...newData];
             }
+
+            // Set isEnd: true for the last question of the entire survey
+            if (dataStore.length > 0) {
+                dataStore[dataStore.length - 1] = {
+                    ...dataStore[dataStore.length - 1],
+                    isEnd: true,
+                };
+            }
+
+            console.log("dataStore >>>> ", dataStore);
 
             dispatch(
                 setSurveyData({
@@ -286,6 +327,7 @@ const Start = ({
                 dataResponse?.Questions[0]?.Id
             ) {
                 setCurrent(dataResponse?.Questions[0]?.Id);
+                setCurrentIndex(0);
             }
         }
     };
