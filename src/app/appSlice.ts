@@ -576,8 +576,11 @@ export const appSlice = createSlice({
                             IsValid: true,
                             ValueJson: {
                                 ...i.ValueJson,
-                                QuestionContent: {
-                                    ...i.ValueJson.QuestionContent,
+                                QuestionResponse: {
+                                    ...(typeof i.ValueJson.QuestionResponse ===
+                                        "object" && i.ValueJson.QuestionResponse
+                                        ? i.ValueJson.QuestionResponse
+                                        : {}),
                                     SpeechText: action.payload.text,
                                 },
                             },

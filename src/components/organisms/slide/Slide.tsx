@@ -235,7 +235,7 @@ const Slide = ({ currentQuestionId }: Props) => {
         }
     }, [data]);
 
-    console.log("check data : ", data)
+    console.log("check data : ", data);
 
     return (
         <div className="">
@@ -286,8 +286,7 @@ const Slide = ({ currentQuestionId }: Props) => {
             </div>
 
             {/* Microphone Button */}
-            {
-                (data?.ValueJson.QuestionContent as any).IsVoice &&
+            {(data?.ValueJson.QuestionContent as any).IsVoice && (
                 <div className="flex justify-center mb-4">
                     <button
                         onClick={handleToggleMicrophone}
@@ -296,13 +295,13 @@ const Slide = ({ currentQuestionId }: Props) => {
                             background: isActiveAudio
                                 ? "#ef4444" // red-500
                                 : config?.ConfigJson?.ButtonBackgroundColor ||
-                                "#3b82f6", // blue-500 default
+                                  "#3b82f6", // blue-500 default
                             boxShadow: isActiveAudio
                                 ? "0 10px 15px -3px rgba(239, 68, 68, 0.5)" // shadow-red-500/50
                                 : `0 10px 15px -3px ${
-                                    config?.ConfigJson?.ButtonBackgroundColor ||
-                                    "#3b82f6"
-                                }80`, // shadow với opacity
+                                      config?.ConfigJson
+                                          ?.ButtonBackgroundColor || "#3b82f6"
+                                  }80`, // shadow với opacity
                         }}
                     >
                         <svg
@@ -315,10 +314,10 @@ const Slide = ({ currentQuestionId }: Props) => {
                         </svg>
                     </button>
                 </div>
-            }
+            )}
 
             {/* Display transcribed text */}
-            {inputText &&
+            {/* {inputText &&
                 (data?.ValueJson?.QuestionContent as any)?.IsVoice && (
                     <div className="text-center mb-4 p-4 bg-gray-100 rounded-lg">
                         <p className="text-gray-700 font-medium">
@@ -326,7 +325,7 @@ const Slide = ({ currentQuestionId }: Props) => {
                         </p>
                         <p className="text-gray-900">{inputText}</p>
                     </div>
-                )}
+                )} */}
 
             {handleRender()}
         </div>

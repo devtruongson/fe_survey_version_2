@@ -66,7 +66,7 @@ function SurveyCustomer() {
                 isRefetch={isRefetch}
             />
             <div
-                className={`py-[60px] w-full min-h-[100vh] bg-white z-50`}
+                className={`py-[60px] w-full min-h-[100vh] bg-white z-50 flex justify-center items-center`}
                 style={{
                     ...((dataResponse as any)?.Background === "color_gradient"
                         ? {
@@ -98,7 +98,7 @@ function SurveyCustomer() {
                     }%)`,
                 }}
             >
-                <div className="w-full h-full flex flex-col items-center justify-center relative z-10">
+                <div className="w-full h-[100%] flex flex-col items-center justify-center relative z-10">
                     <HandleSlide
                         setIsRefetch={setIsRefetch}
                         dataResponse={dataResponse}
