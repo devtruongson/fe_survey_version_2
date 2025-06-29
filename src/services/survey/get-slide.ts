@@ -5,7 +5,9 @@ import type { QueryConfig } from "../../libs/query";
 export const GET_QUERY_KEY = "slide";
 
 const get = async (id: number) => {
-    const { data } = await api.get(`/survey/slide?id=${id}`);
+    const { data } = await api.get(
+        `/survey/session/surveys/${id}/taking-session?id=${id}`
+    );
     return data;
 };
 

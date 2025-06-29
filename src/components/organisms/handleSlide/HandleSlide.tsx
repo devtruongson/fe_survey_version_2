@@ -7,7 +7,7 @@ import {
     type Dispatch,
     type SetStateAction,
 } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { handleSetIsValid, setSurveyData } from "../../../app/appSlice";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { routesMap } from "../../../routes/routes";
@@ -35,6 +35,11 @@ type Props = {
 
 const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
     const [current, setCurrent] = useState(0);
+    const [searchParams] = useSearchParams();
+    const taken_subject = useMemo(
+        () => searchParams.get("taking_subject"),
+        [searchParams]
+    );
     const surveyData = useAppSelector((state) => state.appSlice.surveyData);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -156,6 +161,7 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
         if (!surveyData || !id) return;
         const dataBuider = {
             ...surveyData,
+            taken_subject: taken_subject,
             SurveyResponses: surveyData?.SurveyResponses?.map((i) => ({
                 ...i,
                 ValueJson: {
@@ -174,7 +180,7 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
         };
         mutate(dataBuider);
         navigate(routesMap.EndSurveyCustomer.replace("/:id", `/${id}`));
-    }, [id, mutate, navigate, surveyData]);
+    }, [id, mutate, navigate, surveyData, taken_subject]);
 
     if (!surveyData?.SurveyResponses?.length) {
         return <Start dataResponse={dataResponse} setCurrent={setCurrent} />;
