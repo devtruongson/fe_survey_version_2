@@ -58,33 +58,6 @@ const Action = ({
 
     return (
         <div className="flex items-center justify-center gap-6 py-6 bg-transparent">
-            {/* Quay lại */}
-            {/* <button
-                onClick={onPrev}
-                disabled={isFirst}
-                className={`flex items-center bg-none border-none text-white font-medium text-lg transition-opacity ${
-                    isFirst
-                        ? "opacity-50 cursor-not-allowed"
-                        : "hover:opacity-80"
-                }`}
-                type="button"
-            >
-                <svg
-                    className="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15 19l-7-7 7-7"
-                    />
-                </svg>
-                Quay lại
-            </button> */}
-
             <button
                 onClick={() => {
                     if (isEnd) {

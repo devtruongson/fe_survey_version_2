@@ -173,7 +173,7 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
             })),
         };
         mutate(dataBuider);
-        navigate(routesMap.EndSurveyCustomer.replace(":id", `/${id}`));
+        navigate(routesMap.EndSurveyCustomer.replace("/:id", `/${id}`));
     }, [id, mutate, navigate, surveyData]);
 
     if (!surveyData?.SurveyResponses?.length) {
