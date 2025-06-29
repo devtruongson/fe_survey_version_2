@@ -19,9 +19,11 @@ const RakingSlide = ({ data }: Props) => {
     const ranking: { SurveyOptionId: number; RankIndex: number }[] =
         useSelector(
             (state: RootState) =>
-                state.appSlice.surveyData?.SurveyResponses.find(
-                    (r) => r.ValueJson.QuestionContent.Id === questionId
-                )?.ValueJson.QuestionResponse?.Ranking || []
+                (
+                    state.appSlice.surveyData?.SurveyResponses.find(
+                        (r) => r.ValueJson.QuestionContent.Id === questionId
+                    )?.ValueJson.QuestionResponse as any
+                )?.Ranking || []
         );
 
     const options = data?.ValueJson?.QuestionContent?.Options || [];
