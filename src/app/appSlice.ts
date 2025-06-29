@@ -144,7 +144,6 @@ export const appSlice = createSlice({
                         action.payload.questionId
                     ) {
                         return {
-                            // IsValid: true,
                             ...i,
                             ValueJson: {
                                 ...i.ValueJson,
@@ -174,6 +173,13 @@ export const appSlice = createSlice({
                 }
             } else {
                 if (!state.surveyData) return;
+                state.surveyData.SurveyResponses =
+                    state.surveyData.SurveyResponses.map((i) =>
+                        i.ValueJson.QuestionContent.Id ===
+                        action.payload.questionId
+                            ? { ...i, IsValid: false }
+                            : i
+                    );
                 const mess = `${
                     state.surveyData.InvalidReason ? ". " : ""
                 }Câu ${
@@ -249,6 +255,13 @@ export const appSlice = createSlice({
                 }
             } else {
                 if (!state.surveyData) return;
+                state.surveyData.SurveyResponses =
+                    state.surveyData.SurveyResponses.map((i) =>
+                        i.ValueJson.QuestionContent.Id ===
+                        action.payload.questionId
+                            ? { ...i, IsValid: false }
+                            : i
+                    );
                 const mess = `${
                     state.surveyData.InvalidReason ? ". " : ""
                 }Câu ${
@@ -308,6 +321,13 @@ export const appSlice = createSlice({
                 }
             } else {
                 if (!state.surveyData) return;
+                state.surveyData.SurveyResponses =
+                    state.surveyData.SurveyResponses.map((i) =>
+                        i.ValueJson.QuestionContent.Id ===
+                        action.payload.idChoose
+                            ? { ...i, IsValid: false }
+                            : i
+                    );
                 const mess = `${
                     state.surveyData.InvalidReason ? ". " : ""
                 }Câu ${
@@ -368,6 +388,13 @@ export const appSlice = createSlice({
                 }
             } else {
                 if (!state.surveyData) return;
+                state.surveyData.SurveyResponses =
+                    state.surveyData.SurveyResponses.map((i) =>
+                        i.ValueJson.QuestionContent.Id ===
+                        action.payload.idChoose
+                            ? { ...i, IsValid: false }
+                            : i
+                    );
                 const mess = `${
                     state.surveyData.InvalidReason ? ". " : ""
                 }Câu ${
@@ -427,6 +454,13 @@ export const appSlice = createSlice({
                 }
             } else {
                 if (!state.surveyData) return;
+                state.surveyData.SurveyResponses =
+                    state.surveyData.SurveyResponses.map((i) =>
+                        i.ValueJson.QuestionContent.Id ===
+                        action.payload.idChoose
+                            ? { ...i, IsValid: false }
+                            : i
+                    );
                 const mess = `${
                     state.surveyData.InvalidReason ? ". " : ""
                 }Câu ${
@@ -483,6 +517,13 @@ export const appSlice = createSlice({
                 }
             } else {
                 if (!state.surveyData) return;
+                state.surveyData.SurveyResponses =
+                    state.surveyData.SurveyResponses.map((i) =>
+                        i.ValueJson.QuestionContent.Id ===
+                        action.payload.idChoose
+                            ? { ...i, IsValid: false }
+                            : i
+                    );
                 const mess = `${
                     state.surveyData.InvalidReason ? ". " : ""
                 }Câu ${
@@ -546,6 +587,13 @@ export const appSlice = createSlice({
                 }
             } else {
                 if (!state.surveyData) return;
+                state.surveyData.SurveyResponses =
+                    state.surveyData.SurveyResponses.map((i) =>
+                        i.ValueJson.QuestionContent.Id ===
+                        action.payload.idChoose
+                            ? { ...i, IsValid: false }
+                            : i
+                    );
                 const mess = `${
                     state.surveyData.InvalidReason ? ". " : ""
                 }Câu ${
@@ -607,6 +655,13 @@ export const appSlice = createSlice({
                     `${state.surveyData.InvalidReason ? ". " : ""}Câu ${
                         action.payload.questionId
                     } phát hiện đầu vào ẩn`;
+                state.surveyData.SurveyResponses =
+                    state.surveyData.SurveyResponses.map((i) =>
+                        i.ValueJson.QuestionContent.Id ===
+                        action.payload.questionId
+                            ? { ...i, IsValid: false }
+                            : i
+                    );
             }
         },
     },

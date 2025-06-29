@@ -184,7 +184,14 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
                             i.ValueJson.QuestionContent.QuestionTypeId,
                         Content: i.ValueJson.QuestionContent.Content,
                         Description: i.ValueJson.QuestionContent.Description,
-                        ConfigJson: i.ValueJson.QuestionContent.ConfigJson,
+                        ConfigJson: (() => {
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                            const { JumpLogics, ...rest } = (i.ValueJson
+                                .QuestionContent.ConfigJson || {}) as {
+                                [key: string]: any;
+                            };
+                            return rest;
+                        })(),
                         Options: i.ValueJson.QuestionContent.Options,
                     },
                 },
@@ -245,7 +252,7 @@ const Start = ({
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (i: any) => ({
                     isEnd: false,
-                    IsValid: false,
+                    IsValid: true,
                     ValueJson: {
                         QuestionContent: {
                             Id: i?.Id || null,
