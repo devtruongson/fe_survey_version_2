@@ -287,18 +287,22 @@ const Slide = ({ currentQuestionId }: Props) => {
             <div className="flex justify-center mb-4">
                 <button
                     onClick={handleToggleMicrophone}
-                    className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 ${
-                        isActiveAudio
-                            ? "bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/50"
-                            : "bg-blue-500 hover:bg-blue-600 shadow-lg shadow-blue-500/50"
-                    }`}
+                    className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg`}
+                    style={{
+                        background: isActiveAudio
+                            ? "#ef4444" // red-500
+                            : config?.ConfigJson?.ButtonBackgroundColor ||
+                              "#3b82f6", // blue-500 default
+                        boxShadow: isActiveAudio
+                            ? "0 10px 15px -3px rgba(239, 68, 68, 0.5)" // shadow-red-500/50
+                            : `0 10px 15px -3px ${
+                                  config?.ConfigJson?.ButtonBackgroundColor ||
+                                  "#3b82f6"
+                              }80`, // shadow với opacity
+                    }}
                 >
                     <svg
-                        className={`w-8 h-8 ${
-                            isActiveAudio
-                                ? "text-white animate-pulse"
-                                : "text-white"
-                        }`}
+                        className="w-8 h-8 text-white"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                     >

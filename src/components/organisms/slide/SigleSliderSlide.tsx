@@ -87,10 +87,26 @@ const SigleSliderSlide = ({ data }: Props) => {
                     step={step}
                     sx={{
                         "& .MuiSlider-thumb": {
-                            backgroundColor: config?.ConfigJson
-                                ?.ButtonBackgroundColor
-                                ? config?.ConfigJson?.ButtonBackgroundColor
-                                : "#000",
+                            background:
+                                config?.ConfigJson?.ButtonBackgroundColor?.startsWith(
+                                    "linear-gradient"
+                                ) ||
+                                config?.ConfigJson?.ButtonBackgroundColor?.startsWith(
+                                    "radial-gradient"
+                                )
+                                    ? config?.ConfigJson?.ButtonBackgroundColor
+                                    : "",
+                            backgroundColor: !(
+                                config?.ConfigJson?.ButtonBackgroundColor?.startsWith(
+                                    "linear-gradient"
+                                ) ||
+                                config?.ConfigJson?.ButtonBackgroundColor?.startsWith(
+                                    "radial-gradient"
+                                )
+                            )
+                                ? config?.ConfigJson?.ButtonBackgroundColor ||
+                                  "#000"
+                                : "",
                             borderRadius: 0,
                             width: 26,
                             height: 26,
