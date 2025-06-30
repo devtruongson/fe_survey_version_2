@@ -175,7 +175,9 @@ const HandleSlide = ({ dataResponse, setIsRefetch }: Props) => {
         const dataBuider = {
             ...surveyData,
             taken_subject: taken_subject,
-            SurveyResponses: surveyData?.SurveyResponses?.map((i) => ({
+            SurveyResponses: surveyData?.SurveyResponses?.filter(
+                (i) => !i.parentId
+            ).map((i) => ({
                 IsValid: i.IsValid,
                 ValueJson: {
                     ...i.ValueJson,

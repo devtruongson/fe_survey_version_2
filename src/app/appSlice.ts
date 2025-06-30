@@ -15,6 +15,7 @@ interface IQuestionContent {
 interface SurveyResponse {
     isEnd?: boolean;
     isNext?: boolean;
+    parentId?: string | number;
     IsValid: boolean;
     ValueJson: {
         QuestionContent: IQuestionContent;
@@ -95,7 +96,10 @@ const validateDuplicateAnswers = (
     const answer1 = current.ValueJson.QuestionResponse;
     const answer2 = parent.ValueJson.QuestionResponse;
     if (!compareAnswers(answer1, answer2, questionType)) {
-        const mess = `. Câu ${currentQuestionId} có câu trả lời không nhất quán với câu gốc`;
+        const hasReason = !!state.surveyData.InvalidReason;
+        const mess = `${hasReason ? ". " : ""}Câu ${
+            current.parentId
+        } có đáp án không khớp với nhau`;
         if (
             state.surveyData &&
             !state.surveyData.InvalidReason.includes(mess)
