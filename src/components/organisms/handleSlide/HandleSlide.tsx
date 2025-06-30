@@ -16,6 +16,7 @@ import Action from "../../molecules/action/Action";
 import Slide from "../slide/Slide";
 import "./styles.scss";
 import { useUpdateSurveyPro } from "../../../services/survey/update-pro";
+import { v4 as uuidv4 } from "uuid";
 
 type JumpLogic = {
     Conditions: {
@@ -305,14 +306,23 @@ const Start = ({
                     if (indexChild === duplicatedItems.length - 1) {
                         return {
                             ...i,
+                            parentId: i?.ValueJson?.QuestionContent?.Id,
+                            isUnPost: true,
                             isEnd: true,
+                            ValueJson: {
+                                ...i.ValueJson,
+                                QuestionContent: {
+                                    ...i?.ValueJson?.QuestionContent,
+                                    Id: uuidv4(),
+                                },
+                            },
                         };
                     }
                     return i;
                 });
                 dataStore = [...dataStore, ...newData];
             }
-
+            console.log("dataStore >>>", dataStore);
             // Set isEnd: true for the last question of the entire survey
             if (dataStore.length > 0) {
                 dataStore[dataStore.length - 1] = {

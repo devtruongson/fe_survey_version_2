@@ -75,36 +75,33 @@ const compareAnswers = (answer1: any, answer2: any, questionType: string) => {
 // Helper function để validate câu trả lời lặp lại
 const validateDuplicateAnswers = (
     state: any,
-    currentQuestionId: number,
+    currentQuestionId: number | string,
     questionType: string
 ) => {
     const responses = state.surveyData?.SurveyResponses || [];
 
-    // Tìm tất cả câu hỏi có cùng ID (bao gồm câu gốc và câu lặp)
-    const sameQuestions = responses.filter(
+    const current = responses.find(
         (response: any) =>
             response.ValueJson.QuestionContent.Id === currentQuestionId
     );
+    if (!current || !current.parentId) return;
 
-    if (sameQuestions.length > 1) {
-        // Lấy câu trả lời đầu tiên (câu gốc)
-        const firstAnswer = sameQuestions[0]?.ValueJson.QuestionResponse;
+    const parent = responses.find(
+        (response: any) =>
+            response.ValueJson.QuestionContent.Id === current.parentId
+    );
+    if (!parent) return;
 
-        // So sánh với các câu còn lại
-        for (let i = 1; i < sameQuestions.length; i++) {
-            const currentAnswer = sameQuestions[i]?.ValueJson.QuestionResponse;
-
-            if (!compareAnswers(firstAnswer, currentAnswer, questionType)) {
-                const mess = `. Câu ${currentQuestionId} có câu trả lời không nhất quán giữa các lần lặp lại`;
-                if (
-                    state.surveyData &&
-                    !state.surveyData.InvalidReason.includes(mess)
-                ) {
-                    state.surveyData.InvalidReason =
-                        state.surveyData.InvalidReason + mess;
-                }
-                break;
-            }
+    const answer1 = current.ValueJson.QuestionResponse;
+    const answer2 = parent.ValueJson.QuestionResponse;
+    if (!compareAnswers(answer1, answer2, questionType)) {
+        const mess = `. Câu ${currentQuestionId} có câu trả lời không nhất quán với câu gốc`;
+        if (
+            state.surveyData &&
+            !state.surveyData.InvalidReason.includes(mess)
+        ) {
+            state.surveyData.InvalidReason =
+                state.surveyData.InvalidReason + mess;
         }
     }
 };
@@ -136,7 +133,10 @@ export const appSlice = createSlice({
         // Cập nhật các handler functions
         handleUpdateSigleChoose(
             state,
-            action: PayloadAction<{ idChoose: number; questionId: number }>
+            action: PayloadAction<{
+                idChoose: number;
+                questionId: number | string;
+            }>
         ) {
             if (!state.isValid) {
                 const clone = state.surveyData?.SurveyResponses.map((i) => {
@@ -196,7 +196,10 @@ export const appSlice = createSlice({
 
         handleUpdateMutilChoice(
             state,
-            action: PayloadAction<{ idChoose: number; questionId: number }>
+            action: PayloadAction<{
+                idChoose: number;
+                questionId: number | string;
+            }>
         ) {
             if (!state.isValid) {
                 const clone = state.surveyData?.SurveyResponses.map((i) => {
@@ -280,7 +283,7 @@ export const appSlice = createSlice({
         handleChangeSlider(
             state,
             action: PayloadAction<{
-                idChoose: number; // questionId
+                idChoose: number | string;
                 value: number;
             }>
         ) {
@@ -346,7 +349,7 @@ export const appSlice = createSlice({
         handleChangeRangeSlide(
             state,
             action: PayloadAction<{
-                idChoose: number;
+                idChoose: number | string;
                 min: number;
                 max: number;
             }>
@@ -413,7 +416,7 @@ export const appSlice = createSlice({
         handleUpdateRating(
             state,
             action: PayloadAction<{
-                idChoose: number;
+                idChoose: number | string;
                 value: number;
             }>
         ) {
@@ -479,7 +482,7 @@ export const appSlice = createSlice({
         handleUpdateRaking(
             state,
             action: PayloadAction<{
-                idChoose: number;
+                idChoose: number | string;
                 ranking: { SurveyOptionId: number; RankIndex: number }[];
             }>
         ) {
@@ -545,7 +548,7 @@ export const appSlice = createSlice({
         handleUpdateForm(
             state,
             action: PayloadAction<{
-                idChoose: number;
+                idChoose: number | string;
                 type: number;
                 value: string | number;
             }>
@@ -617,7 +620,7 @@ export const appSlice = createSlice({
 
         handleUpdateSpeechText(
             state,
-            action: PayloadAction<{ text: string; questionId: number }>
+            action: PayloadAction<{ text: string; questionId: number | string }>
         ) {
             if (!state.isValid) {
                 const clone = state.surveyData?.SurveyResponses.map((i) => {
@@ -653,7 +656,7 @@ export const appSlice = createSlice({
 
         handleUpdateInvalidReason(
             state,
-            action: PayloadAction<{ questionId: number }>
+            action: PayloadAction<{ questionId: number | string }>
         ) {
             if (state.surveyData) {
                 state.surveyData.InvalidReason =
